@@ -22,3 +22,16 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.navbar-brand {
+    padding-bottom: 25%;
+    padding-top: 25%;
+}
+
+#guitar-icon {
+    border-radius: 50px;
+    max-height: 1.5em;
+    max-width: 1.5em;
+
+}
+

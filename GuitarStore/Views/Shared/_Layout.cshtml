@@ -8,7 +8,7 @@
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
-    <div class="navbar navbar-inverse navbar-fixed-top">
+    <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
                 <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -16,13 +16,20 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
+                
+                @*@Html.ActionLink("Home", "Index", "Home", new { area = "" }, new { @class = "navbar-brand img-responsive", } )*@
+                <a href="@Url.Action("Index", "Home")" class="navbar-brand"><img class="img-responsive" id="guitar-icon" src="~/images/guitar-icon.png" alt="guitar-icon" /></a>
             </div>
             <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
+                <ul class="nav nav-pills">
+                    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("About", "About", "Home")</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
+                    <li>@Html.ActionLink("Contact", "Contact", "Home")</li>*@
+                    
+                    <li>@Html.ActionLink("Electric Guitars", "ElectricGuitars", "Home")</li>
+                    <li>@Html.ActionLink("Acoustic Guitars", "AcousticGuitars", "Home")</li>
+                    <li>@Html.ActionLink("Bass Guitars", "BassGuitars", "Home")</li>
+                    <li class="pull-right">@Html.ActionLink("Shopping Cart", "ShoppingCart", "Home")</li>
                 </ul>
             </div>
         </div>
@@ -31,7 +38,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - Matt's Guitar Store</p>
         </footer>
     </div>
 
