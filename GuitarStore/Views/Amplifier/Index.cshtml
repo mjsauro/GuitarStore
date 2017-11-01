@@ -1,0 +1,17 @@
+﻿
+@model GuitarStore.Models.Amplifier
+@{
+    ViewBag.TItle = "Index";
+}
+
+<div class="row">
+    <div class="col-xs12, col-sm-4">
+        <h2>@Model.Make</h2>
+        <p>@Model.Model</p>
+        <p>@Model.Watts</p>
+        <p>@Model.Size</p>
+        <p>@Model.Description</p>
+        <p>@Model.Price.ToString("C")</p>
+        <img class="img=-responsive" src="@Model.Image" />
+    </div>
+</div>
