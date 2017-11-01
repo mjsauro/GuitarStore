@@ -151,6 +151,8 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\Amplifier.cs" />
+    <Compile Include="Controllers\EffectsController.cs" />
+    <Compile Include="Models\Effects.cs" />
     <Compile Include="Models\Guitar.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -175,10 +177,16 @@
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
     <Content Include="images\explorer.jpg" />
+    <Content Include="images\fender.jpg" />
     <Content Include="images\guitar-icon.png" />
     <Content Include="images\lespaul.jpg" />
+    <Content Include="images\marshall.jpg" />
+    <Content Include="images\metalzone.jpg" />
     <Content Include="images\strat.jpg" />
     <Content Include="images\telecaster.jpg" />
+    <Content Include="images\vox.jpg" />
+    <Content Include="images\wah.jpg" />
+    <Content Include="images\whammy.jpg" />
     <Content Include="Scripts\angular-mocks.js" />
     <Content Include="Scripts\angular.js" />
     <Content Include="Scripts\angular.min.js" />
@@ -211,15 +219,14 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\ElectricGuitars.cshtml" />
-    <Content Include="Views\Home\AcousticGuitars.cshtml" />
-    <Content Include="Views\Home\BassGuitars.cshtml" />
     <Content Include="Views\Home\ShoppingCart.cshtml" />
     <Content Include="Views\Guitar\Index.cshtml" />
     <Content Include="Views\Amplifier\Index.cshtml" />
+    <Content Include="Views\Guitar\List.cshtml" />
+    <Content Include="Views\Amplifier\List.cshtml" />
+    <Content Include="Views\Effects\Index.cshtml" />
+    <Content Include="Views\Effects\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -1,0 +1,19 @@
+﻿@model IEnumerable<GuitarStore.Models.Amplifier>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Products</h2>
+<div class="row">
+    @foreach (var amplifier in Model)
+    {
+        <div class="col-xs-4">
+            <div class="well">
+                <h2>@amplifier.Make</h2>
+                <h2>@amplifier.Model</h2>
+                <img class="img-responsive" src="@amplifier.Image" />
+            </div>
+            @Html.ActionLink("Check it out!", "Index", new { ID = amplifier.ID })
+        </div>
+    }
+</div>

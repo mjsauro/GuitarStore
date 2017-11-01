@@ -1,0 +1,20 @@
+﻿@model IEnumerable<GuitarStore.Models.Effects>
+@{
+    ViewBag.Title = "List";
+}
+
+<h2>Products</h2>
+<div class="row">
+    @foreach (var effects in Model)
+    {
+        <div class="col-xs-4">
+            <div class="well">
+                <h2>@effects.Make</h2>
+                <h2>@effects.Model</h2>
+                <h2>@effects.Type</h2>
+                <img class="img-responsive" src="@effects.Image" />
+            </div>
+            @Html.ActionLink("Check it out!", "Index", new { ID = effects.ID })
+        </div>
+    }
+</div>
