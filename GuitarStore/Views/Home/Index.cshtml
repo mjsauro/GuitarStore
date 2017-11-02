@@ -2,28 +2,50 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
-    <h1>Matt's Guitar Store</h1>
-    <p class="lead">We specialize in Acoustic, Electric, and Bass Guitars.</p>
-    </div>
-
-<div class="row">
-    <div class="col-md-4">
-        <h2>Electric guitars</h2>
-        <p>
-            Click here for our @Html.ActionLink("electric guitar collection", "List", "Guitar")
-        </p>       
-    </div>
-    <div class="col-md-4">
-        <h2>Amplifiers</h2>
-        <p>
-            See our @Html.ActionLink("amplifiers", "List", "Amplifier")
-        </p>
-    </div>
-    <div class="col-md-4">
-        <h2>Effects Pedals</h2>
-        <p>
-            We have a large selection of @Html.ActionLink("effects pedals", "List", "Effects")
-        </p>
+<div class="jumbotron text-center">
+    <h1 id="forward">Matt's Guitar Store</h1>
+    <p class="lead" id="forward">We specialize in Guitars, Amplifiers, and Effects Pedals.</p>
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>Electric guitars</h2>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        Click here for our @Html.ActionLink("electric guitar collection", "List", "Guitar")
+                    </p>
+                    <img class="img-responsive" src="~/images/electricguitars.jpeg" alt="pictures of electric guitars" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>Amplifiers</h2>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        See our @Html.ActionLink("amplifiers", "List", "Amplifier")
+                    </p>
+                    <img class="img-responsive" src="~/images/amplifiers.jpeg" alt="pictures of amplifiers" />
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>Effects Pedals</h2>
+                </div>
+                <div class="panel-body">
+                    <p>
+                        We have a large selection of @Html.ActionLink("effects pedals", "List", "Effects")
+                    </p>
+                    <img class="img-responsive" src="~/images/effectspedals.jpg" alt="pictures of guitar effects pedals" />
+                </div>
+            </div>
+        </div>
     </div>
 </div>

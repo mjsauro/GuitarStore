@@ -21,7 +21,7 @@ namespace GuitarStore.Models
                 Model = "Metal Zone",
                 Type = "Distortion Pedal",
                 Description = "An effects pedal for bone crunching metal enthusiasts!",
-                Image = "/images/metalzone.jpg",
+                Image = "/images/distortionpedal.jpg",
                 Price = 34m,
             });
 
@@ -43,7 +43,7 @@ namespace GuitarStore.Models
                 Model = "Whammy",
                 Type = "Tone shifter",
                 Description = "Used by guitar legend Tom Morello of Rage Against the Machine fame.",
-                Image = "/images/whammy.jpg",
+                Image = "/images/whammy.gif",
                 Price = 79m
             });
 
@@ -60,7 +60,7 @@ namespace GuitarStore.Models
                 effects.Model = "Metal Zone";
                 effects.Type = "Distortion Pedal";
                 effects.Description = "An effects pedal for bone crunching metal enthusiasts!";
-                effects.Image = "/images/metalzone.jpg";
+                effects.Image = "/images/distortionpedal.jpg";
                 effects.Price = 34m;
             }
             else if (id == 2)
@@ -78,7 +78,7 @@ namespace GuitarStore.Models
                 effects.Model = "Whammy";
                 effects.Type = "Tone shifter";
                 effects.Description = "Used by guitar legend Tom Morello of Rage Against the Machine fame";
-                effects.Image = "/images/whammy.jpg";
+                effects.Image = "/images/whammy.gif";
                 effects.Price = 79m;
             }
             else
