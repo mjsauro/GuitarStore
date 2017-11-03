@@ -1,0 +1,60 @@
+﻿@model IEnumerable<GuitarStore.Models.Product>
+@{
+    ViewBag.Title = "List";
+}
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        switch (product.ProductType)
+        {
+            case "Guitar":
+                <div class="col-md-4">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h2>@product.Make @product.Mod</h2>
+                        </div>
+                        <div class="panel-body">
+                            <img class="img-responsive" src="@product.Image" />
+                        </div>
+                        <div class="panel-footer">
+                            @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case "Amplifier":
+                <div class="col-md-4">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h2>@product.Make @product.Mod</h2>
+                        </div>
+                        <div class="panel-body">
+                            <img class="img-responsive" src="@product.Image" />
+                        </div>
+                        <div class="panel-footer">
+                            @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
+                        </div>
+                    </div>
+                </div>
+                break;
+
+            case "Effect":
+                <div class="col-md-4">
+                    <div class="panel">
+                        <div class="panel-heading">
+                            <h2>@product.Make @product.Mod</h2>
+                        </div>
+                        <div class="panel-body">
+                            <img class="img-responsive" src="@product.Image" />
+                        </div>
+                        <div class="panel-footer">
+                            @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
+                        </div>
+                    </div>
+                </div>
+                break;
+        }
+    }
+</div>

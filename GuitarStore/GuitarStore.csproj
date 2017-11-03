@@ -144,16 +144,16 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
-    <Compile Include="Controllers\AmplifierController.cs" />
-    <Compile Include="Controllers\GuitarController.cs" />
+    <Compile Include="Controllers\CartController.cs" />
+    <Compile Include="Controllers\CheckoutController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\ProductController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Models\Amplifier.cs" />
-    <Compile Include="Controllers\EffectsController.cs" />
-    <Compile Include="Models\Effects.cs" />
-    <Compile Include="Models\Guitar.cs" />
+    <Compile Include="Models\Cart.cs" />
+    <Compile Include="Models\CheckoutDetails.cs" />
+    <Compile Include="Models\Product.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -224,13 +224,11 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Home\ShoppingCart.cshtml" />
-    <Content Include="Views\Guitar\Index.cshtml" />
-    <Content Include="Views\Amplifier\Index.cshtml" />
-    <Content Include="Views\Guitar\List.cshtml" />
-    <Content Include="Views\Amplifier\List.cshtml" />
-    <Content Include="Views\Effects\Index.cshtml" />
-    <Content Include="Views\Effects\List.cshtml" />
+    <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\List.cshtml" />
+    <Content Include="Views\CheckOut\Index.cshtml" />
+    <Content Include="Views\Product\GuitarList.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

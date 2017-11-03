@@ -1,0 +1,50 @@
+﻿
+@model GuitarStore.Models.Product
+@{
+    ViewBag.Title = "Index";
+}
+<div class="row">
+    <div class="col-xs12, col-md-4 col-md-offset-4">
+        <div class="panel">
+            <div class="panel-heading">
+                <h3>@Model.Make @Model.Mod</h3>
+            </div>
+            <div class="panel-body">
+                @switch (Model.ProductType)
+                {   //if product type is guitar, show the color
+                    case "Guitar":
+                        {<p> @("Color: " + Model.Color) </p>}
+                        break;
+                    // if product type is amplifier, show the watts and size
+                    case "Amplifier":
+                        {<p>@("Watts: " + Model.Watts)</p>
+                        <p>@("Size: " + Model.Size)</p>}
+                        break;
+                    // if product type is effect, show the effect type
+                    case "Effect":
+                        { <p>@("Effect Type: " + Model.EffectType)</p>}
+                        break;
+                }
+
+                <p>Description: @Model.Description</p>
+                <p>Price: @Model.Price.ToString("C")</p>
+                <img class="img-responsive" src="@Model.Image" />
+                @using (Html.BeginForm())
+                 {
+                    @Html.HiddenFor(m => m.ID)
+                    @Html.HiddenFor(m => m.ProductType)
+                    @Html.HiddenFor(m => m.Make)
+                    @Html.HiddenFor(m => m.Mod)
+                    @Html.HiddenFor(m => m.Description)
+                    @Html.HiddenFor(m => m.Price)
+                    @Html.HiddenFor(m => m.Quantity)
+
+                    <input type="submit" class="btn btn-default" value="Add to Cart" />
+                }
+            </div>
+            <div class="panel-footer">
+                @Html.ActionLink("Return to List", null, null, null, new { href = Request.UrlReferrer })
+            </div>
+        </div>
+    </div>
+</div>

@@ -16,7 +16,7 @@ namespace GuitarStore.Controllers
             {
                 ID = 1,
                 Make = "Fender",
-                Model = "Stratocaster",
+                Mod = "Stratocaster",
                 Color = "White",
                 Description = "A true classic from the 1950s",
                 Image = "/images/strat.jpg",
@@ -27,7 +27,7 @@ namespace GuitarStore.Controllers
             {
                 ID = 2,
                 Make = "Gibson",
-                Model = "Les Paul",
+                Mod = "Les Paul",
                 Color = "Sunburst",
                 Description = "A perfect balance of clean and distorted tones.",
                 Image = "/images/lespaul.jpg",
@@ -38,7 +38,7 @@ namespace GuitarStore.Controllers
             {
                 ID = 3,
                 Make = "Gibson",
-                Model = "Explorer",
+                Mod = "Explorer",
                 Color = "Black",
                 Description = "Featuring two humbucking pickups with a serious crunch.",
                 Image = "/images/explorer.jpg",
@@ -54,7 +54,7 @@ namespace GuitarStore.Controllers
             if (id == 1)
             {
                 guitar.Make = "Fender";
-                guitar.Model = "Stratocaster";
+                guitar.Mod = "Stratocaster";
                 guitar.Color = "White";
                 guitar.Description = "A true classic from the 1950s.";
                 guitar.Image = "/images/strat.jpg";
@@ -64,7 +64,7 @@ namespace GuitarStore.Controllers
             else if (id == 2)
             {
                 guitar.Make = "Gibson";
-                guitar.Model = "Les Paul";
+                guitar.Mod = "Les Paul";
                 guitar.Color = "Sunburst";
                 guitar.Description = "A perfect balance of clean and distorted tones.";
                 guitar.Image = "/images/lespaul.jpg";
@@ -74,7 +74,7 @@ namespace GuitarStore.Controllers
             else if (id == 3)
             {
                 guitar.Make = "Gibson";
-                guitar.Model = "Explorer";
+                guitar.Mod = "Explorer";
                 guitar.Color = "Black";
                 guitar.Description = "Featuring two humbucking pickups with a serious crunch.";
                 guitar.Image = "/images/explorer.jpg";
@@ -86,7 +86,27 @@ namespace GuitarStore.Controllers
             }
 
             return View(guitar);
+        }
 
+        [HttpPost]
+        public ActionResult Index(Guitar model, string make)
+        {
+            //TODO: Save the posted information to a database!
+
+            HttpContext.Session.Add("guitarMake", model.Make);
+            HttpContext.Session.Add("guitarModel", model.Mod);
+            HttpContext.Session.Add("guitarPrice", model.Price.ToString("C"));
+            HttpContext.Session.Add("guitarQuantity", model.Quantity.ToString());
+
+            //TODO: Rip out this cookie code later - we're going to use it for now to mock up site functionality
+            Response.AppendCookie(new HttpCookie("guitarMake", model.Make));
+            Response.AppendCookie(new HttpCookie("guitarModel", model.Mod));
+            Response.AppendCookie(new HttpCookie("guitarPrice", model.Price.ToString("C")));
+            Response.AppendCookie(new HttpCookie("guitarQuantity", model.Quantity.ToString()));
+
+
+            //TODO: build up the cart controller!
+            return RedirectToAction("Index", "Cart");
         }
     }
 }
