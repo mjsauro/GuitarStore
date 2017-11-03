@@ -10,122 +10,136 @@ namespace GuitarStore.Controllers
     public class ProductController : Controller
     {
 
-        public ActionResult List()
+        public ActionResult List(string ID)
         {
             List<Product> product = new List<Product>();
-            product.Add(new Product
-            {
-                ID = "g1",
-                ProductType = "Guitar",
-                Make = "Fender",
-                Mod = "Stratocaster",
-                Color = "White",
-                Description = "A true classic from the 1950s",
-                Image = "/images/strat.jpg",
-                Price = 599m,
-                
-            });
 
-            product.Add(new Product
+            switch (ID)
             {
-                ID = "g2",
-                ProductType = "Guitar",
-                Make = "Gibson",
-                Mod = "Les Paul",
-                Color = "Sunburst",
-                Description = "A perfect balance of clean and distorted tones.",
-                Image = "/images/lespaul.jpg",
-                Price = 699m
-            });
 
-            product.Add(new Product
-            {
-                ID = "g3",
-                ProductType = "Guitar",
-                Make = "Gibson",
-                Mod = "Explorer",
-                Color = "Black",
-                Description = "Featuring two humbucking pickups with a serious crunch.",
-                Image = "/images/explorer.jpg",
-                Price = 299m
-            });
+                case "Guitar":
 
-            product.Add(new Product
-            {
-                ID = "a1",
-                ProductType = "Amplifier",
-                Make = "Marshall",
-                Mod = "JCM2000",
-                Watts = "100W",
-                Size = "24 x 24",
-                Description = "Trademark Marshall Sound",
-                Image = "/images/marshall.jpg",
-                Price = 199m
-            });
+                    product.Add(new Product
 
-            product.Add(new Product
-            {
-                ID = "a2",
-                ProductType = "Amplifier",
-                Make = "Fender",
-                Mod = "Twinspeaker",
-                Watts = "50W",
-                Size = "10 x 10",
-                Description = "Packs a double punch",
-                Image = "/images/fender.jpg",
-                Price = 299m
-            });
+                    {
+                        ID = "g1",
+                        ProductType = "Guitar",
+                        Make = "Fender",
+                        Mod = "Stratocaster",
+                        Color = "White",
+                        Description = "A true classic from the 1950s",
+                        Image = "/images/strat.jpg",
+                        Price = 599m,
 
-            product.Add(new Product
-            {
-                ID = "a3",
-                ProductType = "Amplifier",
-                Make = "Vox",
-                Mod = "Tube",
-                Watts = "75W",
-                Size = "40 x 40",
-                Description = "A classic tube amp",
-                Image = "/images/vox.jpg",
-                Price = 399m,
-            });
+                    });
 
-            product.Add(new Product
-            {
-                ProductType = "Effect",
-                ID = "e1",
-                Make = "Boss",
-                Mod = "Metal Zone",
-                EffectType = "Distortion Pedal",
-                Description = "An effects pedal for bone crunching metal enthusiasts!",
-                Image = "/images/distortionpedal.jpg",
-                Price = 34m,
-            });
+                    product.Add(new Product
+                    {
+                        ID = "g2",
+                        ProductType = "Guitar",
+                        Make = "Gibson",
+                        Mod = "Les Paul",
+                        Color = "Sunburst",
+                        Description = "A perfect balance of clean and distorted tones.",
+                        Image = "/images/lespaul.jpg",
+                        Price = 699m
+                    });
 
-            product.Add(new Product
-            {
-                ProductType = "Effect",
-                ID = "e2",
-                Make = "Dunlop",
-                Mod = "CryBaby Wah",
-                EffectType = "Wah Pedal",
-                Description = "Add great wah effects to your guitar solos.",
-                Image = "/images/wah.jpg",
-                Price = 49m
-            });
+                    product.Add(new Product
+                    {
+                        ID = "g3",
+                        ProductType = "Guitar",
+                        Make = "Gibson",
+                        Mod = "Explorer",
+                        Color = "Black",
+                        Description = "Featuring two humbucking pickups with a serious crunch.",
+                        Image = "/images/explorer.jpg",
+                        Price = 299m
+                    });
+                    return View(product);
+                    
+                case "Amplifier":
+                    product.Add(new Product
+                    {
+                        ID = "a1",
+                        ProductType = "Amplifier",
+                        Make = "Marshall",
+                        Mod = "JCM2000",
+                        Watts = "100W",
+                        Size = "24 x 24",
+                        Description = "Trademark Marshall Sound",
+                        Image = "/images/marshall.jpg",
+                        Price = 199m
+                    });
 
-            product.Add(new Product
-            {
-                ProductType = "Effect",
-                ID = "e3",
-                Make = "Digitech",
-                Mod = "Whammy",
-                EffectType = "Tone shifter",
-                Description = "Used by guitar legend Tom Morello of Rage Against the Machine fame.",
-                Image = "/images/whammy.gif",
-                Price = 79m
-            });
+                    product.Add(new Product
+                    {
+                        ID = "a2",
+                        ProductType = "Amplifier",
+                        Make = "Fender",
+                        Mod = "Twinspeaker",
+                        Watts = "50W",
+                        Size = "10 x 10",
+                        Description = "Packs a double punch",
+                        Image = "/images/fender.jpg",
+                        Price = 299m
+                    });
 
-            return View(product);
+                    product.Add(new Product
+                    {
+                        ID = "a3",
+                        ProductType = "Amplifier",
+                        Make = "Vox",
+                        Mod = "Tube",
+                        Watts = "75W",
+                        Size = "40 x 40",
+                        Description = "A classic tube amp",
+                        Image = "/images/vox.jpg",
+                        Price = 399m,
+                    });
+                    return View(product);
+                    
+                case "Effect":
+                    product.Add(new Product
+                    {
+                        ProductType = "Effect",
+                        ID = "e1",
+                        Make = "Boss",
+                        Mod = "Metal Zone",
+                        EffectType = "Distortion Pedal",
+                        Description = "An effects pedal for bone crunching metal enthusiasts!",
+                        Image = "/images/distortionpedal.jpg",
+                        Price = 34m,
+                    });
+
+                    product.Add(new Product
+                    {
+                        ProductType = "Effect",
+                        ID = "e2",
+                        Make = "Dunlop",
+                        Mod = "CryBaby Wah",
+                        EffectType = "Wah Pedal",
+                        Description = "Add great wah effects to your guitar solos.",
+                        Image = "/images/wah.jpg",
+                        Price = 49m
+                    });
+
+                    product.Add(new Product
+                    {
+                        ProductType = "Effect",
+                        ID = "e3",
+                        Make = "Digitech",
+                        Mod = "Whammy",
+                        EffectType = "Tone shifter",
+                        Description = "Used by guitar legend Tom Morello of Rage Against the Machine fame.",
+                        Image = "/images/whammy.gif",
+                        Price = 79m
+                    });
+                    return View(product);
+                    
+                default:
+                    return View(product);
+            }
         }
 
         // GET: Products
