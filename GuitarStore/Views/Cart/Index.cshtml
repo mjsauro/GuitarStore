@@ -4,56 +4,64 @@
 }
 @using (Html.BeginForm())
 {
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Item</th>
-                <th>Quantity</th>
-                <th>Price</th>
-                <th>Item Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            @for (int i = 0; i < Model.Products.Length; i++)
-            {
+    <div class="container">
+        <table class="table table-striped">
+            <thead>
                 <tr>
-                    <td>
-                        @Model.Products[i].Make
-                        @Model.Products[i].Mod
-                        @Html.HiddenFor(m => m.Products[i].Make)
-                        @Html.HiddenFor(m => m.Products[i].Mod)
-                </td>
-                <td>
-                    <input type="number" min="0" max="10" class="form-control" value="@Model.Products[i].Quantity" name="@("Products[" + i + "].Quantity")" />
+                    <th>Item</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Item Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                @for (int i = 0; i < Model.Products.Length; i++)
+                {
+                    <tr>
+                        <td>
+                            @Model.Products[i].Make
+                            @Model.Products[i].Mod
+                            @Html.HiddenFor(m => m.Products[i].Make)
+                            @Html.HiddenFor(m => m.Products[i].Mod)
+                        </td>
+                        <td>
+                            <input type="number" min="0" max="10" class="form-control" value="@Model.Products[i].Quantity" name="@("Products[" + i + "].Quantity")" />
 
-                </td>
-                <td>
-                    @Model.Products[i].Price.ToString("C")
-                @Html.HiddenFor(m => m.Products[i].Price)
-            </td>
-            <td>@((Model.Products[i].Quantity * Model.Products[i].Price).ToString("C"))</td>
-        </tr>
-            }
-        </tbody>
-        <tfoot>
-            <tr>
-                <th colspan="3">Subtotal</th>
-                <th>@Model.SubTotal.ToString("C")</th>
-            </tr>
-            <tr>
-                <th colspan="3">Shipping and Handling</th>
-                <th>@Model.ShippingAndHandling.ToString("C")</th>
-            </tr>
-            <tr>
-                <th colspan="3">Tax</th>
-                <th>@Model.Tax.ToString("C")</th>
-            </tr>
-            <tr>
-                <th colspan="3">Total</th>
-                <th>@Model.Total.ToString("C")</th>
-            </tr>
-        </tfoot>
-    </table>
-    <input type="submit" value="Update Cart Quantities" class="btn btn-default" />
-    @Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-primary" })
+                        </td>
+                        <td>
+                            @Model.Products[i].Price.ToString("C")
+                            @Html.HiddenFor(m => m.Products[i].Price)
+                        </td>
+                        <td>@((Model.Products[i].Quantity * Model.Products[i].Price).ToString("C"))</td>
+                    </tr>
+                }
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">Subtotal</th>
+                    <th>@Model.SubTotal.ToString("C")</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Shipping and Handling</th>
+                    <th>@Model.ShippingAndHandling.ToString("C")</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Tax</th>
+                    <th>@Model.Tax.ToString("C")</th>
+                </tr>
+                <tr>
+                    <th colspan="3">Total</th>
+                    <th>@Model.Total.ToString("C")</th>
+                </tr>
+            </tfoot>
+        </table>
+        <div class="row">
+            <div class="col-md-4 col-md-offset-2">
+                <input type="submit" value="Update Cart Quantities" class="btn btn-default" />
+            </div>
+            <div class="col-md-4">
+                @Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-primary" })
+            </div>
+        </div>
+    </div>
 }
