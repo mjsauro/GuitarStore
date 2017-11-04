@@ -2,6 +2,7 @@
 @{
     ViewBag.Title = "List";
 }
+@Styles.Render("/Content/css")
 
 <div class="row">
     @foreach (var product in Model)
@@ -12,13 +13,15 @@
                 <div class="col-md-4">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h2>@product.Make @product.Mod</h2>
+                            <h2>@Html.ActionLink(@product.Make + " " + @product.Mod, "Index", new { ID = product.ID })</h2>
                         </div>
                         <div class="panel-body">
-                            <img class="img-responsive" src="@product.Image" />
+                            <a href="@Url.Action("Index", "Product", new { ID = product.ID })"> <img class="img-responsive" src= @product.Image /> </a>
+                            
                         </div>
                         <div class="panel-footer">
                             @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
+                            
                         </div>
                     </div>
                 </div>
@@ -28,10 +31,10 @@
                 <div class="col-md-4">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h2>@product.Make @product.Mod</h2>
+                            <h2>@Html.ActionLink(@product.Make + " " + @product.Mod, "Index", new { ID = product.ID })</h2>
                         </div>
                         <div class="panel-body">
-                            <img class="img-responsive" src="@product.Image" />
+                            <a href="@Url.Action("Index", "Product", new { ID = product.ID })"> <img class="img-responsive" src=@product.Image /> </a>
                         </div>
                         <div class="panel-footer">
                             @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
@@ -44,10 +47,10 @@
                 <div class="col-md-4">
                     <div class="panel">
                         <div class="panel-heading">
-                            <h2>@product.Make @product.Mod</h2>
+                            <h2>@Html.ActionLink(@product.Make + " " + @product.Mod, "Index", new { ID = product.ID })</h2>
                         </div>
                         <div class="panel-body">
-                            <img class="img-responsive" src="@product.Image" />
+                            <a href="@Url.Action("Index", "Product", new { ID = product.ID })"> <img class="img-responsive" src=@product.Image /> </a>
                         </div>
                         <div class="panel-footer">
                             @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })

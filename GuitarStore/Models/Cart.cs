@@ -30,7 +30,15 @@ namespace GuitarStore.Models
             cart.SubTotal = cart.Products.Sum(x => x.Price * x.Quantity);
 
             cart.Tax = cart.SubTotal * .1025m;
-            cart.ShippingAndHandling = cart.Products.Sum(x => x.Quantity) * 1m;
+
+            if (cart.SubTotal < 500)
+            {
+                cart.ShippingAndHandling = cart.Products.Sum(x => x.Quantity) * 29m;
+            }
+            else
+            {
+                cart.ShippingAndHandling = 0;
+            }
             cart.Total = cart.SubTotal + cart.Tax + cart.ShippingAndHandling;
             return cart;
         }

@@ -27,8 +27,18 @@ namespace GuitarStore.Controllers
             model.SubTotal = model.Products.Sum(x => x.Price * x.Quantity);
 
             model.Tax = model.SubTotal * .1025m;
-            model.ShippingAndHandling = model.Products.Sum(x => x.Quantity) * 1m;
+
+            if (model.SubTotal < 500)
+            {
+                model.ShippingAndHandling = model.Products.Sum(x => x.Quantity) * 29m;
+            }
+            else
+            {
+                model.ShippingAndHandling = 0;
+            }
+
             model.Total = model.SubTotal + model.Tax + model.ShippingAndHandling;
+
             return View(model);
         }
     }

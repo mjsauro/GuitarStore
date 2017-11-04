@@ -1,51 +1,48 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
-
 <div class="jumbotron text-center">
-    <h1 id="forward">Matt's Guitar Store</h1>
-    <p class="lead" id="forward">We specialize in Guitars, Amplifiers, and Effects Pedals.</p>
+    <h1>Matt's Guitar Store</h1>
+    <p class="lead">We specialize in Guitars, Amplifiers, and Effects Pedals.</p>
 </div>
 <div class="container">
     <div class="row">
         <div class="col-md-4">
             <div class="panel">
                 <div class="panel-heading">
-                    <h2>Electric Guitars</h2>
+                    <h2>@Html.ActionLink("Electric Guitars", "List/Guitar", "Product")</h2>
                 </div>
                 <div class="panel-body">
                     <p>
-                        Click here for our @Html.ActionLink("electric guitar collection", "List/Guitar", "Product")
-                        
-                        
+                        @Html.ActionLink("Click here for our electric guitar collection", "List/Guitar", "Product")
                     </p>
-                    <img class="img-responsive" src="~/images/electricguitars.jpeg" alt="pictures of electric guitars" />
+                    <a href="@Url.Action("List/Guitar", "Product")"> <img class="img-responsive" src="~/images/electricguitars.jpg" /> </a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="panel">
                 <div class="panel-heading">
-                    <h2>Amplifiers</h2>
+                    <h2>@Html.ActionLink("Amplifiers", "List/Amplifier", "Product")</h2>
                 </div>
                 <div class="panel-body">
                     <p>
-                        See our @Html.ActionLink("amplifiers", "List/Amplifier", "Product")
+                        @Html.ActionLink("See our amplifiers", "List/Amplifier", "Product")
                     </p>
-                    <img class="img-responsive" src="~/images/amplifiers.jpeg" alt="pictures of amplifiers" />
+                    <a href="@Url.Action("List/Amplifier", "Product")"> <img class="img-responsive" src="~/images/amplifiers.jpg" /> </a>
                 </div>
             </div>
         </div>
         <div class="col-md-4">
             <div class="panel">
                 <div class="panel-heading">
-                    <h2>Effects Pedals</h2>
+                    <h2>@Html.ActionLink("Effects Pedals", "List/Effect", "Product")</h2>
                 </div>
                 <div class="panel-body">
                     <p>
-                        We have a large selection of @Html.ActionLink("effects pedals", "List/Effect", "Product")
+                       @Html.ActionLink(" We have a large selection of effects pedals", "List/Effect", "Product")
                     </p>
-                    <img class="img-responsive" src="~/images/effectspedals.jpg" alt="pictures of guitar effects pedals" />
+                    <a href="@Url.Action("List/Effect", "Product")"> <img class="img-responsive" src="~/images/effectspedals.jpg" /> </a>
                 </div>
             </div>
         </div>

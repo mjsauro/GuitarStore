@@ -23,6 +23,13 @@ body {
   padding-top: 50px;
   padding-bottom: 20px;
 }
+iframe {
+  margin-top: 3em;
+  margin-bottom: 5em;
+}
+li {
+  height: 100%;
+}
 table,
 tr,
 td,
@@ -32,21 +39,27 @@ th {
 }
 .jumbotron {
   background-color: rgba(255, 255, 250, 0.7);
-  color: black;
 }
 .panel {
   background-color: rgba(255, 255, 250, 0.7);
   margin-top: 3em;
+  margin-bottom: 5em;
 }
-.panel-body,
-.panel-footer {
+.panel .panel-body,
+.panel .panel-footer {
   background-color: rgba(255, 255, 250, 0.7);
 }
-.panel-heading {
+.panel .panel-body a,
+.panel .panel-footer a {
+  color: black;
+}
+.panel .panel-heading {
   background-color: rgba(255, 255, 250, 0.5);
+}
+.panel .panel-heading a {
+  color: black;
 }
 #guitar-icon {
   border-radius: 50px;
-  max-height: 1.5em;
-  max-width: 1.5em;
+  height: 100%;
 }

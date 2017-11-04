@@ -4,7 +4,7 @@
     ViewBag.Title = "Index";
 }
 <div class="row">
-    <div class="col-xs12, col-md-4 col-md-offset-4">
+    <div class="col-xs-6 col-md-4 col-md-offset-1">
         <div class="panel">
             <div class="panel-heading">
                 <h3>@Model.Make @Model.Mod</h3>
@@ -28,9 +28,9 @@
 
                 <p>Description: @Model.Description</p>
                 <p>Price: @Model.Price.ToString("C")</p>
-                <img class="img-responsive" src="@Model.Image" />
+
                 @using (Html.BeginForm())
-                 {
+                {
                     @Html.HiddenFor(m => m.ID)
                     @Html.HiddenFor(m => m.ProductType)
                     @Html.HiddenFor(m => m.Make)
@@ -47,4 +47,12 @@
             </div>
         </div>
     </div>
+    <div class="col-xs-12 col-md-4 col-md-offset-1">
+        <div class="panel">
+            <div class="panel-body">
+                <img class="img-responsive" src="@Model.Image" />
+            </div>
+        </div>
+    </div>
+
 </div>

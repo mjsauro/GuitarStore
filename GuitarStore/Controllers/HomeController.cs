@@ -13,6 +13,16 @@ namespace GuitarStore.Controllers
             return View();
         }
 
+        public ActionResult Location()
+        {
+            return View();
+        }
+
+        public ActionResult About()
+        {
+            return View();
+        }
+
 
     }
 }

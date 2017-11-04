@@ -26,7 +26,7 @@ namespace GuitarStore.Controllers
                         ProductType = "Guitar",
                         Make = "Fender",
                         Mod = "Stratocaster",
-                        Color = "White",
+                        Color = "Black",
                         Description = "A true classic from the 1950s",
                         Image = "/images/strat.jpg",
                         Price = 599m,
@@ -128,11 +128,11 @@ namespace GuitarStore.Controllers
                     {
                         ProductType = "Effect",
                         ID = "e3",
-                        Make = "Digitech",
-                        Mod = "Whammy",
-                        EffectType = "Tone shifter",
-                        Description = "Used by guitar legend Tom Morello of Rage Against the Machine fame.",
-                        Image = "/images/whammy.gif",
+                        Make = "Ibanez",
+                        Mod = "Tube Screamer",
+                        EffectType = "Overdrive",
+                        Description = "Make your tones soar!.",
+                        Image = "/images/tubescreamer.jpg",
                         Price = 79m
                     });
                     return View(product);
@@ -242,11 +242,11 @@ namespace GuitarStore.Controllers
 
                 case "e3":
                     product.ProductType = "Effect";
-                    product.Make = "Digitech";
-                    product.Mod = "Whammy";
-                    product.EffectType = "Tone shifter";
-                    product.Description = "Used by guitar legend Tom Morello of Rage Against the Machine fame";
-                    product.Image = "/images/whammy.gif";
+                    product.Make = "Ibanez";
+                    product.Mod = "Tube Screamer";
+                    product.EffectType = "Overdrive";
+                    product.Description = "Make your tone soar!";
+                    product.Image = "/images/tubescreamer.jpg";
                     product.Price = 79m;
                     product.Quantity = 1;
                     break;

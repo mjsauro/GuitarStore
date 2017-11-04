@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
+    @Styles.Render("/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 </head>
 <body>
@@ -16,11 +16,11 @@
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-
                 <a href="@Url.Action("Index", "Home")" class="navbar-brand"><img class="img-responsive" id="guitar-icon" src="~/images/guitar-icon.png" alt="guitar-icon" /></a>
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav nav-pills">           
+                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     <li>@Html.ActionLink("Guitars", "List/Guitar", "Product")</li>
                     <li>@Html.ActionLink("Amplifiers", "List/Amplifier", "Product")</li>
                     <li>@Html.ActionLink("Effects Pedals", "List/Effect", "Product")</li>
@@ -31,11 +31,31 @@
     </div>
     <div class="container-fluid body-content">
         @RenderBody()
-        <hr />
-        <footer>
-            <p style="color:white;"> &copy; @DateTime.Now.Year - Matt's Guitar Store</p>
-        </footer>
     </div>
+        <footer>
+
+            <div class="navbar navbar-inverse navbar-fixed-bottom" id="navbar-bottom">
+                <div class="container">
+                    <div class="navbar-header">
+                        <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                        </button>
+                        <a href="@Url.Action("Index", "Home")" class="navbar-brand"><img class="img-responsive" id="guitar-icon" src="~/images/guitar-icon.png" alt="guitar-icon" /></a>
+                    </div>
+                    <div class="navbar-collapse collapse">
+                        <ul class="nav nav-pills">
+                            @*<li style="color:white;"> &copy; @DateTime.Now.Year - Matt's Guitar Store</li>*@
+                            <li>@Html.ActionLink("Our Location", "Location", "Home")</li>
+                            <li>@Html.ActionLink("About Us", "About", "Home")</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+        </footer>
+  
 
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
