@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitarStore", "GuitarStore\
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GuitarStoreDB", "Store\GuitarStoreDB.sqlproj", "{FB148FF9-0423-41DC-96DA-03CC01FDF44C}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AdventureWorks", "GuitarStore2\AdventureWorks.sqlproj", "{7EA8E51D-8509-45EC-A7D1-FD93A294C405}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,12 @@ Global
 		{FB148FF9-0423-41DC-96DA-03CC01FDF44C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB148FF9-0423-41DC-96DA-03CC01FDF44C}.Release|Any CPU.Build.0 = Release|Any CPU
 		{FB148FF9-0423-41DC-96DA-03CC01FDF44C}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{7EA8E51D-8509-45EC-A7D1-FD93A294C405}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EA8E51D-8509-45EC-A7D1-FD93A294C405}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EA8E51D-8509-45EC-A7D1-FD93A294C405}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{7EA8E51D-8509-45EC-A7D1-FD93A294C405}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EA8E51D-8509-45EC-A7D1-FD93A294C405}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EA8E51D-8509-45EC-A7D1-FD93A294C405}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
