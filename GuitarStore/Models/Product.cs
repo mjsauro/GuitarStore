@@ -9,6 +9,7 @@ namespace GuitarStore.Models
     {
         //all products
         public string ID { get; set; }
+
         public string ProductType { get; set; }
         public string Make { get; set; }
         public string Mod { get; set; }
@@ -22,11 +23,10 @@ namespace GuitarStore.Models
 
         //amps
         public string Watts { get; set; }
+
         public string Size { get; set; }
 
         //effects
         public string EffectType { get; set; }
-
-
     }
 }

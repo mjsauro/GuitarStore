@@ -4,8 +4,8 @@
 }
 <div class="container-fluid">
     <div class="row">
-        <div class="cold-md-3 col-md-offset-2">
-            <h1 style="color: white">Reports</h1>
+        <div class="jumbotron text-center">
+            <h1>Reports</h1>
         </div>
     </div>
     <div class="row">
@@ -17,7 +17,7 @@
                     @Html.DropDownListFor(m => m.SelectedState, Model.States.Select(x => new SelectListItem { Value = x, Text = x }), new { @class = "form-control" })
                 </div>
                 <div class="row">
-                    <input type="submit" value="Get Report" class="btn btn-primary" />
+                    <input type="submit" value="Get Reports" class="btn btn-primary" />
                 </div>
             }
         </div>
@@ -25,28 +25,28 @@
 
     <div class="panel panel-default col-md-3 col-md-offset-2">
         <div class="panel-heading">
-            Top 5 Products by sale price
+            <h4>Top 5 Products by sale price</h4>
         </div>
         @foreach (var topSale in Model.TopSalesByDollar)
         {
 
             <div class="panel-body">
-                <p>Product ID @topSale.ProductID Sales Price:  $@topSale.Price</p>
+                <p>Product ID: @topSale.ProductID Sales Price:  $@topSale.Price</p>
             </div>
         }
     </div>
 
-    <div class="panel panel-default col-md-3 col-md-offset-1"
-         <div class="panel panel-default col-md-4">
-             <div class="panel-heading">
-                 Top 5 Products by Quantity
-             </div>
-    @foreach (var topSale in Model.TopSalesByQuantity)
-    {
-        <div class="panel-body">
-            <p>Product ID @topSale.ProductID  Quantity:  @topSale.Quantity</p>
-        </div>
-    }
+    <div class="panel panel-default col-md-3 col-md-offset-1">
+        <div class="panel panel-default col-md-4">
+            <div class="panel-heading">
+                <h4>Top 5 Products by Quantity</h4>
+            </div>
+            @foreach (var topSale in Model.TopSalesByQuantity)
+            {
+                <div class="panel-body">
+                    <p>Product ID: @topSale.ProductID  Quantity:  @topSale.Quantity</p>
+                </div>
+            }
         </div>
     </div>
 </div>
