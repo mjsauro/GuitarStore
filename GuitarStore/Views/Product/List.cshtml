@@ -7,57 +7,20 @@
 <div class="row">
     @foreach (var product in Model)
     {
-        switch (product.ProductType)
-        {
-            case "Guitar":
-                <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h2>@Html.ActionLink(@product.Make + " " + @product.Mod, "Index", new { ID = product.ID })</h2>
-                        </div>
-                        <div class="panel-body">
-                            <a href="@Url.Action("Index", "Product", new { ID = product.ID })"> <img class="img-responsive" src= @product.Image /> </a>
-                            
-                        </div>
-                        <div class="panel-footer">
-                            @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
-                            
-                        </div>
-                    </div>
-                </div>
-                break;
 
-            case "Amplifier":
-                <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h2>@Html.ActionLink(@product.Make + " " + @product.Mod, "Index", new { ID = product.ID })</h2>
-                        </div>
-                        <div class="panel-body">
-                            <a href="@Url.Action("Index", "Product", new { ID = product.ID })"> <img class="img-responsive" src=@product.Image /> </a>
-                        </div>
-                        <div class="panel-footer">
-                            @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
-                        </div>
-                    </div>
+        <div class="col-md-4">
+            <div class="panel">
+                <div class="panel-heading">
+                    <h2>@Html.ActionLink(@product.Make.Name + " " + @product.Model, "Index", new { ID = product.ID })</h2>
                 </div>
-                break;
+                <div class="panel-body">
+                    <a href="@Url.Action("Index", "Product", new { ID = product.ID } )"> <img > <img class="img-responsive" src=@product.Image /> </a>
+                </div>
+                <div class="panel-footer">
+                    @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
+                </div>
+            </div>
+        </div>
 
-            case "Effect":
-                <div class="col-md-4">
-                    <div class="panel">
-                        <div class="panel-heading">
-                            <h2>@Html.ActionLink(@product.Make + " " + @product.Mod, "Index", new { ID = product.ID })</h2>
-                        </div>
-                        <div class="panel-body">
-                            <a href="@Url.Action("Index", "Product", new { ID = product.ID })"> <img class="img-responsive" src=@product.Image /> </a>
-                        </div>
-                        <div class="panel-footer">
-                            @Html.ActionLink("Click for more information!", "Index", new { ID = product.ID })
-                        </div>
-                    </div>
-                </div>
-                break;
-        }
     }
 </div>

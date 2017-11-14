@@ -1,5 +1,4 @@
-﻿
-@model GuitarStore.Models.Product
+﻿@model GuitarStore.Models.Product
 @{
     ViewBag.Title = "Index";
 }
@@ -7,37 +6,26 @@
     <div class="col-xs-6 col-md-4 col-md-offset-1">
         <div class="panel">
             <div class="panel-heading">
-                <h3>@Model.Make @Model.Mod</h3>
+                <h3>@Model.Make.Name @Model.Model</h3>
             </div>
             <div class="panel-body">
-                @switch (Model.ProductType)
-                {   //if product type is guitar, show the color
-                    case "Guitar":
-                        {<p> @("Color: " + Model.Color) </p>}
-                        break;
-                    // if product type is amplifier, show the watts and size
-                    case "Amplifier":
-                        {<p>@("Watts: " + Model.Watts)</p>
-                        <p>@("Size: " + Model.Size)</p>}
-                        break;
-                    // if product type is effect, show the effect type
-                    case "Effect":
-                        { <p>@("Effect Type: " + Model.EffectType)</p>}
-                        break;
+                @foreach (var property in Model.ProductTypePropertyValues)
+                {
+
+                    <p>@property.Property : @property.Value </p>
                 }
 
                 <p>Description: @Model.Description</p>
-                <p>Price: @Model.Price.ToString("C")</p>
+                <p>Price: @((Model.Price ?? 0).ToString("C"))</p>
 
                 @using (Html.BeginForm())
                 {
                     @Html.HiddenFor(m => m.ID)
                     @Html.HiddenFor(m => m.ProductType)
                     @Html.HiddenFor(m => m.Make)
-                    @Html.HiddenFor(m => m.Mod)
+                    @Html.HiddenFor(m => m.Model)
                     @Html.HiddenFor(m => m.Description)
                     @Html.HiddenFor(m => m.Price)
-                    @Html.HiddenFor(m => m.Quantity)
 
                     <input type="submit" class="btn btn-default" value="Add to Cart" />
                 }
@@ -54,5 +42,4 @@
             </div>
         </div>
     </div>
-
 </div>

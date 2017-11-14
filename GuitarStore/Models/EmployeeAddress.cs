@@ -12,11 +12,17 @@ namespace GuitarStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cart
+    public partial class EmployeeAddress
     {
-        public System.Guid ID { get; set; }
-        public string AspNetUserID { get; set; }
-        public System.DateTime DateCreated { get; set; }
-        public System.DateTime DateModified { get; set; }
+        public int EmpID { get; set; }
+        public int AddressID { get; set; }
+        public string Address1 { get; set; }
+        public string Address2 { get; set; }
+        public string City { get; set; }
+        public string State { get; set; }
+        public string Zip { get; set; }
+    
+        public virtual Address Address { get; set; }
+        public virtual Employee Employee { get; set; }
     }
 }

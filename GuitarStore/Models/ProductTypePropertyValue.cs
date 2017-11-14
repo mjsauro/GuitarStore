@@ -12,11 +12,14 @@ namespace GuitarStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cart
+    public partial class ProductTypePropertyValue
     {
-        public System.Guid ID { get; set; }
-        public string AspNetUserID { get; set; }
-        public System.DateTime DateCreated { get; set; }
-        public System.DateTime DateModified { get; set; }
+        public int ProductID { get; set; }
+        public string ProductTypeName { get; set; }
+        public string Property { get; set; }
+        public string Value { get; set; }
+    
+        public virtual Product Product { get; set; }
+        public virtual ProductTypeProperty ProductTypeProperty { get; set; }
     }
 }

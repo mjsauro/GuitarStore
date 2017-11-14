@@ -12,11 +12,17 @@ namespace GuitarStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cart
+    public partial class Manufacturer
     {
-        public System.Guid ID { get; set; }
-        public string AspNetUserID { get; set; }
-        public System.DateTime DateCreated { get; set; }
-        public System.DateTime DateModified { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public Manufacturer()
+        {
+            this.Makes = new HashSet<Make>();
+        }
+    
+        public string Name { get; set; }
+    
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Make> Makes { get; set; }
     }
 }

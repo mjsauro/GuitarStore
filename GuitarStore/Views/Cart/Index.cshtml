@@ -29,10 +29,10 @@
 
                         </td>
                         <td>
-                            @Model.Products[i].Price.ToString("C")
+                            @Model.Products[i].Price.ToString()
                             @Html.HiddenFor(m => m.Products[i].Price)
                         </td>
-                        <td>@((Model.Products[i].Quantity * Model.Products[i].Price).ToString("C"))</td>
+                        <td>@((Model.Products[i].Quantity * Model.Products[i].Price).ToString())</td>
                     </tr>
                 }
             </tbody>

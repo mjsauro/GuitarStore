@@ -20,15 +20,15 @@ namespace GuitarStore.Controllers
         [HttpPost]
         public ActionResult Index(Models.Cart model)
         {
-            //Response.AppendCookie(new HttpCookie("productQuantity", model.Products[0].Quantity.ToString()));
+            Response.AppendCookie(new HttpCookie("productQuantity", model.Products[0].Quantity.ToString()));
 
-            // model.SubTotal = model.Products.Sum(x => x.Price * x.Quantity);
+            model.SubTotal = model.Products.Sum(x => x.Price * x.Quantity);
 
             model.Tax = model.SubTotal * .1025m;
 
             if (model.SubTotal < 500)
             {
-                //model.ShippingAndHandling = model.Products.Sum(x => x.Quantity) * 29m;
+                model.ShippingAndHandling = model.Products.Sum(x => x.Quantity) * 29m;
             }
             else
             {

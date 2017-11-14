@@ -33,9 +33,9 @@
 
                         </td>
                         <td>
-                            @Model.CurrentCart.Products[i].Price.ToString("C")
+                            @Model.CurrentCart.Products[i].Price.ToString()
                         </td>
-                        <td>@((Model.CurrentCart.Products[i].Quantity * Model.CurrentCart.Products[i].Price).ToString("C"))</td>
+                        <td>@((Model.CurrentCart.Products[i].Quantity * Model.CurrentCart.Products[i].Price).ToString())</td>
                     </tr>
                 }
             </tbody>

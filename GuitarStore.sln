@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitarStore", "GuitarStore\
 EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AdventureWorks", "AdventureWorks\AdventureWorks.sqlproj", "{09424F57-340F-4889-B7D9-6ED470020535}"
 EndProject
+Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GuitarStoreDB", "GuitarStoreDB\GuitarStoreDB.sqlproj", "{192C86F0-DACB-406B-9E71-0BE78E8492C1}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -23,6 +25,12 @@ Global
 		{09424F57-340F-4889-B7D9-6ED470020535}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{09424F57-340F-4889-B7D9-6ED470020535}.Release|Any CPU.Build.0 = Release|Any CPU
 		{09424F57-340F-4889-B7D9-6ED470020535}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
+		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Release|Any CPU.Deploy.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

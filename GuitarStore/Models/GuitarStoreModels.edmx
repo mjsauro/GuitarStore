@@ -1,0 +1,907 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="GuitarStoreModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" Nullable="false" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="5" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="AspNetUserID" Type="nvarchar" MaxLength="100" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateModified" Type="datetime" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustId" />
+          </Key>
+          <Property Name="CustId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="CustID" />
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="CustID" Type="int" Nullable="false" />
+          <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="Zip" Type="nvarchar" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="FirstName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="LastName" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="DOB" Type="date" Nullable="false" />
+          <Property Name="Wage" Type="money" Nullable="false" />
+        </EntityType>
+        <EntityType Name="EmployeeAddress">
+          <Key>
+            <PropertyRef Name="EmpID" />
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="EmpID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="Zip" Type="char" MaxLength="5" />
+        </EntityType>
+        <EntityType Name="Make">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ManufacturerName" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Products">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="ProductTypeName" Type="nvarchar" MaxLength="128" />
+          <Property Name="MakeName" Type="nvarchar" MaxLength="100" />
+          <Property Name="Model" Type="nvarchar" MaxLength="100" />
+          <Property Name="Description" Type="ntext" />
+          <Property Name="Image" Type="nvarchar" MaxLength="1000" />
+          <Property Name="Price" Type="money" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DateModified" Type="datetime" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductTypeProperty">
+          <Key>
+            <PropertyRef Name="ProductTypeName" />
+            <PropertyRef Name="Property" />
+          </Key>
+          <Property Name="ProductTypeName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Property" Type="nvarchar" MaxLength="128" Nullable="false" />
+        </EntityType>
+        <EntityType Name="ProductTypePropertyValues">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ProductTypeName" />
+            <PropertyRef Name="Property" />
+          </Key>
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="ProductTypeName" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Property" Type="nvarchar" MaxLength="128" Nullable="false" />
+          <Property Name="Value" Type="ntext" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="StoreID" />
+          </Key>
+          <Property Name="StoreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+        </EntityType>
+        <EntityType Name="StoreAddress">
+          <Key>
+            <PropertyRef Name="StoreID" />
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="StoreID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="AddressID" Type="int" Nullable="false" />
+          <Property Name="Name" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address1" Type="nvarchar" MaxLength="100" />
+          <Property Name="Address2" Type="nvarchar" MaxLength="100" />
+          <Property Name="City" Type="nvarchar" MaxLength="100" />
+          <Property Name="State" Type="nvarchar" MaxLength="2" />
+          <Property Name="Zip" Type="char" MaxLength="5" />
+        </EntityType>
+        <Association Name="FK_Customer_Address">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_EmpID">
+          <End Role="Customer" Type="Self.Customer" Multiplicity="1" />
+          <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="CustID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Address">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="EmployeeAddress" Type="Self.EmployeeAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="EmployeeAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EpmloyeeAddress_EmpID">
+          <End Role="Employee" Type="Self.Employee" Multiplicity="1" />
+          <End Role="EmployeeAddress" Type="Self.EmployeeAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="EmployeeAddress">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Make_Manufacturer">
+          <End Role="Manufacturer" Type="Self.Manufacturer" Multiplicity="1" />
+          <End Role="Make" Type="Self.Make" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manufacturer">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Make">
+              <PropertyRef Name="ManufacturerName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Make">
+          <End Role="Make" Type="Self.Make" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Make">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="MakeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductType">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="0..1" />
+          <End Role="Products" Type="Self.Products" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Products">
+              <PropertyRef Name="ProductTypeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTypeProperty_ProductType">
+          <End Role="ProductType" Type="Self.ProductType" Multiplicity="1" />
+          <End Role="ProductTypeProperty" Type="Self.ProductTypeProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="ProductTypeProperty">
+              <PropertyRef Name="ProductTypeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTypePropertyValues_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="ProductTypePropertyValues" Type="Self.ProductTypePropertyValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProductTypePropertyValues">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTypePropertyValues_ProductTypeProperty">
+          <End Role="ProductTypeProperty" Type="Self.ProductTypeProperty" Multiplicity="1" />
+          <End Role="ProductTypePropertyValues" Type="Self.ProductTypePropertyValues" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTypeProperty">
+              <PropertyRef Name="ProductTypeName" />
+              <PropertyRef Name="Property" />
+            </Principal>
+            <Dependent Role="ProductTypePropertyValues">
+              <PropertyRef Name="ProductTypeName" />
+              <PropertyRef Name="Property" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreAddress_Address">
+          <End Role="Address" Type="Self.Address" Multiplicity="1" />
+          <End Role="StoreAddress" Type="Self.StoreAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="StoreAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreAddress_StoreID">
+          <End Role="Store" Type="Self.Store" Multiplicity="1" />
+          <End Role="StoreAddress" Type="Self.StoreAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreID" />
+            </Principal>
+            <Dependent Role="StoreAddress">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="GuitarStoreModelStoreContainer">
+          <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CustomerAddress" EntityType="Self.CustomerAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="EmployeeAddress" EntityType="Self.EmployeeAddress" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Make" EntityType="Self.Make" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductTypeProperty" EntityType="Self.ProductTypeProperty" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="ProductTypePropertyValues" EntityType="Self.ProductTypePropertyValues" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="StoreAddress" EntityType="Self.StoreAddress" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="FK_Customer_Address" Association="Self.FK_Customer_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_EmpID" Association="Self.FK_CustomerAddress_EmpID">
+            <End Role="Customer" EntitySet="Customer" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Address" Association="Self.FK_Employee_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="EmployeeAddress" EntitySet="EmployeeAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EpmloyeeAddress_EmpID" Association="Self.FK_EpmloyeeAddress_EmpID">
+            <End Role="Employee" EntitySet="Employee" />
+            <End Role="EmployeeAddress" EntitySet="EmployeeAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Make_Manufacturer" Association="Self.FK_Make_Manufacturer">
+            <End Role="Manufacturer" EntitySet="Manufacturer" />
+            <End Role="Make" EntitySet="Make" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Make" Association="Self.FK_Products_Make">
+            <End Role="Make" EntitySet="Make" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductType" Association="Self.FK_Products_ProductType">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="Products" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTypeProperty_ProductType" Association="Self.FK_ProductTypeProperty_ProductType">
+            <End Role="ProductType" EntitySet="ProductType" />
+            <End Role="ProductTypeProperty" EntitySet="ProductTypeProperty" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTypePropertyValues_Products" Association="Self.FK_ProductTypePropertyValues_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="ProductTypePropertyValues" EntitySet="ProductTypePropertyValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTypePropertyValues_ProductTypeProperty" Association="Self.FK_ProductTypePropertyValues_ProductTypeProperty">
+            <End Role="ProductTypeProperty" EntitySet="ProductTypeProperty" />
+            <End Role="ProductTypePropertyValues" EntitySet="ProductTypePropertyValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreAddress_Address" Association="Self.FK_StoreAddress_Address">
+            <End Role="Address" EntitySet="Address" />
+            <End Role="StoreAddress" EntitySet="StoreAddress" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreAddress_StoreID" Association="Self.FK_StoreAddress_StoreID">
+            <End Role="Store" EntitySet="Store" />
+            <End Role="StoreAddress" EntitySet="StoreAddress" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="GuitarStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="GuitarStoreEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Addresses" EntityType="GuitarStoreModel.Address" />
+          <EntitySet Name="Customers" EntityType="GuitarStoreModel.Customer" />
+          <EntitySet Name="CustomerAddresses" EntityType="GuitarStoreModel.CustomerAddress" />
+          <EntitySet Name="Employees" EntityType="GuitarStoreModel.Employee" />
+          <EntitySet Name="EmployeeAddresses" EntityType="GuitarStoreModel.EmployeeAddress" />
+          <EntitySet Name="Makes" EntityType="GuitarStoreModel.Make" />
+          <EntitySet Name="Manufacturers" EntityType="GuitarStoreModel.Manufacturer" />
+          <EntitySet Name="Products" EntityType="GuitarStoreModel.Product" />
+          <EntitySet Name="ProductTypes" EntityType="GuitarStoreModel.ProductType" />
+          <EntitySet Name="ProductTypeProperties" EntityType="GuitarStoreModel.ProductTypeProperty" />
+          <EntitySet Name="ProductTypePropertyValues" EntityType="GuitarStoreModel.ProductTypePropertyValue" />
+          <EntitySet Name="Stores" EntityType="GuitarStoreModel.Store" />
+          <EntitySet Name="StoreAddresses" EntityType="GuitarStoreModel.StoreAddress" />
+          <AssociationSet Name="FK_Customer_Address" Association="GuitarStoreModel.FK_Customer_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Employee_Address" Association="GuitarStoreModel.FK_Employee_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="EmployeeAddress" EntitySet="EmployeeAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreAddress_Address" Association="GuitarStoreModel.FK_StoreAddress_Address">
+            <End Role="Address" EntitySet="Addresses" />
+            <End Role="StoreAddress" EntitySet="StoreAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_CustomerAddress_EmpID" Association="GuitarStoreModel.FK_CustomerAddress_EmpID">
+            <End Role="Customer" EntitySet="Customers" />
+            <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_EpmloyeeAddress_EmpID" Association="GuitarStoreModel.FK_EpmloyeeAddress_EmpID">
+            <End Role="Employee" EntitySet="Employees" />
+            <End Role="EmployeeAddress" EntitySet="EmployeeAddresses" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Make_Manufacturer" Association="GuitarStoreModel.FK_Make_Manufacturer">
+            <End Role="Manufacturer" EntitySet="Manufacturers" />
+            <End Role="Make" EntitySet="Makes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_Make" Association="GuitarStoreModel.FK_Products_Make">
+            <End Role="Make" EntitySet="Makes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Products_ProductType" Association="GuitarStoreModel.FK_Products_ProductType">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTypePropertyValues_Products" Association="GuitarStoreModel.FK_ProductTypePropertyValues_Products">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="ProductTypePropertyValue" EntitySet="ProductTypePropertyValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTypeProperty_ProductType" Association="GuitarStoreModel.FK_ProductTypeProperty_ProductType">
+            <End Role="ProductType" EntitySet="ProductTypes" />
+            <End Role="ProductTypeProperty" EntitySet="ProductTypeProperties" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ProductTypePropertyValues_ProductTypeProperty" Association="GuitarStoreModel.FK_ProductTypePropertyValues_ProductTypeProperty">
+            <End Role="ProductTypeProperty" EntitySet="ProductTypeProperties" />
+            <End Role="ProductTypePropertyValue" EntitySet="ProductTypePropertyValues" />
+          </AssociationSet>
+          <AssociationSet Name="FK_StoreAddress_StoreID" Association="GuitarStoreModel.FK_StoreAddress_StoreID">
+            <End Role="Store" EntitySet="Stores" />
+            <End Role="StoreAddress" EntitySet="StoreAddresses" />
+          </AssociationSet>
+          <EntitySet Name="Carts" EntityType="GuitarStoreModel.Cart" />
+          </EntityContainer>
+        <EntityType Name="Address">
+          <Key>
+            <PropertyRef Name="AddressId" />
+          </Key>
+          <Property Name="AddressId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Address1" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" Nullable="false" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" Nullable="false" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerAddresses" Relationship="GuitarStoreModel.FK_Customer_Address" FromRole="Address" ToRole="CustomerAddress" />
+          <NavigationProperty Name="EmployeeAddresses" Relationship="GuitarStoreModel.FK_Employee_Address" FromRole="Address" ToRole="EmployeeAddress" />
+          <NavigationProperty Name="StoreAddresses" Relationship="GuitarStoreModel.FK_StoreAddress_Address" FromRole="Address" ToRole="StoreAddress" />
+        </EntityType>
+        <EntityType Name="Customer">
+          <Key>
+            <PropertyRef Name="CustId" />
+          </Key>
+          <Property Name="CustId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="CustomerAddresses" Relationship="GuitarStoreModel.FK_CustomerAddress_EmpID" FromRole="Customer" ToRole="CustomerAddress" />
+        </EntityType>
+        <EntityType Name="CustomerAddress">
+          <Key>
+            <PropertyRef Name="CustID" />
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="CustID" Type="Int32" Nullable="false" />
+          <Property Name="AddressID" Type="Int32" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="5" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Address" Relationship="GuitarStoreModel.FK_Customer_Address" FromRole="CustomerAddress" ToRole="Address" />
+          <NavigationProperty Name="Customer" Relationship="GuitarStoreModel.FK_CustomerAddress_EmpID" FromRole="CustomerAddress" ToRole="Customer" />
+        </EntityType>
+        <EntityType Name="Employee">
+          <Key>
+            <PropertyRef Name="EmpID" />
+          </Key>
+          <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="FirstName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="LastName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DOB" Type="DateTime" Nullable="false" Precision="0" />
+          <Property Name="Wage" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="EmployeeAddresses" Relationship="GuitarStoreModel.FK_EpmloyeeAddress_EmpID" FromRole="Employee" ToRole="EmployeeAddress" />
+        </EntityType>
+        <EntityType Name="EmployeeAddress">
+          <Key>
+            <PropertyRef Name="EmpID" />
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="EmpID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddressID" Type="Int32" Nullable="false" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Address" Relationship="GuitarStoreModel.FK_Employee_Address" FromRole="EmployeeAddress" ToRole="Address" />
+          <NavigationProperty Name="Employee" Relationship="GuitarStoreModel.FK_EpmloyeeAddress_EmpID" FromRole="EmployeeAddress" ToRole="Employee" />
+        </EntityType>
+        <EntityType Name="Make">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ManufacturerName" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Manufacturer" Relationship="GuitarStoreModel.FK_Make_Manufacturer" FromRole="Make" ToRole="Manufacturer" />
+          <NavigationProperty Name="Products" Relationship="GuitarStoreModel.FK_Products_Make" FromRole="Make" ToRole="Product" />
+        </EntityType>
+        <EntityType Name="Manufacturer">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Makes" Relationship="GuitarStoreModel.FK_Make_Manufacturer" FromRole="Manufacturer" ToRole="Make" />
+        </EntityType>
+        <EntityType Name="Product">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="ProductTypeName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="MakeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Model" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Image" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Make" Relationship="GuitarStoreModel.FK_Products_Make" FromRole="Product" ToRole="Make" />
+          <NavigationProperty Name="ProductType" Relationship="GuitarStoreModel.FK_Products_ProductType" FromRole="Product" ToRole="ProductType" />
+          <NavigationProperty Name="ProductTypePropertyValues" Relationship="GuitarStoreModel.FK_ProductTypePropertyValues_Products" FromRole="Product" ToRole="ProductTypePropertyValue" />
+        </EntityType>
+        <EntityType Name="ProductType">
+          <Key>
+            <PropertyRef Name="Name" />
+          </Key>
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Products" Relationship="GuitarStoreModel.FK_Products_ProductType" FromRole="ProductType" ToRole="Product" />
+          <NavigationProperty Name="ProductTypeProperties" Relationship="GuitarStoreModel.FK_ProductTypeProperty_ProductType" FromRole="ProductType" ToRole="ProductTypeProperty" />
+        </EntityType>
+        <EntityType Name="ProductTypeProperty">
+          <Key>
+            <PropertyRef Name="ProductTypeName" />
+            <PropertyRef Name="Property" />
+          </Key>
+          <Property Name="ProductTypeName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Property" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="ProductType" Relationship="GuitarStoreModel.FK_ProductTypeProperty_ProductType" FromRole="ProductTypeProperty" ToRole="ProductType" />
+          <NavigationProperty Name="ProductTypePropertyValues" Relationship="GuitarStoreModel.FK_ProductTypePropertyValues_ProductTypeProperty" FromRole="ProductTypeProperty" ToRole="ProductTypePropertyValue" />
+        </EntityType>
+        <EntityType Name="ProductTypePropertyValue">
+          <Key>
+            <PropertyRef Name="ProductID" />
+            <PropertyRef Name="ProductTypeName" />
+            <PropertyRef Name="Property" />
+          </Key>
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="ProductTypeName" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Property" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+          <Property Name="Value" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Product" Relationship="GuitarStoreModel.FK_ProductTypePropertyValues_Products" FromRole="ProductTypePropertyValue" ToRole="Product" />
+          <NavigationProperty Name="ProductTypeProperty" Relationship="GuitarStoreModel.FK_ProductTypePropertyValues_ProductTypeProperty" FromRole="ProductTypePropertyValue" ToRole="ProductTypeProperty" />
+        </EntityType>
+        <EntityType Name="Store">
+          <Key>
+            <PropertyRef Name="StoreID" />
+          </Key>
+          <Property Name="StoreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="StoreAddresses" Relationship="GuitarStoreModel.FK_StoreAddress_StoreID" FromRole="Store" ToRole="StoreAddress" />
+        </EntityType>
+        <EntityType Name="StoreAddress">
+          <Key>
+            <PropertyRef Name="StoreID" />
+            <PropertyRef Name="AddressID" />
+          </Key>
+          <Property Name="StoreID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="AddressID" Type="Int32" Nullable="false" />
+          <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address1" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Address2" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="State" Type="String" MaxLength="2" FixedLength="false" Unicode="true" />
+          <Property Name="Zip" Type="String" MaxLength="5" FixedLength="true" Unicode="false" />
+          <NavigationProperty Name="Address" Relationship="GuitarStoreModel.FK_StoreAddress_Address" FromRole="StoreAddress" ToRole="Address" />
+          <NavigationProperty Name="Store" Relationship="GuitarStoreModel.FK_StoreAddress_StoreID" FromRole="StoreAddress" ToRole="Store" />
+        </EntityType>
+        <Association Name="FK_Customer_Address">
+          <End Type="GuitarStoreModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="GuitarStoreModel.CustomerAddress" Role="CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Employee_Address">
+          <End Type="GuitarStoreModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="GuitarStoreModel.EmployeeAddress" Role="EmployeeAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="EmployeeAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreAddress_Address">
+          <End Type="GuitarStoreModel.Address" Role="Address" Multiplicity="1" />
+          <End Type="GuitarStoreModel.StoreAddress" Role="StoreAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Address">
+              <PropertyRef Name="AddressId" />
+            </Principal>
+            <Dependent Role="StoreAddress">
+              <PropertyRef Name="AddressID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_CustomerAddress_EmpID">
+          <End Type="GuitarStoreModel.Customer" Role="Customer" Multiplicity="1" />
+          <End Type="GuitarStoreModel.CustomerAddress" Role="CustomerAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Customer">
+              <PropertyRef Name="CustId" />
+            </Principal>
+            <Dependent Role="CustomerAddress">
+              <PropertyRef Name="CustID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_EpmloyeeAddress_EmpID">
+          <End Type="GuitarStoreModel.Employee" Role="Employee" Multiplicity="1" />
+          <End Type="GuitarStoreModel.EmployeeAddress" Role="EmployeeAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Employee">
+              <PropertyRef Name="EmpID" />
+            </Principal>
+            <Dependent Role="EmployeeAddress">
+              <PropertyRef Name="EmpID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Make_Manufacturer">
+          <End Type="GuitarStoreModel.Manufacturer" Role="Manufacturer" Multiplicity="1" />
+          <End Type="GuitarStoreModel.Make" Role="Make" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Manufacturer">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Make">
+              <PropertyRef Name="ManufacturerName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_Make">
+          <End Type="GuitarStoreModel.Make" Role="Make" Multiplicity="0..1" />
+          <End Type="GuitarStoreModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Make">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="MakeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Products_ProductType">
+          <End Type="GuitarStoreModel.ProductType" Role="ProductType" Multiplicity="0..1" />
+          <End Type="GuitarStoreModel.Product" Role="Product" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="Product">
+              <PropertyRef Name="ProductTypeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTypePropertyValues_Products">
+          <End Type="GuitarStoreModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="GuitarStoreModel.ProductTypePropertyValue" Role="ProductTypePropertyValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="ProductTypePropertyValue">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTypeProperty_ProductType">
+          <End Type="GuitarStoreModel.ProductType" Role="ProductType" Multiplicity="1" />
+          <End Type="GuitarStoreModel.ProductTypeProperty" Role="ProductTypeProperty" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductType">
+              <PropertyRef Name="Name" />
+            </Principal>
+            <Dependent Role="ProductTypeProperty">
+              <PropertyRef Name="ProductTypeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ProductTypePropertyValues_ProductTypeProperty">
+          <End Type="GuitarStoreModel.ProductTypeProperty" Role="ProductTypeProperty" Multiplicity="1" />
+          <End Type="GuitarStoreModel.ProductTypePropertyValue" Role="ProductTypePropertyValue" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="ProductTypeProperty">
+              <PropertyRef Name="ProductTypeName" />
+              <PropertyRef Name="Property" />
+            </Principal>
+            <Dependent Role="ProductTypePropertyValue">
+              <PropertyRef Name="ProductTypeName" />
+              <PropertyRef Name="Property" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_StoreAddress_StoreID">
+          <End Type="GuitarStoreModel.Store" Role="Store" Multiplicity="1" />
+          <End Type="GuitarStoreModel.StoreAddress" Role="StoreAddress" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Store">
+              <PropertyRef Name="StoreID" />
+            </Principal>
+            <Dependent Role="StoreAddress">
+              <PropertyRef Name="StoreID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="AspNetUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="3" />
+        </EntityType>
+        </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="GuitarStoreModelStoreContainer" CdmEntityContainer="GuitarStoreEntities">
+          <EntitySetMapping Name="Addresses">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Address">
+              <MappingFragment StoreEntitySet="Address">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Customers">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Customer">
+              <MappingFragment StoreEntitySet="Customer">
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="CustId" ColumnName="CustId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CustomerAddresses">
+            <EntityTypeMapping TypeName="GuitarStoreModel.CustomerAddress">
+              <MappingFragment StoreEntitySet="CustomerAddress">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="CustID" ColumnName="CustID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Employees">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Employee">
+              <MappingFragment StoreEntitySet="Employee">
+                <ScalarProperty Name="Wage" ColumnName="Wage" />
+                <ScalarProperty Name="DOB" ColumnName="DOB" />
+                <ScalarProperty Name="LastName" ColumnName="LastName" />
+                <ScalarProperty Name="FirstName" ColumnName="FirstName" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="EmployeeAddresses">
+            <EntityTypeMapping TypeName="GuitarStoreModel.EmployeeAddress">
+              <MappingFragment StoreEntitySet="EmployeeAddress">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="EmpID" ColumnName="EmpID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Makes">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Make">
+              <MappingFragment StoreEntitySet="Make">
+                <ScalarProperty Name="ManufacturerName" ColumnName="ManufacturerName" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Manufacturers">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Manufacturer">
+              <MappingFragment StoreEntitySet="Manufacturer">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Products">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Product">
+              <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Price" ColumnName="Price" />
+                <ScalarProperty Name="Image" ColumnName="Image" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="MakeName" ColumnName="MakeName" />
+                <ScalarProperty Name="ProductTypeName" ColumnName="ProductTypeName" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypes">
+            <EntityTypeMapping TypeName="GuitarStoreModel.ProductType">
+              <MappingFragment StoreEntitySet="ProductType">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypeProperties">
+            <EntityTypeMapping TypeName="GuitarStoreModel.ProductTypeProperty">
+              <MappingFragment StoreEntitySet="ProductTypeProperty">
+                <ScalarProperty Name="Property" ColumnName="Property" />
+                <ScalarProperty Name="ProductTypeName" ColumnName="ProductTypeName" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="ProductTypePropertyValues">
+            <EntityTypeMapping TypeName="GuitarStoreModel.ProductTypePropertyValue">
+              <MappingFragment StoreEntitySet="ProductTypePropertyValues">
+                <ScalarProperty Name="Value" ColumnName="Value" />
+                <ScalarProperty Name="Property" ColumnName="Property" />
+                <ScalarProperty Name="ProductTypeName" ColumnName="ProductTypeName" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Stores">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Store">
+              <MappingFragment StoreEntitySet="Store">
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="StoreAddresses">
+            <EntityTypeMapping TypeName="GuitarStoreModel.StoreAddress">
+              <MappingFragment StoreEntitySet="StoreAddress">
+                <ScalarProperty Name="Zip" ColumnName="Zip" />
+                <ScalarProperty Name="State" ColumnName="State" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Address2" ColumnName="Address2" />
+                <ScalarProperty Name="Address1" ColumnName="Address1" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="AddressID" ColumnName="AddressID" />
+                <ScalarProperty Name="StoreID" ColumnName="StoreID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
