@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GuitarStore.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,36 +9,37 @@ namespace GuitarStore.Controllers
 {
     public class CartController : Controller
     {
+        protected GuitarStoreEntities db = new GuitarStoreEntities();
+
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                db.Dispose();
+            }
+            base.Dispose(disposing);
+        }
+
         // GET: Cart
         public ActionResult Index()
         {
-            var cart = Models.Cart.BuildCart(Request);
+            Guid cartID = Guid.Parse(Request.Cookies["cartID"].Value);
 
-            return View(cart);
+            return View(db.Carts.Find(cartID));
         }
 
         // POST: Cart
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Index(Models.Cart model)
         {
-            //Response.AppendCookie(new HttpCookie("productQuantity", model.Products[0].Quantity.ToString()));
-
-            // model.SubTotal = model.Products.Sum(x => x.Price * x.Quantity);
-
-            model.Tax = model.SubTotal * .1025m;
-
-            if (model.SubTotal < 500)
+            var cart = db.Carts.Find(model.ID);
+            for (int i = 0; i < model.CartProducts.Count; i++)
             {
-                //model.ShippingAndHandling = model.Products.Sum(x => x.Quantity) * 29m;
+                cart.CartProducts.ElementAt(i).Quantity = model.CartProducts.ElementAt(i).Quantity;
             }
-            else
-            {
-                model.ShippingAndHandling = 0;
-            }
-
-            model.Total = model.SubTotal + model.Tax + model.ShippingAndHandling;
-
-            return View(model);
+            db.SaveChanges();
+            return View(cart);
         }
     }
 }

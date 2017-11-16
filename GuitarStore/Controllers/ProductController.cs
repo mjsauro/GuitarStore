@@ -40,20 +40,49 @@ namespace GuitarStore.Controllers
         }
 
         [HttpPost]
-        public ActionResult Index(Product model, string make)
+        public ActionResult Index(Product model)
         {
             //TODO: Save the posted information to a database!
+            Guid cartID;
+            Cart cart = null;
+            if (Request.Cookies.AllKeys.Contains("cartID"))
+            {
+                cartID = Guid.Parse(Request.Cookies["cartID"].Value);
+                cart = db.Carts.Find(cartID);
+            }
+            if (cart == null)
+            {
+                cartID = Guid.NewGuid();
+                cart = new Cart
+                {
+                    ID = cartID,
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow
+                };
+                db.Carts.Add(cart);
+                Response.AppendCookie(new HttpCookie("cartID", cartID.ToString()));
+            }
 
-            HttpContext.Session.Add("productMake", model.Make);
-            HttpContext.Session.Add("productModel", model.Model);
-            HttpContext.Session.Add("productPrice", (model.Price ?? 0).ToString("C"));
-            //HttpContext.Session.Add("productQuantity", model.Quantity.ToString());
+            CartProduct cartProduct = cart.CartProducts.FirstOrDefault(x => x.ProductID == model.ID);
+            if (cartProduct == null)
+            {
+                cartProduct = new CartProduct
+                {
+                    DateCreated = DateTime.UtcNow,
+                    DateModified = DateTime.UtcNow,
+                    ProductID = model.ID,
+                    Quantity = 0
+                };
+                cart.CartProducts.Add(cartProduct);
+            }
 
-            //TODO: Rip out this cookie code later - we're going to use it for now to mock up site functionality
-            Response.AppendCookie(new HttpCookie("productMake", model.Make.Name));
-            Response.AppendCookie(new HttpCookie("productModel", model.Model));
-            Response.AppendCookie(new HttpCookie("productPrice", (model.Price ?? 0).ToString("C")));
+            cartProduct.Quantity += model.Quantity ?? 1;
+            cartProduct.DateModified = DateTime.UtcNow;
+            cart.DateModified = DateTime.UtcNow;
 
+            db.SaveChanges();
+
+            TempData.Add("NewItem", model.Make + " " + model.MakeName + " " + model.Mod);
             //TODO: build up the cart controller!
             return RedirectToAction("Index", "Cart");
         }

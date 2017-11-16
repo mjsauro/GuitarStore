@@ -1,44 +1,66 @@
 ﻿@model GuitarStore.Models.Product
 @{
     ViewBag.Title = "Index";
+    SelectListItem[] quantityOptions = new SelectListItem[10];
+    for (int i = 1; i <= quantityOptions.Length; i++)
+    {
+        quantityOptions[i - 1] = new SelectListItem();
+        if (i == 1)
+        {
+            quantityOptions[i - 1].Text = i + " " + Model.Mod;
+        }
+        else
+        {
+            quantityOptions[i - 1].Text = i + " " + Model.Mod + "s";
+        }
+        quantityOptions[i - 1].Value = i.ToString();
+    }
 }
-<div class="row">
-    <div class="col-xs-6 col-md-4 col-md-offset-1">
-        <div class="panel">
-            <div class="panel-heading">
-                <h3>@Model.Make.Name @Model.Model</h3>
+<div class="container-fluid">
+    <div class="well">
+        <div class="row">
+
+            <div class="col-xs-6 col-md-4 col-md-offset-1">
+                <div class="panel">
+                    <div class="panel-heading">
+                        <h3>@Model.Make.Name @Model.Mod</h3>
+                    </div>
+                    <div class="panel-body">
+                        @foreach (var property in Model.ProductTypePropertyValues)
+                        {
+
+                            <p>@property.Property : @property.Value </p>
+                        }
+
+                        <p>Description: @Model.Description</p>
+                        <p>Price: @((Model.Price ?? 0).ToString("C"))</p>
+
+                        @using (Html.BeginForm())
+                        {
+                            @Html.HiddenFor(m => m.ID)
+                            @Html.HiddenFor(m => m.ProductType)
+                            @Html.HiddenFor(m => m.Make)
+                            @Html.HiddenFor(m => m.Mod)
+                            @Html.HiddenFor(m => m.Description)
+                            @Html.HiddenFor(m => m.Price)
+                            <div class="form-group">
+                                @Html.LabelFor(m => m.Quantity, new { @class = "control-label" })
+                                @Html.DropDownListFor(m => m.Quantity, quantityOptions, new { @class = "form-control" })
+                            </div>
+                            <input type="submit" class="btn btn-default" value="Add to Cart" />
+                        }
+                    </div>
+                    <div class="panel-footer">
+                        @Html.ActionLink("Return to List", null, null, null, new { href = Request.UrlReferrer })
+                    </div>
+                </div>
             </div>
-            <div class="panel-body">
-                @foreach (var property in Model.ProductTypePropertyValues)
-                {
-
-                    <p>@property.Property : @property.Value </p>
-                }
-
-                <p>Description: @Model.Description</p>
-                <p>Price: @((Model.Price ?? 0).ToString("C"))</p>
-
-                @using (Html.BeginForm())
-                {
-                    @Html.HiddenFor(m => m.ID)
-                    @Html.HiddenFor(m => m.ProductType)
-                    @Html.HiddenFor(m => m.Make)
-                    @Html.HiddenFor(m => m.Model)
-                    @Html.HiddenFor(m => m.Description)
-                    @Html.HiddenFor(m => m.Price)
-
-                    <input type="submit" class="btn btn-default" value="Add to Cart" />
-                }
-            </div>
-            <div class="panel-footer">
-                @Html.ActionLink("Return to List", null, null, null, new { href = Request.UrlReferrer })
-            </div>
-        </div>
-    </div>
-    <div class="col-xs-12 col-md-4 col-md-offset-1">
-        <div class="panel">
-            <div class="panel-body">
-                <img class="img-responsive" src="@Model.Image" />
+            <div class="col-xs-12 col-md-4 col-md-offset-1">
+                <div class="panel">
+                    <div class="panel-body">
+                        <img class="img-responsive" src="@Model.Image" />
+                    </div>
+                </div>
             </div>
         </div>
     </div>

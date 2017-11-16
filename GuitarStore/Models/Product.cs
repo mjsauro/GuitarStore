@@ -17,20 +17,27 @@ namespace GuitarStore.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Product()
         {
+            this.CartProducts = new HashSet<CartProduct>();
+            this.OrderProducts = new HashSet<OrderProduct>();
             this.ProductTypePropertyValues = new HashSet<ProductTypePropertyValue>();
         }
     
         public int ID { get; set; }
         public string ProductTypeName { get; set; }
         public string MakeName { get; set; }
-        public string Model { get; set; }
+        public string Mod { get; set; }
         public string Description { get; set; }
         public string Image { get; set; }
         public Nullable<decimal> Price { get; set; }
         public Nullable<System.DateTime> DateCreated { get; set; }
         public Nullable<System.DateTime> DateModified { get; set; }
+        public Nullable<int> Quantity { get; set; }
     
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<CartProduct> CartProducts { get; set; }
         public virtual Make Make { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
         public virtual ProductType ProductType { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ProductTypePropertyValue> ProductTypePropertyValues { get; set; }

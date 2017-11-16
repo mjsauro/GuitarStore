@@ -25,6 +25,17 @@
           <Property Name="DateCreated" Type="datetime" Nullable="false" />
           <Property Name="DateModified" Type="datetime" Nullable="false" />
         </EntityType>
+        <EntityType Name="CartProduct">
+          <Key>
+            <PropertyRef Name="CartID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="CartID" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateModified" Type="datetime" Nullable="false" />
+        </EntityType>
         <EntityType Name="Customer">
           <Key>
             <PropertyRef Name="CustId" />
@@ -83,6 +94,39 @@
           </Key>
           <Property Name="Name" Type="nvarchar" MaxLength="100" Nullable="false" />
         </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="TrackingNumber" Type="char" MaxLength="8" Nullable="false" />
+          <Property Name="Email" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="PurchaserName" Type="nvarchar" MaxLength="512" Nullable="false" />
+          <Property Name="ShippingAddress1" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ShippingAddress2" Type="nvarchar" MaxLength="1000" />
+          <Property Name="ShippingCity" Type="nvarchar" MaxLength="1000" Nullable="false" />
+          <Property Name="ShippingState" Type="nvarchar" MaxLength="100" Nullable="false" />
+          <Property Name="ShippingPostalCode" Type="nvarchar" MaxLength="10" Nullable="false" />
+          <Property Name="SubTotal" Type="money" Nullable="false" />
+          <Property Name="ShippingAndHandling" Type="money" Nullable="false" />
+          <Property Name="Tax" Type="money" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" Nullable="false" />
+          <Property Name="DateModified" Type="datetime" Nullable="false" />
+          <Property Name="ShipDate" Type="datetime" />
+        </EntityType>
+        <EntityType Name="OrderProduct">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="OrderID" Type="int" Nullable="false" />
+          <Property Name="ProductID" Type="int" Nullable="false" />
+          <Property Name="Quantity" Type="int" Nullable="false" />
+          <Property Name="PlacedName" Type="nvarchar" MaxLength="100" />
+          <Property Name="PlacedUnitName" Type="money" Nullable="false" />
+          <Property Name="DateCreated" Type="datetime" />
+          <Property Name="DateModified" Type="datetime" />
+        </EntityType>
         <EntityType Name="Products">
           <Key>
             <PropertyRef Name="ID" />
@@ -90,12 +134,13 @@
           <Property Name="ID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="ProductTypeName" Type="nvarchar" MaxLength="128" />
           <Property Name="MakeName" Type="nvarchar" MaxLength="100" />
-          <Property Name="Model" Type="nvarchar" MaxLength="100" />
+          <Property Name="Mod" Type="nvarchar" MaxLength="100" />
           <Property Name="Description" Type="ntext" />
           <Property Name="Image" Type="nvarchar" MaxLength="1000" />
           <Property Name="Price" Type="money" />
           <Property Name="DateCreated" Type="datetime" />
           <Property Name="DateModified" Type="datetime" />
+          <Property Name="Quantity" Type="int" />
         </EntityType>
         <EntityType Name="ProductType">
           <Key>
@@ -143,6 +188,30 @@
           <Property Name="State" Type="nvarchar" MaxLength="2" />
           <Property Name="Zip" Type="char" MaxLength="5" />
         </EntityType>
+        <Association Name="fk_CartProduct_Cart">
+          <End Role="Cart" Type="Self.Cart" Multiplicity="1" />
+          <End Role="CartProduct" Type="Self.CartProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CartProduct">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CartProduct_Product">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="CartProduct" Type="Self.CartProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CartProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_Customer_Address">
           <End Role="Address" Type="Self.Address" Multiplicity="1" />
           <End Role="CustomerAddress" Type="Self.CustomerAddress" Multiplicity="*" />
@@ -200,6 +269,30 @@
             </Principal>
             <Dependent Role="Make">
               <PropertyRef Name="ManufacturerName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderProduct_Order">
+          <End Role="Order" Type="Self.Order" Multiplicity="1" />
+          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderProduct">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderProduct_Product">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="OrderProduct" Type="Self.OrderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderProduct">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -292,18 +385,29 @@
         <EntityContainer Name="GuitarStoreModelStoreContainer">
           <EntitySet Name="Address" EntityType="Self.Address" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Cart" EntityType="Self.Cart" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="CartProduct" EntityType="Self.CartProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Customer" EntityType="Self.Customer" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="CustomerAddress" EntityType="Self.CustomerAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Employee" EntityType="Self.Employee" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="EmployeeAddress" EntityType="Self.EmployeeAddress" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Make" EntityType="Self.Make" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Manufacturer" EntityType="Self.Manufacturer" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Order" EntityType="Self.Order" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="OrderProduct" EntityType="Self.OrderProduct" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductType" EntityType="Self.ProductType" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTypeProperty" EntityType="Self.ProductTypeProperty" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="ProductTypePropertyValues" EntityType="Self.ProductTypePropertyValues" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Store" EntityType="Self.Store" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="StoreAddress" EntityType="Self.StoreAddress" Schema="dbo" store:Type="Tables" />
+          <AssociationSet Name="fk_CartProduct_Cart" Association="Self.fk_CartProduct_Cart">
+            <End Role="Cart" EntitySet="Cart" />
+            <End Role="CartProduct" EntitySet="CartProduct" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CartProduct_Product" Association="Self.fk_CartProduct_Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="CartProduct" EntitySet="CartProduct" />
+          </AssociationSet>
           <AssociationSet Name="FK_Customer_Address" Association="Self.FK_Customer_Address">
             <End Role="Address" EntitySet="Address" />
             <End Role="CustomerAddress" EntitySet="CustomerAddress" />
@@ -323,6 +427,14 @@
           <AssociationSet Name="FK_Make_Manufacturer" Association="Self.FK_Make_Manufacturer">
             <End Role="Manufacturer" EntitySet="Manufacturer" />
             <End Role="Make" EntitySet="Make" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderProduct_Order" Association="Self.fk_OrderProduct_Order">
+            <End Role="Order" EntitySet="Order" />
+            <End Role="OrderProduct" EntitySet="OrderProduct" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderProduct_Product" Association="Self.fk_OrderProduct_Product">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="OrderProduct" EntitySet="OrderProduct" />
           </AssociationSet>
           <AssociationSet Name="FK_Products_Make" Association="Self.FK_Products_Make">
             <End Role="Make" EntitySet="Make" />
@@ -359,12 +471,16 @@
       <Schema Namespace="GuitarStoreModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityContainer Name="GuitarStoreEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Addresses" EntityType="GuitarStoreModel.Address" />
+          <EntitySet Name="Carts" EntityType="GuitarStoreModel.Cart" />
+          <EntitySet Name="CartProducts" EntityType="GuitarStoreModel.CartProduct" />
           <EntitySet Name="Customers" EntityType="GuitarStoreModel.Customer" />
           <EntitySet Name="CustomerAddresses" EntityType="GuitarStoreModel.CustomerAddress" />
           <EntitySet Name="Employees" EntityType="GuitarStoreModel.Employee" />
           <EntitySet Name="EmployeeAddresses" EntityType="GuitarStoreModel.EmployeeAddress" />
           <EntitySet Name="Makes" EntityType="GuitarStoreModel.Make" />
           <EntitySet Name="Manufacturers" EntityType="GuitarStoreModel.Manufacturer" />
+          <EntitySet Name="Orders" EntityType="GuitarStoreModel.Order" />
+          <EntitySet Name="OrderProducts" EntityType="GuitarStoreModel.OrderProduct" />
           <EntitySet Name="Products" EntityType="GuitarStoreModel.Product" />
           <EntitySet Name="ProductTypes" EntityType="GuitarStoreModel.ProductType" />
           <EntitySet Name="ProductTypeProperties" EntityType="GuitarStoreModel.ProductTypeProperty" />
@@ -383,6 +499,14 @@
             <End Role="Address" EntitySet="Addresses" />
             <End Role="StoreAddress" EntitySet="StoreAddresses" />
           </AssociationSet>
+          <AssociationSet Name="fk_CartProduct_Cart" Association="GuitarStoreModel.fk_CartProduct_Cart">
+            <End Role="Cart" EntitySet="Carts" />
+            <End Role="CartProduct" EntitySet="CartProducts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_CartProduct_Product" Association="GuitarStoreModel.fk_CartProduct_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="CartProduct" EntitySet="CartProducts" />
+          </AssociationSet>
           <AssociationSet Name="FK_CustomerAddress_EmpID" Association="GuitarStoreModel.FK_CustomerAddress_EmpID">
             <End Role="Customer" EntitySet="Customers" />
             <End Role="CustomerAddress" EntitySet="CustomerAddresses" />
@@ -398,6 +522,14 @@
           <AssociationSet Name="FK_Products_Make" Association="GuitarStoreModel.FK_Products_Make">
             <End Role="Make" EntitySet="Makes" />
             <End Role="Product" EntitySet="Products" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderProduct_Order" Association="GuitarStoreModel.fk_OrderProduct_Order">
+            <End Role="Order" EntitySet="Orders" />
+            <End Role="OrderProduct" EntitySet="OrderProducts" />
+          </AssociationSet>
+          <AssociationSet Name="fk_OrderProduct_Product" Association="GuitarStoreModel.fk_OrderProduct_Product">
+            <End Role="Product" EntitySet="Products" />
+            <End Role="OrderProduct" EntitySet="OrderProducts" />
           </AssociationSet>
           <AssociationSet Name="FK_Products_ProductType" Association="GuitarStoreModel.FK_Products_ProductType">
             <End Role="ProductType" EntitySet="ProductTypes" />
@@ -419,8 +551,7 @@
             <End Role="Store" EntitySet="Stores" />
             <End Role="StoreAddress" EntitySet="StoreAddresses" />
           </AssociationSet>
-          <EntitySet Name="Carts" EntityType="GuitarStoreModel.Cart" />
-          </EntityContainer>
+        </EntityContainer>
         <EntityType Name="Address">
           <Key>
             <PropertyRef Name="AddressId" />
@@ -434,6 +565,29 @@
           <NavigationProperty Name="CustomerAddresses" Relationship="GuitarStoreModel.FK_Customer_Address" FromRole="Address" ToRole="CustomerAddress" />
           <NavigationProperty Name="EmployeeAddresses" Relationship="GuitarStoreModel.FK_Employee_Address" FromRole="Address" ToRole="EmployeeAddress" />
           <NavigationProperty Name="StoreAddresses" Relationship="GuitarStoreModel.FK_StoreAddress_Address" FromRole="Address" ToRole="StoreAddress" />
+        </EntityType>
+        <EntityType Name="Cart">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Guid" Nullable="false" />
+          <Property Name="AspNetUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="CartProducts" Relationship="GuitarStoreModel.fk_CartProduct_Cart" FromRole="Cart" ToRole="CartProduct" />
+        </EntityType>
+        <EntityType Name="CartProduct">
+          <Key>
+            <PropertyRef Name="CartID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="CartID" Type="Guid" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="3" />
+          <NavigationProperty Name="Cart" Relationship="GuitarStoreModel.fk_CartProduct_Cart" FromRole="CartProduct" ToRole="Cart" />
+          <NavigationProperty Name="Product" Relationship="GuitarStoreModel.fk_CartProduct_Product" FromRole="CartProduct" ToRole="Product" />
         </EntityType>
         <EntityType Name="Customer">
           <Key>
@@ -502,6 +656,42 @@
           <Property Name="Name" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="Makes" Relationship="GuitarStoreModel.FK_Make_Manufacturer" FromRole="Manufacturer" ToRole="Make" />
         </EntityType>
+        <EntityType Name="Order">
+          <Key>
+            <PropertyRef Name="ID" />
+          </Key>
+          <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="TrackingNumber" Type="String" Nullable="false" MaxLength="8" FixedLength="true" Unicode="false" />
+          <Property Name="Email" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PurchaserName" Type="String" Nullable="false" MaxLength="512" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingAddress1" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingAddress2" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingCity" Type="String" Nullable="false" MaxLength="1000" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingState" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="ShippingPostalCode" Type="String" Nullable="false" MaxLength="10" FixedLength="false" Unicode="true" />
+          <Property Name="SubTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="ShippingAndHandling" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="Tax" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="ShipDate" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="OrderProducts" Relationship="GuitarStoreModel.fk_OrderProduct_Order" FromRole="Order" ToRole="OrderProduct" />
+        </EntityType>
+        <EntityType Name="OrderProduct">
+          <Key>
+            <PropertyRef Name="OrderID" />
+            <PropertyRef Name="ProductID" />
+          </Key>
+          <Property Name="OrderID" Type="Int32" Nullable="false" />
+          <Property Name="ProductID" Type="Int32" Nullable="false" />
+          <Property Name="Quantity" Type="Int32" Nullable="false" />
+          <Property Name="PlacedName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="PlacedUnitName" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="DateCreated" Type="DateTime" Precision="3" />
+          <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <NavigationProperty Name="Order" Relationship="GuitarStoreModel.fk_OrderProduct_Order" FromRole="OrderProduct" ToRole="Order" />
+          <NavigationProperty Name="Product" Relationship="GuitarStoreModel.fk_OrderProduct_Product" FromRole="OrderProduct" ToRole="Product" />
+        </EntityType>
         <EntityType Name="Product">
           <Key>
             <PropertyRef Name="ID" />
@@ -509,13 +699,16 @@
           <Property Name="ID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="ProductTypeName" Type="String" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="MakeName" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="Model" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="Mod" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Image" Type="String" MaxLength="1000" FixedLength="false" Unicode="true" />
           <Property Name="Price" Type="Decimal" Precision="19" Scale="4" />
           <Property Name="DateCreated" Type="DateTime" Precision="3" />
           <Property Name="DateModified" Type="DateTime" Precision="3" />
+          <Property Name="Quantity" Type="Int32" />
+          <NavigationProperty Name="CartProducts" Relationship="GuitarStoreModel.fk_CartProduct_Product" FromRole="Product" ToRole="CartProduct" />
           <NavigationProperty Name="Make" Relationship="GuitarStoreModel.FK_Products_Make" FromRole="Product" ToRole="Make" />
+          <NavigationProperty Name="OrderProducts" Relationship="GuitarStoreModel.fk_OrderProduct_Product" FromRole="Product" ToRole="OrderProduct" />
           <NavigationProperty Name="ProductType" Relationship="GuitarStoreModel.FK_Products_ProductType" FromRole="Product" ToRole="ProductType" />
           <NavigationProperty Name="ProductTypePropertyValues" Relationship="GuitarStoreModel.FK_ProductTypePropertyValues_Products" FromRole="Product" ToRole="ProductTypePropertyValue" />
         </EntityType>
@@ -610,6 +803,30 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="fk_CartProduct_Cart">
+          <End Type="GuitarStoreModel.Cart" Role="Cart" Multiplicity="1" />
+          <End Type="GuitarStoreModel.CartProduct" Role="CartProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Cart">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CartProduct">
+              <PropertyRef Name="CartID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_CartProduct_Product">
+          <End Type="GuitarStoreModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="GuitarStoreModel.CartProduct" Role="CartProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="CartProduct">
+              <PropertyRef Name="ProductID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_CustomerAddress_EmpID">
           <End Type="GuitarStoreModel.Customer" Role="Customer" Multiplicity="1" />
           <End Type="GuitarStoreModel.CustomerAddress" Role="CustomerAddress" Multiplicity="*" />
@@ -655,6 +872,30 @@
             </Principal>
             <Dependent Role="Product">
               <PropertyRef Name="MakeName" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderProduct_Order">
+          <End Type="GuitarStoreModel.Order" Role="Order" Multiplicity="1" />
+          <End Type="GuitarStoreModel.OrderProduct" Role="OrderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Order">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderProduct">
+              <PropertyRef Name="OrderID" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_OrderProduct_Product">
+          <End Type="GuitarStoreModel.Product" Role="Product" Multiplicity="1" />
+          <End Type="GuitarStoreModel.OrderProduct" Role="OrderProduct" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Product">
+              <PropertyRef Name="ID" />
+            </Principal>
+            <Dependent Role="OrderProduct">
+              <PropertyRef Name="ProductID" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -720,15 +961,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityType Name="Cart">
-          <Key>
-            <PropertyRef Name="ID" />
-          </Key>
-          <Property Name="ID" Type="Guid" Nullable="false" />
-          <Property Name="AspNetUserID" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
-          <Property Name="DateCreated" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="DateModified" Type="DateTime" Nullable="false" Precision="3" />
-        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -744,6 +976,27 @@
                 <ScalarProperty Name="Address2" ColumnName="Address2" />
                 <ScalarProperty Name="Address1" ColumnName="Address1" />
                 <ScalarProperty Name="AddressId" ColumnName="AddressId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Carts">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Cart">
+              <MappingFragment StoreEntitySet="Cart">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="CartProducts">
+            <EntityTypeMapping TypeName="GuitarStoreModel.CartProduct">
+              <MappingFragment StoreEntitySet="CartProduct">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="CartID" ColumnName="CartID" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -809,15 +1062,50 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="Orders">
+            <EntityTypeMapping TypeName="GuitarStoreModel.Order">
+              <MappingFragment StoreEntitySet="Order">
+                <ScalarProperty Name="ShipDate" ColumnName="ShipDate" />
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="Tax" ColumnName="Tax" />
+                <ScalarProperty Name="ShippingAndHandling" ColumnName="ShippingAndHandling" />
+                <ScalarProperty Name="SubTotal" ColumnName="SubTotal" />
+                <ScalarProperty Name="ShippingPostalCode" ColumnName="ShippingPostalCode" />
+                <ScalarProperty Name="ShippingState" ColumnName="ShippingState" />
+                <ScalarProperty Name="ShippingCity" ColumnName="ShippingCity" />
+                <ScalarProperty Name="ShippingAddress2" ColumnName="ShippingAddress2" />
+                <ScalarProperty Name="ShippingAddress1" ColumnName="ShippingAddress1" />
+                <ScalarProperty Name="PurchaserName" ColumnName="PurchaserName" />
+                <ScalarProperty Name="Email" ColumnName="Email" />
+                <ScalarProperty Name="TrackingNumber" ColumnName="TrackingNumber" />
+                <ScalarProperty Name="ID" ColumnName="ID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="OrderProducts">
+            <EntityTypeMapping TypeName="GuitarStoreModel.OrderProduct">
+              <MappingFragment StoreEntitySet="OrderProduct">
+                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
+                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
+                <ScalarProperty Name="PlacedUnitName" ColumnName="PlacedUnitName" />
+                <ScalarProperty Name="PlacedName" ColumnName="PlacedName" />
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
+                <ScalarProperty Name="ProductID" ColumnName="ProductID" />
+                <ScalarProperty Name="OrderID" ColumnName="OrderID" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="GuitarStoreModel.Product">
               <MappingFragment StoreEntitySet="Products">
+                <ScalarProperty Name="Quantity" ColumnName="Quantity" />
                 <ScalarProperty Name="DateModified" ColumnName="DateModified" />
                 <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
                 <ScalarProperty Name="Price" ColumnName="Price" />
                 <ScalarProperty Name="Image" ColumnName="Image" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
-                <ScalarProperty Name="Model" ColumnName="Model" />
+                <ScalarProperty Name="Mod" ColumnName="Mod" />
                 <ScalarProperty Name="MakeName" ColumnName="MakeName" />
                 <ScalarProperty Name="ProductTypeName" ColumnName="ProductTypeName" />
                 <ScalarProperty Name="ID" ColumnName="ID" />
@@ -871,17 +1159,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Carts">
-            <EntityTypeMapping TypeName="GuitarStoreModel.Cart">
-              <MappingFragment StoreEntitySet="Cart">
-                <ScalarProperty Name="DateModified" ColumnName="DateModified" />
-                <ScalarProperty Name="DateCreated" ColumnName="DateCreated" />
-                <ScalarProperty Name="AspNetUserID" ColumnName="AspNetUserID" />
-                <ScalarProperty Name="ID" ColumnName="ID" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          </EntityContainerMapping>
+        </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>
   </edmx:Runtime>

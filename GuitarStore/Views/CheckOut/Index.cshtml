@@ -1,6 +1,10 @@
 ﻿@model GuitarStore.Models.CheckoutDetails
 @{
     ViewBag.Title = "Checkout";
+
+    var subTotal = Model.CurrentCart.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0;
+    var shippingAndHandling = Model.CurrentCart.CartProducts.Sum(x => x.Quantity);
+    var tax = (Model.CurrentCart.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0) * .1025m;
 }
 
 <div class="row">
@@ -18,43 +22,39 @@
                 </tr>
             </thead>
             <tbody>
-                @for (int i = 0; i < Model.CurrentCart.Products.Length; i++)
+                @for (int i = 0; i < Model.CurrentCart.CartProducts.Count; i++)
                 {
                     <tr>
 
                         <td>
-                            @Model.CurrentCart.Products[i].Make
+                            @Model.CurrentCart.CartProducts.ElementAt(i).Product.MakeName
                         </td>
                         <td>
-                            @Model.CurrentCart.Products[i].Mod
+                            @Model.CurrentCart.CartProducts.ElementAt(i).Quantity
                         </td>
                         <td>
-                            @Model.CurrentCart.Products[i].Quantity
-
+                            @((Model.CurrentCart.CartProducts.ElementAt(i).Product.Price ?? 0).ToString("C"))
                         </td>
-                        <td>
-                            @Model.CurrentCart.Products[i].Price.ToString()
-                        </td>
-                        <td>@((Model.CurrentCart.Products[i].Quantity * Model.CurrentCart.Products[i].Price).ToString())</td>
+                        <td>@(((Model.CurrentCart.CartProducts.ElementAt(i).Quantity * Model.CurrentCart.CartProducts.ElementAt(i).Product.Price) ?? 0).ToString("C"))</td>
                     </tr>
                 }
             </tbody>
             <tfoot>
                 <tr>
-                    <th colspan="4">Subtotal</th>
-                    <th>@Model.CurrentCart.SubTotal.ToString("C")</th>
+                    <th colspan="3">Subtotal</th>
+                    <th>@subTotal.ToString("C")</th>
                 </tr>
                 <tr>
-                    <th colspan="4">Shipping and Handling</th>
-                    <th>@Model.CurrentCart.ShippingAndHandling.ToString("C")</th>
+                    <th colspan="3">Shipping and Handling</th>
+                    <th>@shippingAndHandling.ToString("C")</th>
                 </tr>
                 <tr>
-                    <th colspan="4">Tax</th>
-                    <th>@Model.CurrentCart.Tax.ToString("C")</th>
+                    <th colspan="3">Tax</th>
+                    <th>@tax.ToString("C")</th>
                 </tr>
                 <tr>
-                    <th colspan="4">Total</th>
-                    <th>@Model.CurrentCart.Total.ToString("C")</th>
+                    <th colspan="3">Total</th>
+                    <th>@((tax + shippingAndHandling + subTotal).ToString("C"))</th>
                 </tr>
             </tfoot>
         </table>
@@ -63,9 +63,9 @@
     <div class="col-xs-12 col-sm-6">
         @using (Html.BeginForm())
         {
-            <div class="alert alert-danger">
-                @Html.ValidationSummary(false)
-            </div>
+            @*<div class="alert alert-danger">
+                    @Html.ValidationSummary(false)
+                </div>*@
             <div class="form-group">
                 @Html.LabelFor(m => m.ContactName, new { @class = "control-label" })
                 @Html.TextBoxFor(m => m.ContactName, new { @class = "form-control", placeholder = "Your Name" })
@@ -109,5 +109,3 @@
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
 }
-
-

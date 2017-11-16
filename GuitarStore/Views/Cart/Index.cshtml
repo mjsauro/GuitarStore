@@ -1,67 +1,78 @@
 ﻿@model GuitarStore.Models.Cart
 @{
     ViewBag.Title = "Index";
+    var subTotal = Model.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0;
+    var shippingAndHandling = Model.CartProducts.Sum(x => x.Quantity);
+    var tax = (Model.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0) * .1025m;
 }
-@using (Html.BeginForm())
-{
-    <div class="container">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Item Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.Products.Length; i++)
-                {
-                    <tr>
-                        <td>
-                            @Model.Products[i].Make
-                            @Model.Products[i].Mod
-                            @Html.HiddenFor(m => m.Products[i].Make)
-                            @Html.HiddenFor(m => m.Products[i].Mod)
-                        </td>
-                        <td>
-                            <input type="number" min="0" max="10" class="form-control" value="@Model.Products[i].Quantity" name="@("Products[" + i + "].Quantity")" />
+<div class="container-fluid">
+    <div class="well">
+        @if (TempData.ContainsKey("NewItem"))
+        {
+            <div class="alert alert-success">
+                @TempData["NewItem"] has been added to your cart
+            </div>
+        }
+        @if (Model.CartProducts.Count > 0)
+        {
+            using (Html.BeginForm())
+            {
+                @Html.HiddenFor(m => m.ID)
+                @Html.AntiForgeryToken()
+                <table class="table table-striped">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Item Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.CartProducts.Count; i++)
+                    {
+                            <tr>
 
-                        </td>
-                        <td>
-                            @Model.Products[i].Price.ToString()
-                            @Html.HiddenFor(m => m.Products[i].Price)
-                        </td>
-                        <td>@((Model.Products[i].Quantity * Model.Products[i].Price).ToString())</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3">Subtotal</th>
-                    <th>@Model.SubTotal.ToString("C")</th>
-                </tr>
-                <tr>
-                    <th colspan="3">Shipping and Handling</th>
-                    <th>@Model.ShippingAndHandling.ToString("C")</th>
-                </tr>
-                <tr>
-                    <th colspan="3">Tax</th>
-                    <th>@Model.Tax.ToString("C")</th>
-                </tr>
-                <tr>
-                    <th colspan="3">Total</th>
-                    <th>@Model.Total.ToString("C")</th>
-                </tr>
-            </tfoot>
-        </table>
-        <div class="row">
-            <div class="col-md-4 col-md-offset-2">
+                                <td>
+                                    @Model.CartProducts.ElementAt(i).Product.MakeName @Model.CartProducts.ElementAt(i).Product.Mod
+                                </td>
+                                <td>
+                                    <input type="number" min="0" max="10" class="form-control" value="@Model.CartProducts.ElementAt(i).Quantity" name="@("CartProducts[" + i + "].Quantity")" />
+                                </td>
+                                <td>
+                                    @((Model.CartProducts.ElementAt(i).Product.Price ?? 0).ToString("C"))
+                                </td>
+                                <td>@(((Model.CartProducts.ElementAt(i).Quantity * Model.CartProducts.ElementAt(i).Product.Price) ?? 0).ToString("C"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="3">Subtotal</th>
+                            <th>@subTotal.ToString("C")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Shipping and Handling</th>
+                            <th>@shippingAndHandling.ToString("C")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Tax</th>
+                            <th>@tax.ToString("C")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="3">Total</th>
+                            <th>@((tax + subTotal + shippingAndHandling).ToString("C"))</th>
+                        </tr>
+                    </tfoot>
+                </table>
                 <input type="submit" value="Update Cart Quantities" class="btn btn-default" />
-            </div>
-            <div class="col-md-4">
                 @Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-primary" })
-            </div>
-        </div>
+            }
+
+        }
+        else
+        {
+            <p>Your cart is currently empty</p>
+        }
     </div>
-}
+</div>

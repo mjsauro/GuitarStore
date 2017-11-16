@@ -26,18 +26,21 @@ namespace GuitarStore.Models
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<Cart> Carts { get; set; }
+        public virtual DbSet<CartProduct> CartProducts { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
         public virtual DbSet<CustomerAddress> CustomerAddresses { get; set; }
         public virtual DbSet<Employee> Employees { get; set; }
         public virtual DbSet<EmployeeAddress> EmployeeAddresses { get; set; }
         public virtual DbSet<Make> Makes { get; set; }
         public virtual DbSet<Manufacturer> Manufacturers { get; set; }
+        public virtual DbSet<Order> Orders { get; set; }
+        public virtual DbSet<OrderProduct> OrderProducts { get; set; }
         public virtual DbSet<Product> Products { get; set; }
         public virtual DbSet<ProductType> ProductTypes { get; set; }
         public virtual DbSet<ProductTypeProperty> ProductTypeProperties { get; set; }
         public virtual DbSet<ProductTypePropertyValue> ProductTypePropertyValues { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StoreAddress> StoreAddresses { get; set; }
-        public virtual DbSet<Cart> Carts { get; set; }
     }
 }

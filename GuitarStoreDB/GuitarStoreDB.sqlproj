@@ -75,6 +75,9 @@
     <Build Include="dbo\Tables\ProductTypePropertyValues.sql" />
     <Build Include="dbo\Tables\Make.sql" />
     <Build Include="dbo\Tables\Cart.sql" />
+    <Build Include="dbo\Tables\CartProduct.sql" />
+    <Build Include="dbo\Tables\Order.sql" />
+    <Build Include="dbo\Tables\OrderProduct.sql" />
   </ItemGroup>
   <ItemGroup>
     <PostDeploy Include="Script.Products.sql" />

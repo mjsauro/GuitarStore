@@ -1,0 +1,150 @@
+﻿@model GuitarStore.Models.Order
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div class="container-fluid">
+    <div class="well">
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>
+                        <h4>Thank you for your order!</h4>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.TrackingNumber)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.TrackingNumber)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Email)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.PurchaserName)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.PurchaserName)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShippingAddress1)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ShippingAddress1)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShippingAddress2)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ShippingAddress2)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShippingCity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(model => model.ShippingCity)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShippingState)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ShippingState)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShippingPostalCode)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ShippingPostalCode)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.SubTotal)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.SubTotal)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShippingAndHandling)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ShippingAndHandling)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.Tax)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.Tax)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.DateCreated)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.DateCreated)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.DateModified)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.DateModified)
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        @Html.DisplayNameFor(model => model.ShipDate)
+                    </td>
+
+                    <td>
+                        @Html.DisplayFor(model => model.ShipDate)
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

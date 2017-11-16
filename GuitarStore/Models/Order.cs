@@ -12,20 +12,31 @@ namespace GuitarStore.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Cart
+    public partial class Order
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Cart()
+        public Order()
         {
-            this.CartProducts = new HashSet<CartProduct>();
+            this.OrderProducts = new HashSet<OrderProduct>();
         }
     
-        public System.Guid ID { get; set; }
-        public string AspNetUserID { get; set; }
+        public int ID { get; set; }
+        public string TrackingNumber { get; set; }
+        public string Email { get; set; }
+        public string PurchaserName { get; set; }
+        public string ShippingAddress1 { get; set; }
+        public string ShippingAddress2 { get; set; }
+        public string ShippingCity { get; set; }
+        public string ShippingState { get; set; }
+        public string ShippingPostalCode { get; set; }
+        public decimal SubTotal { get; set; }
+        public decimal ShippingAndHandling { get; set; }
+        public decimal Tax { get; set; }
         public System.DateTime DateCreated { get; set; }
         public System.DateTime DateModified { get; set; }
+        public Nullable<System.DateTime> ShipDate { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<CartProduct> CartProducts { get; set; }
+        public virtual ICollection<OrderProduct> OrderProducts { get; set; }
     }
 }

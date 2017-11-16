@@ -154,9 +154,11 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="Controllers\CartController.cs" />
     <Compile Include="Controllers\CheckoutController.cs" />
+    <Compile Include="Controllers\EmployeesController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ProductAdminController.cs" />
     <Compile Include="Controllers\ProductController.cs" />
+    <Compile Include="Controllers\ReceiptController.cs" />
     <Compile Include="Controllers\ReportHomeController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -165,6 +167,9 @@
       <DependentUpon>GuitarStoreModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Cart.cs">
+      <DependentUpon>GuitarStoreModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\CartProduct.cs">
       <DependentUpon>GuitarStoreModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\CheckoutDetails.cs" />
@@ -199,6 +204,12 @@
       <DependentUpon>GuitarStoreModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Manufacturer.cs">
+      <DependentUpon>GuitarStoreModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\Order.cs">
+      <DependentUpon>GuitarStoreModels.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\OrderProduct.cs">
       <DependentUpon>GuitarStoreModels.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\Product.cs">
@@ -327,6 +338,12 @@
     <Content Include="Views\ProductAdmin\Details.cshtml" />
     <Content Include="Views\ProductAdmin\Edit.cshtml" />
     <Content Include="Views\ProductAdmin\Index.cshtml" />
+    <Content Include="Views\Receipt\Index.cshtml" />
+    <Content Include="Views\Employees\Create.cshtml" />
+    <Content Include="Views\Employees\Delete.cshtml" />
+    <Content Include="Views\Employees\Details.cshtml" />
+    <Content Include="Views\Employees\Edit.cshtml" />
+    <Content Include="Views\Employees\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
