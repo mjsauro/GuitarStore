@@ -1,11 +1,24 @@
 ﻿@{
     ViewBag.Title = "Home Page";
 }
+>
+
 <div class="jumbotron text-center">
     <h1>Matt's Guitar Store</h1>
     <p class="lead">We specialize in Guitars, Amplifiers, and Effects Pedals.</p>
 </div>
 <div class="container">
+    <div class="row">
+        @if (TempData.ContainsKey("LogStatus"))
+        {
+            <div class="col-md-4 col-md-offset-4">
+                <div class="alert alert-success text-center">
+                    @TempData["LogStatus"]
+                </div>
+            </div>
+            <div style="display:none">@TempData.Remove("LogStatus")</div>
+        }
+    </div>
     <div class="row">
         <div class="col-md-4">
             <div class="panel">

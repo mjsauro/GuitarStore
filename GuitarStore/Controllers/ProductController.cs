@@ -82,7 +82,7 @@ namespace GuitarStore.Controllers
 
             db.SaveChanges();
 
-            TempData.Add("NewItem", model.Make + " " + model.MakeName + " " + model.Mod);
+            TempData.Add("NewItem", cartProduct.Product.Mod);
             //TODO: build up the cart controller!
             return RedirectToAction("Index", "Cart");
         }

@@ -10,9 +10,10 @@
         @if (TempData.ContainsKey("NewItem"))
         {
             <div class="alert alert-success">
-                @TempData["NewItem"] has been added to your cart
+                @TempData["NewItem"] has been added to your cart.
             </div>
         }
+
         @if (Model.CartProducts.Count > 0)
         {
             using (Html.BeginForm())
