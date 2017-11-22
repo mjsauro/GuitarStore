@@ -39,6 +39,9 @@ th {
   margin-top: 3em;
   margin-bottom: 5em;
 }
+.box {
+  margin-top: 1em;
+}
 .jumbotron {
   background-color: rgba(255, 255, 250, 0.7);
 }

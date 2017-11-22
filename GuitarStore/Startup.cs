@@ -33,6 +33,8 @@ namespace GuitarStore
 
                 manager.UserTokenProvider = new EmailTokenProvider<IdentityUser>();
 
+                //manager.EmailService = new SendEmail();
+
                 manager.PasswordValidator = new PasswordValidator
 
                 {
@@ -46,6 +48,7 @@ namespace GuitarStore
 
                     RequireNonLetterOrDigit = false
                 };
+
                 return manager;
             });
         }

@@ -3,4 +3,30 @@
     ViewBag.Title = "Register";
 
 }
-@Html.Partial("_UsernamePassword")
+@*@Html.Partial("_UsernamePassword")*@
+<div class="container-fluid">
+    <div class="col-md-6 col-md-offset-3">
+        <div class="well text-center">
+            <h2>@ViewBag.Title</h2>
+            @using (Html.BeginForm())
+            {
+                <div class="form-group form-inline">
+                    <div class="row">
+                        <label for="username" class="control-label">Username</label>
+                        <input = name="username" class="form-control" type="text" />
+                    </div>
+                    <div class="row"></div>
+                    <label for="password" class="control-label">Password</label>
+                    <input name="password" class="form-control" type="password" />
+                </div>
+                <div class="row">
+                    <input type="submit" value="@ViewBag.Title" class="btn btn-primary" />
+                </div>
+            }
+            <div class="row">
+                <div class="box">Already Have An Account?</div>
+                <div class="box">@Html.ActionLink("Click Here to Sign In!", "Login", "Account", new { @class = "btn btn-primary" })</div>
+            </div>
+        </div>
+    </div>
+</div>

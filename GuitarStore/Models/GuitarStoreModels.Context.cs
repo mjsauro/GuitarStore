@@ -26,6 +26,10 @@ namespace GuitarStore.Models
         }
     
         public virtual DbSet<Address> Addresses { get; set; }
+        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
+        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
+        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
+        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<Cart> Carts { get; set; }
         public virtual DbSet<CartProduct> CartProducts { get; set; }
         public virtual DbSet<Customer> Customers { get; set; }
@@ -42,9 +46,5 @@ namespace GuitarStore.Models
         public virtual DbSet<ProductTypePropertyValue> ProductTypePropertyValues { get; set; }
         public virtual DbSet<Store> Stores { get; set; }
         public virtual DbSet<StoreAddress> StoreAddresses { get; set; }
-        public virtual DbSet<AspNetRole> AspNetRoles { get; set; }
-        public virtual DbSet<AspNetUserClaim> AspNetUserClaims { get; set; }
-        public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
-        public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
     }
 }

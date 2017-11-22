@@ -43,7 +43,7 @@ namespace GuitarStore.Controllers
             if (ModelState.IsValid)
             {
                 string trackingNumber = Guid.NewGuid().ToString().Substring(0, 8);
-                db.Orders.Add(new Order
+                var o = new Order()
                 {
                     DateCreated = DateTime.UtcNow,
                     DateModified = DateTime.UtcNow,
@@ -57,11 +57,42 @@ namespace GuitarStore.Controllers
                     ShippingCity = model.ShippingCity,
                     ShippingPostalCode = model.ShippingPostalCode,
                     ShippingState = model.ShippingState
-                });
-
+                };
+                db.Orders.Add(o);
                 db.SaveChanges();
-                //TODO: send some confirmation emails to the person placing the order and the system admin
-                //TODO: Reset the cart
+
+                if (User.Identity.IsAuthenticated == false)
+                {
+                    return RedirectToAction("Index", "Home");
+                }
+
+                string merchantId = System.Configuration.ConfigurationManager.AppSettings["Braintree.MerchantId"];
+                string environment = System.Configuration.ConfigurationManager.AppSettings["Braintree.Environment"];
+                string publicKey = System.Configuration.ConfigurationManager.AppSettings["Braintree.PublicKey"];
+                string privateKey = System.Configuration.ConfigurationManager.AppSettings["Braintree.PrivateKey"];
+                Braintree.BraintreeGateway gateway = new Braintree.BraintreeGateway(environment, merchantId, publicKey, privateKey);
+
+                Braintree.TransactionRequest transaction = new Braintree.TransactionRequest();
+                //transaction.Amount = 1m;    //I can hard-code a dollar amount for now to test everything else
+                transaction.Amount = o.SubTotal + o.ShippingAndHandling + o.Tax;
+                transaction.TaxAmount = o.Tax;
+                //https://developers.braintreepayments.com/reference/general/testing/ruby
+                transaction.CreditCard = new Braintree.TransactionCreditCardRequest
+                {
+                    CardholderName = model.CardholderName,
+                    CVV = model.CVV,
+                    Number = model.CreditCardNumber,
+                    ExpirationYear = model.ExpirationYear,
+                    ExpirationMonth = model.ExpirationMonth
+                };
+
+                var result = gateway.Transaction.Sale(transaction);
+
+                //Reset the cart
+                Response.SetCookie(new HttpCookie("cartID") { Expires = DateTime.UtcNow });
+                db.CartProducts.RemoveRange(model.CurrentCart.CartProducts);
+                db.Carts.Remove(model.CurrentCart);
+
                 return RedirectToAction("Index", "Receipt", new { id = trackingNumber });
             }
             return View(model);
