@@ -81,8 +81,9 @@ namespace GuitarStore.Controllers
             cart.DateModified = DateTime.UtcNow;
 
             db.SaveChanges();
-            TempData.Add("NewItem", "Your item has been added to the cart!");
-            //TODO: build up the cart controller!
+
+            TempData.Add("NewItem", String.Format("{0} {1} has been added to your cart.", model.MakeName, model.Mod));
+
             return RedirectToAction("Index", "Cart");
         }
     }

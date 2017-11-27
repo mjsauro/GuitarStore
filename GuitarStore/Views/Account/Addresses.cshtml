@@ -1,0 +1,78 @@
+﻿@model IEnumerable<Braintree.Address>
+@{
+    ViewBag.Title = "Addresses";
+}
+@if (TempData["SuccessMessage"] != null)
+{
+    <div class="alert alert-success">
+        @TempData["SuccessMessage"]
+    </div>
+}
+<h2>Saved Addresses</h2>
+<div class="row">
+    <div class="col-xs-12">
+        <table class="table">
+            <tbody>
+                @foreach (var address in Model)
+                {
+                    <tr>
+                        <td>@address.FirstName</td>
+                        <td>@address.LastName</td>
+                        <td>@address.Company</td>
+                        <td>@address.StreetAddress</td>
+                        <td>@address.ExtendedAddress</td>
+                        <td>@address.Locality</td>
+                        <td>@address.Region</td>
+                        <td>@address.PostalCode</td>
+                        <td>@address.CountryName</td>
+                        <td>@Html.ActionLink("Delete Address", "DeleteAddress", new { id = address.Id }, new { @class = "btn btn-danger" })</td>
+                    </tr>
+
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="col-xs-12">
+        @using (Html.BeginForm("AddAddress", "Account"))
+        {
+            <div class="form-group">
+                <label class="control-label" for="firstName">First Name</label>
+                <input class="form-control" type="text" name="firstName" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="lastName">Last Name</label>
+                <input class="form-control" type="text" name="lastName" />
+            </div>
+
+            <div class="form-group">
+                <label class="control-label" for="company">Company</label>
+                <input class="form-control" type="text" name="company" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="streetAddress">Street</label>
+                <input class="form-control" type="text" name="streetAddress" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="extendedAddress">Apartment/Suite/Unit</label>
+                <input class="form-control" type="text" name="extendedAddress" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="locality">City</label>
+                <input class="form-control" type="text" name="locality" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="region">State</label>
+                <input class="form-control" type="text" name="region" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="postalCode">Zip Code</label>
+                <input class="form-control" type="text" name="postalCode" />
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="countryName">Country</label>
+                <input class="form-control" type="text" name="countryName" placeholder="United States of America" />
+            </div>
+            <input type="submit" value="Add Address" class="btn btn-primary" />
+        }
+    </div>
+</div>

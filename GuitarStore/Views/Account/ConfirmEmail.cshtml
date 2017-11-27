@@ -1,0 +1,16 @@
+﻿@{
+    ViewBag.Title = "ConfirmEmail";
+}
+<div class="container-fluid">
+    @if (ViewBag.Success != null) {
+        <div class="col-md-4 col-md-offset-4 well alert-success">Your email has been confirmed!</div>
+    }
+    else
+    {
+        <div class="col-md-4 col-md-offset-4 well">
+            <h2>Email not verified.</h2>
+        </div>
+    }
+
+    
+</div>

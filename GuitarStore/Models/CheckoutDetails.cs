@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using Braintree;
 
 namespace GuitarStore.Models
 {
@@ -53,5 +54,7 @@ namespace GuitarStore.Models
 
         [Required]
         public string ExpirationYear { get; set; }
+
+        public Braintree.Address[] Addresses { get; internal set; }
     }
 }

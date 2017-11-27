@@ -23,9 +23,26 @@ namespace GuitarStore.Controllers
         // GET: Cart
         public ActionResult Index()
         {
+            try
+            {
+                var cartCheck = Guid.Parse(Request.Cookies["cartID"].Value);
+            }
+            catch
+            {
+                return View("CartEmpty");
+            }
+
             Guid cartID = Guid.Parse(Request.Cookies["cartID"].Value);
 
             return View(db.Carts.Find(cartID));
+        }
+
+        //Reset Cart
+        public ActionResult ResetCart()
+        {
+            Response.SetCookie(new HttpCookie("cartID") { Expires = DateTime.UtcNow });
+
+            return View("Index");
         }
 
         // POST: Cart
@@ -39,6 +56,7 @@ namespace GuitarStore.Controllers
                 cart.CartProducts.ElementAt(i).Quantity = model.CartProducts.ElementAt(i).Quantity;
             }
             db.SaveChanges();
+
             return View(cart);
         }
     }

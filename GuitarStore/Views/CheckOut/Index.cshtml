@@ -5,107 +5,220 @@
     var subTotal = Model.CurrentCart.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0;
     var shippingAndHandling = Model.CurrentCart.CartProducts.Sum(x => x.Quantity);
     var tax = (Model.CurrentCart.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0) * .1025m;
-}
 
-<div class="row">
-    <div class="col-xs-12">
-        <h2>Checkout</h2>
-    </div>
-    <div class="col-xs-12 col-sm-6">
-        <table class="table table-striped">
-            <thead>
-                <tr>
-                    <th>Item</th>
-                    <th>Quantity</th>
-                    <th>Price</th>
-                    <th>Item Total</th>
-                </tr>
-            </thead>
-            <tbody>
-                @for (int i = 0; i < Model.CurrentCart.CartProducts.Count; i++)
-                {
-                    <tr>
+    var months = (new string[] { "01", "02", "03", "04", "05", "06", "07", "08", "09", "10", "11", "12" })
+    .Select(x => new SelectListItem { Text = x, Value = x });
 
-                        <td>
-                            @Model.CurrentCart.CartProducts.ElementAt(i).Product.MakeName
-                        </td>
-                        <td>
-                            @Model.CurrentCart.CartProducts.ElementAt(i).Quantity
-                        </td>
-                        <td>
-                            @((Model.CurrentCart.CartProducts.ElementAt(i).Product.Price ?? 0).ToString("C"))
-                        </td>
-                        <td>@(((Model.CurrentCart.CartProducts.ElementAt(i).Quantity * Model.CurrentCart.CartProducts.ElementAt(i).Product.Price) ?? 0).ToString("C"))</td>
-                    </tr>
-                }
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th colspan="3">Subtotal</th>
-                    <th>@subTotal.ToString("C")</th>
-                </tr>
-                <tr>
-                    <th colspan="3">Shipping and Handling</th>
-                    <th>@shippingAndHandling.ToString("C")</th>
-                </tr>
-                <tr>
-                    <th colspan="3">Tax</th>
-                    <th>@tax.ToString("C")</th>
-                </tr>
-                <tr>
-                    <th colspan="3">Total</th>
-                    <th>@((tax + shippingAndHandling + subTotal).ToString("C"))</th>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
-
-    <div class="col-xs-12 col-sm-6">
-        @using (Html.BeginForm())
+    var years = new List<SelectListItem>();
+    for (int i = 0; i < 5; i++)
+    {
+        years.Add(new SelectListItem
         {
-            @*<div class="alert alert-danger">
-                    @Html.ValidationSummary(false)
-                </div>*@
-            <div class="form-group">
-                @Html.LabelFor(m => m.ContactName, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.ContactName, new { @class = "form-control", placeholder = "Your Name" })
-                @Html.ValidationMessageFor(m => m.ContactName)
+            Text = (DateTime.Now.Year + i).ToString(),
+            Value = (DateTime.Now.Year + i).ToString()
+        });
+    }
+    if (User.Identity.IsAuthenticated)
+    {
+        Model.ContactEmail = User.Identity.Name;
+    }
+}
+<div class="container-fluid">
+    <div class="well">
+        <div class="row">
+            <div class="col-md-10 col-md-offset-1">
+                <h2>Checkout</h2>
             </div>
+            <div class="col-md-10 col-md-offset-1">
+                <table class="table table-striped table-condensed">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Model</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Item Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @for (int i = 0; i < Model.CurrentCart.CartProducts.Count; i++)
+                        {
+                            <tr>
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.ContactEmail, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.ContactEmail, new { @class = "form-control", placeholder = "Your Email Address" })
-                @Html.ValidationMessageFor(m => m.ContactEmail)
+                                <td>
+                                    @Model.CurrentCart.CartProducts.ElementAt(i).Product.MakeName
+                                </td>
+                                <td>
+                                    @Model.CurrentCart.CartProducts.ElementAt(i).Product.Mod
+                                </td>
+                                <td>
+                                    @Model.CurrentCart.CartProducts.ElementAt(i).Quantity
+                                </td>
+                                <td>
+                                    @((Model.CurrentCart.CartProducts.ElementAt(i).Product.Price ?? 0).ToString("C"))
+                                </td>
+                                <td>@(((Model.CurrentCart.CartProducts.ElementAt(i).Quantity * Model.CurrentCart.CartProducts.ElementAt(i).Product.Price) ?? 0).ToString("C"))</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <th colspan="4">Subtotal</th>
+                            <th>@subTotal.ToString("C")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Shipping and Handling</th>
+                            <th>@shippingAndHandling.ToString("C")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Tax</th>
+                            <th>@tax.ToString("C")</th>
+                        </tr>
+                        <tr>
+                            <th colspan="4">Total</th>
+                            <th>@((tax + shippingAndHandling + subTotal).ToString("C"))</th>
+                        </tr>
+                    </tfoot>
+                </table>
             </div>
+            <div class="row">
+                <div class="col-md-10 col-md-offset-1">
+                    @using (Html.BeginForm())
+                    {
+                        if (!(ViewData.ModelState.IsValid))
+                        {
+                            <div class="alert alert-danger">
+                                @Html.ValidationSummary(false)
+                            </div>
+                        }
 
-            <div class="form-group">
-                @Html.LabelFor(m => m.ShippingAddress, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.ShippingAddress, new { @class = "form-control", placeholder = "Address" })
-                @Html.ValidationMessageFor(m => m.ShippingAddress)
+                        <div class="form-group">
+
+                            @Html.LabelFor(m => m.ContactEmail, new { @class = "control-label" })
+                            @if (User.Identity.IsAuthenticated)
+                            {
+                                @Html.TextBoxFor(m => m.ContactEmail, new { @class = "form-control", placeholder = "Your Email Address", disabled = "disabled" })
+                                @Html.HiddenFor(m => m.ContactEmail)
+                            }
+                            else
+                            {
+                                @Html.TextBoxFor(m => m.ContactEmail, new { @class = "form-control", placeholder = "Your Email Address" })
+                            }
+                            @Html.ValidationMessageFor(m => m.ContactEmail)
+                        </div>
+                        if (User.Identity.IsAuthenticated)
+                        {
+                            <div class="form-group">
+                                <label for="addressId">Choose an address</label>
+                                <select name="addressId" id="addressId" class="form-control">
+                                    <option value="">New Address</option>
+                                    @foreach (var address in Model.Addresses)
+                                    {
+                                        <option value="@address.Id">@address.FirstName @address.LastName @address.StreetAddress @address.ExtendedAddress @address.Locality @address.Region @address.PostalCode @address.CountryCodeAlpha2</option>
+                                    }
+                                </select>
+                            </div>
+                        }
+                        <div id="newAddress">
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.ContactName, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.ContactName, new { @class = "form-control col-md-5", placeholder = "Your Name", @style = "width: 35%;" })
+                                @Html.ValidationMessageFor(m => m.ContactName)
+                            </div>
+
+                            @*<div class="row form-group col-md-12 form-inline">
+                                    @Html.LabelFor(m => m.ContactEmail, new { @class = "control-label col-md-1" })
+                                    @Html.TextBoxFor(m => m.ContactEmail, new { @class = "form-control col-md-5", placeholder = "Your Email Address", @style = "width: 35%;" })
+                                    @Html.ValidationMessageFor(m => m.ContactEmail)
+                                </div>*@
+
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.ShippingAddress, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.ShippingAddress, new { @class = "form-control col-md-5", placeholder = "Address", @style = "width: 35%;" })
+                                @Html.ValidationMessageFor(m => m.ShippingAddress)
+                            </div>
+
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.ShippingCity, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.ShippingCity, new { @class = "form-control col-md-5", placeholder = "City", @style = "width: 35%;" })
+                                @Html.ValidationMessageFor(m => m.ShippingCity)
+                            </div>
+
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.ShippingState, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.ShippingState, new { @class = "form-control col-md-5", placeholder = "State", @style = "width: 35%;" })
+                                @Html.ValidationMessageFor(m => m.ShippingState)
+                            </div>
+
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.ShippingPostalCode, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.ShippingPostalCode, new { @class = "form-control col-md-5", placeholder = "Zip Code", @style = "width: 35%;" })
+                                @Html.ValidationMessageFor(m => m.ShippingPostalCode)
+                            </div>
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.CreditCardNumber, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.CreditCardNumber, new { @class = "form-control col-md-5", placeholder = "4111111111111111" })
+                                @Html.ValidationMessageFor(m => m.CreditCardNumber)
+                            </div>
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.CardholderName, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.CardholderName, new { @class = "form-control col-md-5", placeholder = "Joe Cardholder" })
+                                @Html.ValidationMessageFor(m => m.CardholderName)
+                            </div>
+                            <div class="row form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.CVV, new { @class = "control-label col-md-1" })
+                                @Html.TextBoxFor(m => m.CVV, new { @class = "form-control col-md-5", placeholder = "123" })
+                                @Html.ValidationMessageFor(m => m.CVV)
+                            </div>
+                            <div class="form-group col-md-12 form-inline">
+                                @Html.LabelFor(m => m.ExpirationMonth, new { @class = "control-label" })
+                                <div class="form-inline">
+                                    @Html.DropDownListFor(m => m.ExpirationMonth, months, new { @class = "form-control" })
+                                    @Html.DropDownListFor(m => m.ExpirationYear, years, new { @class = "form-control" })
+                                </div>
+                            </div>
+                            <input type="submit" class="btn btn-primary" />
+                        </div>
+                    }
+                </div>
             </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.ShippingCity, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.ShippingCity, new { @class = "form-control", placeholder = "City" })
-                @Html.ValidationMessageFor(m => m.ShippingCity)
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.ShippingState, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.ShippingState, new { @class = "form-control", placeholder = "State" })
-                @Html.ValidationMessageFor(m => m.ShippingState)
-            </div>
-
-            <div class="form-group">
-                @Html.LabelFor(m => m.ShippingPostalCode, new { @class = "control-label" })
-                @Html.TextBoxFor(m => m.ShippingPostalCode, new { @class = "form-control", placeholder = "Zip Code" })
-                @Html.ValidationMessageFor(m => m.ShippingPostalCode)
-            </div>
-
-            <input type="submit" class="btn btn-primary" />
-        }
+        </div>
     </div>
 </div>
 @section Scripts{
     @Scripts.Render("~/bundles/jqueryval")
+    <script type="text/javascript">
+        $("document").ready(function () {
+            $("#addressId").change(this, function () {
+                $("#newAddress .form-control[name=ContactName]").val("");
+                $("#newAddress .form-control[name=ShippingAddress]").val("");
+                $("#newAddress .form-control[name=ShippingCity]").val("");
+                $("#newAddress .form-control[name=ShippingState]").val("");
+                $("#newAddress .form-control[name=ShippingPostalCode]").val("");
+                var addressId = $("#addressId").val();
+                if (addressId !== "") {
+                    var selectedAddress;
+                    for (var i = 0; i < addresses.length; i++) {
+                        if (addresses[i].Id == addressId) {
+                            selectedAddress = addresses[i];
+                            break;
+                        }
+                    }
+                    $("#newAddress .form-control[name=ContactName]").val(selectedAddress.FirstName + " " + selectedAddress.LastName);
+                    if (selectedAddress.ExtendedAddress !== null) {
+                        $("#newAddress .form-control[name=ShippingAddress]").val(selectedAddress.StreetAddress + " " + selectedAddress.ExtendedAddress);
+                    } else {
+                        $("#newAddress .form-control[name=ShippingAddress]").val(selectedAddress.StreetAddress);
+                    }
+
+                    $("#newAddress .form-control[name=ShippingCity]").val(selectedAddress.Locality);
+                    $("#newAddress .form-control[name=ShippingState]").val(selectedAddress.Region);
+                    $("#newAddress .form-control[name=ShippingPostalCode]").val(selectedAddress.PostalCode);
+
+                }
+            });
+        })
+
+        var addresses = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Addresses))');
+    </script>
 }

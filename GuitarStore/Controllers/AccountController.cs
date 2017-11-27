@@ -1,25 +1,18 @@
-﻿using GuitarStore.Models;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Security.Principal;
-using System.Threading.Tasks;
-using System.Web;
-using System.Web.Mvc;
-using System.Web.Security;
-
-using System.Security.Claims;
 using RestSharp;
 using RestSharp.Authenticators;
+using System;
+using System.Web;
+using System.Web.Mvc;
 
 namespace GuitarStore.Controllers
 {
     public class AccountController : Controller
     {
+        private string resetButton = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"module\" data-role=\"module-button\" data-type=\"button\" role=\"module\" style=\"table-layout:fixed;\" width=\"100%\"><tbody><tr><td align=\"left\" bgcolor=\"\" class=\"outer-td\" style=\"padding:0px 0px 0px 0px;\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"button-css__deep-table___2OZyb wrapper-mobile\" style=\"text-align:center;\"><tbody><tr><td align=\"center\" bgcolor=\"#333333\" class=\"inner-td\" style=\"border-radius:6px;font-size:16px;text-align:left;background-color:inherit;\"><a href={0} style=\"background-color:#333333;border:1px solid #333333;border-color:#333333;border-radius:6px;border-width:1px;color:#ffffff;display:inline-block;font-family:arial,helvetica,sans-serif;font-size:16px;font-weight:normal;letter-spacing:0px;line-height:16px;padding:12px 18px 12px 18px;text-align:center;text-decoration:none;\" target=\"_blank\">{1}</a></td></tr></tbody></table></td></tr></tbody></table>";
+
         public UserManager<IdentityUser> UserManager
         {
             get
@@ -28,44 +21,80 @@ namespace GuitarStore.Controllers
             }
         }
 
+        private GuitarStorePaymentService guitarStorePaymentService = new GuitarStorePaymentService();
+
         // GET: Account
+        [Authorize]
         public ActionResult Index()
         {
-            if (User.Identity.IsAuthenticated == false)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            string merchantId = System.Configuration.ConfigurationManager.AppSettings["Braintree.MerchantId"];
-            string environment = System.Configuration.ConfigurationManager.AppSettings["Braintree.Environment"];
-            string publicKey = System.Configuration.ConfigurationManager.AppSettings["Braintree.PublicKey"];
-            string privateKey = System.Configuration.ConfigurationManager.AppSettings["Braintree.PrivateKey"];
-            Braintree.BraintreeGateway gateway = new Braintree.BraintreeGateway(environment, merchantId, publicKey, privateKey);
-
-            var customerGateway = gateway.Customer;
-            Braintree.CustomerSearchRequest query = new Braintree.CustomerSearchRequest();
-            query.Email.Is(User.Identity.Name);
-            var matchedCustomers = customerGateway.Search(query);
-            Braintree.Customer customer = null;
-            if (matchedCustomers.Ids.Count == 0)
-            {
-                Braintree.CustomerRequest newCustomer = new Braintree.CustomerRequest();
-                newCustomer.Email = User.Identity.Name;
-
-                var result = customerGateway.Create(newCustomer);
-                customer = result.Target;
-            }
-            else
-            {
-                customer = matchedCustomers.FirstItem;
-            }
+            var customer = guitarStorePaymentService.GetCustomer(User.Identity.Name);
             return View(customer);
         }
 
-        // GET: Register
-        public ActionResult Register()
+        //GET credit cards
+        [Authorize]
+        public ActionResult CreditCards()
         {
-            return View();
+            var customer = guitarStorePaymentService.GetCustomer(User.Identity.Name);
+            return View(customer.CreditCards);
+        }
+
+        //Add Credit Cards
+        [Authorize]
+        [HttpPost]
+        public ActionResult CreatePaymentMethod(string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear)
+        {
+            guitarStorePaymentService.CreatePaymentMethod(User.Identity.Name, cardHolderName, number, cvv, expirationMonth, expirationYear);
+
+            ViewBag.Added = "Credit Card Added Successfully!";
+            return RedirectToAction("CreditCards");
+        }
+
+        //Add Credit Cards
+        [Authorize]
+        [HttpPost]
+        public ActionResult AddCreditCard(string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear)
+        {
+            guitarStorePaymentService.AddCreditCard(User.Identity.Name, cardHolderName, number, cvv, expirationMonth, expirationYear);
+
+            ViewBag.Added = "Credit Card Added Successfully!";
+            return RedirectToAction("CreditCards");
+        }
+
+        //GET customer address
+        [Authorize]
+        public ActionResult Addresses()
+        {
+            var customer = guitarStorePaymentService.GetCustomer(User.Identity.Name);
+            return View(customer.Addresses);
+        }
+
+        //update address
+        [Authorize]
+        public ActionResult UpdateAddress(string firstName, string lastName, string id)
+        {
+            Braintree.Customer customer = guitarStorePaymentService.UpdateCustomer(firstName, lastName, id);
+            ViewBag.Message = "Updated Succesfully!";
+            return View(customer);
+        }
+
+        //delete address
+        [Authorize]
+        public ActionResult DeleteAddress(string id)
+        {
+            guitarStorePaymentService.DeleteAddress(User.Identity.Name, id);
+            ViewBag.Delete = "Address Deleted Successfully!";
+            return RedirectToAction("Addresses");
+        }
+
+        [Authorize]
+        [HttpPost]
+        public ActionResult AddAddress(string firstName, string lastName, string company, string streetAddress, string extendedAddress, string locality, string region, string postalCode, string countryName)
+        {
+            guitarStorePaymentService.AddAddress(User.Identity.Name, firstName, lastName, company, streetAddress, extendedAddress, locality, region, postalCode, countryName);
+
+            ViewBag.Added = "Address Added Successfully!";
+            return RedirectToAction("Addresses");
         }
 
         // GET: Login
@@ -101,31 +130,44 @@ namespace GuitarStore.Controllers
                             IsPersistent = true,
                             ExpiresUtc = DateTime.UtcNow.AddDays(7)
                         }, userIdentity);
+                        string message = "You have been logged in!";
+                        TempData.Add("LogStatus", message);
+                        return RedirectToAction("Index", "Home");
                     }
-                    string message = "You have been logged in!";
-                    TempData.Add("LogStatus", message);
-                    return RedirectToAction("Index", "Home");
                 }
             }
 
             // If we got this far, something failed, redisplay form
             //ViewBag.Error = new string[] { "Unable to sign in." };
-            string failMessage = "Unable to sign in.";
-            TempData.Add("LogFailed", failMessage);
+            //string failMessage = "Unable to sign in.";
+            //TempData.Add("LogFailed", failMessage);
+            ViewBag.Error = "Unable to Sign In";
             return View();
         }
 
+        // GET: Register
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        // POST: Register
         [HttpPost]
-        public ActionResult Register(string username, string password)
+        public ActionResult Register(string username, string password1, string password2)
         {
             //Make sure the following statements are in the using block:
             //using Microsoft.AspNet.Identity;
             //using Microsoft.AspNet.Identity.EntityFramework;
             //using Microsoft.AspNet.Identity.Owin;
-
+            if (password1 != password2)
+            {
+                ViewBag.PasswordFail = "Passwords do not match!";
+                return View();
+            }
             IdentityUser user = new IdentityUser { Email = username, UserName = username };
 
-            IdentityResult result = UserManager.Create(user, password);
+            IdentityResult result = UserManager.Create(user, password1);
+
             if (result.Succeeded)
             {
                 var userIdentity = UserManager.CreateIdentity(user, DefaultAuthenticationTypes.ApplicationCookie);
@@ -135,9 +177,62 @@ namespace GuitarStore.Controllers
                     ExpiresUtc = DateTime.UtcNow.AddDays(7)
                 }, userIdentity);
 
-                return RedirectToAction("Index", "Home");
+                var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+                var userConfirm = userManager.FindByEmail(username);
+                string confirmToken = userManager.GenerateEmailConfirmationToken(user.Id);
+                string confirmUrl = Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/ConfirmEmail?email=" + username + "&token=" + confirmToken;
+                string message = string.Format("<a href=\"{0}\">Confirm your email address!</a>", confirmUrl);
+                userManager.SendEmail(user.Id, "your email confirmation token", message);
+
+                SendConfirmationEmail();
+                IRestResponse SendConfirmationEmail()
+                {
+                    RestClient client = new RestClient();
+                    client.BaseUrl = new Uri("https://api.mailgun.net/v3");
+                    client.Authenticator =
+                        new HttpBasicAuthenticator("api",
+                                                    System.Configuration.ConfigurationManager.AppSettings["MailGun.PrivateKey"]);
+                    RestRequest request = new RestRequest();
+                    request.AddParameter("domain", "sandboxa9cdb0fb3e0a4168a77655ff39fe11ae.mailgun.org", ParameterType.UrlSegment);
+                    request.Resource = "{domain}/messages";
+                    request.AddParameter("from", "Mailgun Sandbox <postmaster@sandboxa9cdb0fb3e0a4168a77655ff39fe11ae.mailgun.org>");
+                    request.AddParameter("to", username);
+                    request.AddParameter("subject", "Hello");
+                    request.AddParameter("text", message);
+                    request.Method = Method.POST;
+                    return client.Execute(request);
+                }
+
+                return RedirectToAction("EmailConfirmationSent", "Account");
             }
             ViewBag.Error = result.Errors;
+            return View();
+        }
+
+        public ActionResult EmailConfirmationSent()
+        {
+            return View();
+        }
+
+        //public ActionResult ConfirmEmail()
+        //{
+        //    return View()
+        //}
+
+        public ActionResult ConfirmEmail(string email, string token)
+        {
+            var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
+            var user = userManager.FindByEmail(email);
+            if (user != null)
+            {
+                IdentityResult result = userManager.ConfirmEmail(user.Id, token);
+                if (result.Succeeded)
+                {
+                    ViewData.Clear();
+                    ViewBag.Success = "Your email has been confirmed!";
+                    return View();
+                }
+            }
             return View();
         }
 
@@ -149,16 +244,6 @@ namespace GuitarStore.Controllers
         [HttpPost]
         public ActionResult ForgotPassword(string email)
         {
-            //var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
-            //var user = userManager.FindByEmail(email);
-            //if (user != null)
-            //{
-            //    string resetToken = userManager.GeneratePasswordResetToken(user.Id);
-            //    string resetUrl = Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/ResetPassword?email=" + email + "&token=" + resetToken;
-            //    string message = string.Format("<a href=\"{0}\">Reset your password</a>", resetUrl);
-            //    userManager.SendEmail(user.Id, "your password reset token", message);
-            //}
-
             var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
             var user = userManager.FindByEmail(email);
             if (user != null)
@@ -167,6 +252,7 @@ namespace GuitarStore.Controllers
                 string resetUrl = Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/ResetPassword?email=" + email + "&token=" + resetToken;
                 string message = string.Format("<a href=\"{0}\">Reset your password</a>", resetUrl);
                 userManager.SendEmail(user.Id, "your password reset token", message);
+
                 SendForgotEmail();
                 IRestResponse SendForgotEmail()
                 {
@@ -182,6 +268,7 @@ namespace GuitarStore.Controllers
                     request.AddParameter("to", email);
                     request.AddParameter("subject", "Hello");
                     request.AddParameter("text", message);
+                    //request.AddParameter("text", "hi");
                     request.Method = Method.POST;
                     return client.Execute(request);
                 }
@@ -192,6 +279,11 @@ namespace GuitarStore.Controllers
         public ActionResult ForgotPasswordSent()
         {
             return View();
+        }
+
+        public ActionResult GoHome()
+        {
+            return RedirectToAction("Index", "Home");
         }
 
         public ActionResult ResetPassword()

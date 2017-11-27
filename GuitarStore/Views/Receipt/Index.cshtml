@@ -51,15 +51,15 @@
                         @Html.DisplayFor(model => model.ShippingAddress1)
                     </td>
                 </tr>
-                <tr>
-                    <td>
-                        @Html.DisplayNameFor(model => model.ShippingAddress2)
-                    </td>
+                @*<tr>
+                        <td>
+                            @Html.DisplayNameFor(model => model.ShippingAddress2)
+                        </td>
 
-                    <td>
-                        @Html.DisplayFor(model => model.ShippingAddress2)
-                    </td>
-                </tr>
+                        <td>
+                            @Html.DisplayFor(model => model.ShippingAddress2)
+                        </td>
+                    </tr>*@
                 <tr>
                     <td>
                         @Html.DisplayNameFor(model => model.ShippingCity)
@@ -144,7 +144,3 @@
         </table>
     </div>
 </div>
-<p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.ID }) |
-    @Html.ActionLink("Back to List", "Index")
-</p>

@@ -1,6 +1,7 @@
 ﻿@model GuitarStore.Models.Cart
 @{
     ViewBag.Title = "Index";
+
     var subTotal = Model.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0;
     var shippingAndHandling = Model.CartProducts.Sum(x => x.Quantity);
     var tax = (Model.CartProducts.Sum(x => x.Product.Price * x.Quantity) ?? 0) * .1025m;
@@ -8,14 +9,15 @@
 <div class="container-fluid">
     <div class="well">
         @if (TempData.ContainsKey("NewItem"))
-        {
+            {
             <div class="alert alert-success">
                 @TempData["NewItem"]
             </div>
         }
-
-        @if (Model.CartProducts.Count > 0)
+       
+        @if (subTotal > 0)
         {
+
             using (Html.BeginForm())
             {
                 @Html.HiddenFor(m => m.ID)
@@ -67,13 +69,22 @@
                     </tfoot>
                 </table>
                 <input type="submit" value="Update Cart Quantities" class="btn btn-default" />
-                @Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-primary" })
+                if (subTotal == 0)
+                {
+                    @Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-primary disabled" })
+                }
+                else
+                {
+                    @Html.ActionLink("Check Out", "Index", "Checkout", null, new { @class = "btn btn-primary" })
+                }
+                @Html.ActionLink("Reset Cart", "ResetCart", "Cart", null, new { @class = "btn btn-primary" })
             }
 
         }
         else
         {
-            <p>Your cart is currently empty</p>
+
+            <div class="alert alert-info">Your Cart Is Empty</div>
         }
     </div>
 </div>

@@ -1,9 +1,6 @@
 ﻿using GuitarStore.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Web;
 using System.Web.Mvc;
 
 namespace GuitarStore.Controllers
@@ -12,7 +9,6 @@ namespace GuitarStore.Controllers
     {
         private GuitarStoreEntities db = new GuitarStoreEntities();
 
-        // GET: Receipt/Index/5
         public ActionResult Index(string id)
         {
             if (string.IsNullOrEmpty(id))
@@ -25,6 +21,7 @@ namespace GuitarStore.Controllers
                 return HttpNotFound();
             }
             return View(order);
+            //return View();
         }
 
         protected override void Dispose(bool disposing)
