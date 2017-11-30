@@ -76,6 +76,10 @@ th {
 .well .panel-heading a {
   color: black;
 }
+#alert,
+#empty {
+  margin-top: 4em;
+}
 #guitar-icon {
   border-radius: 50px;
   height: 100%;
