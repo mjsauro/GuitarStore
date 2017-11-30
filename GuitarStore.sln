@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.27004.2002
+VisualStudioVersion = 15.0.27004.2009
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitarStore", "GuitarStore\GuitarStore.csproj", "{DF12611C-D0A6-47AA-9CDA-781B740A2D8C}"
 EndProject
-Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "AdventureWorks", "AdventureWorks\AdventureWorks.sqlproj", "{09424F57-340F-4889-B7D9-6ED470020535}"
-EndProject
 Project("{00D1A9C2-B5F0-4AF3-8072-F6C62B433612}") = "GuitarStoreDB", "GuitarStoreDB\GuitarStoreDB.sqlproj", "{192C86F0-DACB-406B-9E71-0BE78E8492C1}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GuitarStoreTests", "GuitarStoreTests\GuitarStoreTests.csproj", "{06EB2783-257E-4744-8E18-72C06EE1505C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -19,18 +19,16 @@ Global
 		{DF12611C-D0A6-47AA-9CDA-781B740A2D8C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DF12611C-D0A6-47AA-9CDA-781B740A2D8C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DF12611C-D0A6-47AA-9CDA-781B740A2D8C}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09424F57-340F-4889-B7D9-6ED470020535}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{09424F57-340F-4889-B7D9-6ED470020535}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{09424F57-340F-4889-B7D9-6ED470020535}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
-		{09424F57-340F-4889-B7D9-6ED470020535}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{09424F57-340F-4889-B7D9-6ED470020535}.Release|Any CPU.Build.0 = Release|Any CPU
-		{09424F57-340F-4889-B7D9-6ED470020535}.Release|Any CPU.Deploy.0 = Release|Any CPU
 		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Debug|Any CPU.Deploy.0 = Debug|Any CPU
 		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Release|Any CPU.Build.0 = Release|Any CPU
 		{192C86F0-DACB-406B-9E71-0BE78E8492C1}.Release|Any CPU.Deploy.0 = Release|Any CPU
+		{06EB2783-257E-4744-8E18-72C06EE1505C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{06EB2783-257E-4744-8E18-72C06EE1505C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{06EB2783-257E-4744-8E18-72C06EE1505C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{06EB2783-257E-4744-8E18-72C06EE1505C}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

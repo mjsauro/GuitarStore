@@ -212,6 +212,7 @@
     </Compile>
     <Compile Include="GuitarStoreEmailService.cs" />
     <Compile Include="GuitarStorePaymentService.cs" />
+    <Compile Include="IPaymentService.cs" />
     <Compile Include="Models\Address.cs">
       <DependentUpon>GuitarStoreModels.tt</DependentUpon>
     </Compile>
@@ -300,10 +301,13 @@
     <Content Include="Content\bootstrap-theme.min.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\bootstrap.min.css" />
+    <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\font-awesome.min.css" />
     <Content Include="Content\Site.min.css">
       <DependentUpon>Site.css</DependentUpon>
     </Content>
     <Content Include="favicon.ico" />
+    <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="Content\Site.css" />
@@ -318,18 +322,17 @@
     <Content Include="Content\bootstrap.css.map" />
     <Content Include="Content\bootstrap-theme.min.css.map" />
     <Content Include="Content\bootstrap-theme.css.map" />
-    <Content Include="images\amplifiers.jpeg" />
+    <Content Include="images\amplifiers.jpg" />
     <Content Include="images\background.jpeg" />
     <Content Include="images\distortionpedal.jpg" />
     <Content Include="images\effectspedals.jpg" />
-    <Content Include="images\electricguitars.jpeg" />
+    <Content Include="images\electricguitars.jpg" />
     <Content Include="images\explorer.jpg" />
     <Content Include="images\fender.jpg" />
     <Content Include="images\guitar-icon.png" />
     <Content Include="images\lespaul.jpg" />
     <Content Include="images\marshall.jpg" />
     <Content Include="images\strat.jpg" />
-    <Content Include="images\telecaster.jpg" />
     <Content Include="images\tubescreamer.jpg" />
     <Content Include="images\vox.jpg" />
     <Content Include="images\wah.jpg" />
@@ -360,6 +363,12 @@
     <Content Include="Models\GuitarStoreModels.edmx.diagram">
       <DependentUpon>GuitarStoreModels.edmx</DependentUpon>
     </Content>
+    <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="fonts\fontawesome-webfont.woff2" />
+    <Content Include="fonts\fontawesome-webfont.woff" />
+    <Content Include="fonts\fontawesome-webfont.ttf" />
+    <Content Include="fonts\fontawesome-webfont.eot" />
+    <None Include="Properties\PublishProfiles\MattSauroGuitarStore - Web Deploy.pubxml" />
     <None Include="Scripts\jquery-3.2.1.intellisense.js" />
     <Content Include="Scripts\bootstrap.js" />
     <Content Include="Scripts\bootstrap.min.js" />
@@ -416,7 +425,6 @@
     <Content Include="Views\Account\Index.cshtml" />
     <Content Include="Views\Cart\CartEmpty.cshtml" />
     <Content Include="Views\Account\Addresses.cshtml" />
-    <Content Include="Views\CheckOut\ThankYou.cshtml" />
     <Content Include="Views\Account\CreditCards.cshtml" />
     <Content Include="Views\Account\EmailConfirmationSent.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />

@@ -6302,7 +6302,7 @@ function augmentWidthOrHeight( elem, name, extra, isBorderBox, styles ) {
 	if ( extra === ( isBorderBox ? "border" : "content" ) ) {
 		i = 4;
 
-	// Otherwise initialize for horizontal or vertical properties
+	// Otherwise initialize for horizontal or  properties
 	} else {
 		i = name === "width" ? 1 : 0;
 	}

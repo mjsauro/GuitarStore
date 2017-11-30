@@ -6,9 +6,9 @@ using Braintree;
 
 namespace GuitarStore
 {
-    public class GuitarStorePaymentService
+    public class GuitarStorePaymentService : IPaymentService
     {
-        protected Braintree.BraintreeGateway gateway;
+        protected Braintree.IBraintreeGateway gateway;
 
         public GuitarStorePaymentService()
         {
@@ -41,16 +41,7 @@ namespace GuitarStore
             return customer;
         }
 
-        internal Customer UpdateCustomer(string firstName, string lastName, string id)
-        {
-            Braintree.CustomerRequest request = new Braintree.CustomerRequest();
-            request.FirstName = firstName;
-            request.LastName = lastName;
-            var result = gateway.Customer.Update(id, request);
-            return result.Target;
-        }
-
-        internal void DeleteAddress(string email, string id)
+        public void DeleteAddress(string email, string id)
         {
             Customer c = GetCustomer(email);
             gateway.Address.Delete(c.Id, id);
@@ -130,6 +121,15 @@ namespace GuitarStore
                 newCard.ExpirationYear = expirationYear;
             };
             CreditCard creditCard = gateway.CreditCard.Create(newCard).Target;
+        }
+
+        public Customer UpdateCustomer(string firstName, string lastName, string id)
+        {
+            Braintree.CustomerRequest request = new Braintree.CustomerRequest();
+            request.FirstName = firstName;
+            request.LastName = lastName;
+            var result = gateway.Customer.Update(id, request);
+            return result.Target;
         }
     }
 }

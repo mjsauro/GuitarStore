@@ -27,6 +27,11 @@ iframe {
   margin-top: 3em;
   margin-bottom: 5em;
 }
+label,
+input {
+  margin-top: 1em;
+  margin-bottom: 1em;
+}
 li {
   height: 100%;
 }
@@ -74,4 +79,12 @@ th {
 #guitar-icon {
   border-radius: 50px;
   height: 100%;
+}
+@media (max-width: 768px) {
+  body {
+    padding-top: 0px;
+  }
+  .navbar-fixed-top {
+    position: static;
+  }
 }

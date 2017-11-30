@@ -13,7 +13,7 @@
         {
             <div class="col-md-4 col-md-offset-4">
                 <div class="alert alert-success text-center">
-                    @TempData["LogStatus"]
+                    @TempData["LogStatus"] @User.Identity.Name!
                 </div>
             </div>
             <div style="display:none">@TempData.Remove("LogStatus")</div>

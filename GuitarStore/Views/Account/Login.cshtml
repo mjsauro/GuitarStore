@@ -15,19 +15,23 @@
             <h2>@ViewBag.Title</h2>
             @using (Html.BeginForm())
             {
-                <div class="form-group form-inline">
-                    <div class="row">
-                        <label for="username" class="control-label col-md-2 col-md-offset-2">Username</label>
-                        <input = name="username" class="form-control col-md-6" type="text" />
+                <form class="form-horizontal">
+                    <div class="form-group">
+                        <label for="username" class="control-label col-md-3 ">Email Address</label>
+                        <div class="col-md-9">
+                            <input name="username" class="form-control" type="text" placeholder="Enter your Email Address" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label for="password" class="control-label col-md-3">Password</label>
+                        <div class="col-md-9">
+                            <input name="password" class="form-control" type="password" placeholder="Enter your Password" />
+                        </div>
                     </div>
                     <div class="row">
-                        <label for="password" class="control-label col-md-2 col-md-offset-2">Password</label>
-                        <input name="password" class="form-control col-md-10" type="password" />
+                        <input type="submit" value="@ViewBag.Title" class="btn btn-primary" />
                     </div>
-                <div class="row">
-                    <input type="submit" value="@ViewBag.Title" class="btn btn-primary box" />
-                </div>
-                    </div>
+                </form>
             }
             <div class="row ">
                 <div class="col-md-10 col-md-offset-1">

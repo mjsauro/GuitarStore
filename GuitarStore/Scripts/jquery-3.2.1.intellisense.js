@@ -2265,7 +2265,7 @@ intellisense.annotate(jQuery.fn, {
   },
   'scrollTop': function() {
     /// <signature>
-    ///   <summary>Set the current vertical position of the scroll bar for each of the set of matched elements.</summary>
+    ///   <summary>Set the current  position of the scroll bar for each of the set of matched elements.</summary>
     ///   <param name="value" type="Number">An integer indicating the new position to set the scroll bar to.</param>
     ///   <returns type="jQuery" />
     /// </signature>
