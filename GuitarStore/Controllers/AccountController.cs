@@ -11,6 +11,16 @@ namespace GuitarStore.Controllers
 {
     public class AccountController : Controller
     {
+        public AccountController()
+        {
+            guitarStorePaymentService = new GuitarStorePaymentService();
+        }
+
+        public AccountController(IPaymentService paymentService)
+        {
+            guitarStorePaymentService = paymentService;
+        }
+
         private string resetButton = "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"module\" data-role=\"module-button\" data-type=\"button\" role=\"module\" style=\"table-layout:fixed;\" width=\"100%\"><tbody><tr><td align=\"left\" bgcolor=\"\" class=\"outer-td\" style=\"padding:0px 0px 0px 0px;\"><table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" class=\"button-css__deep-table___2OZyb wrapper-mobile\" style=\"text-align:center;\"><tbody><tr><td align=\"center\" bgcolor=\"#333333\" class=\"inner-td\" style=\"border-radius:6px;font-size:16px;text-align:left;background-color:inherit;\"><a href={0} style=\"background-color:#333333;border:1px solid #333333;border-color:#333333;border-radius:6px;border-width:1px;color:#ffffff;display:inline-block;font-family:arial,helvetica,sans-serif;font-size:16px;font-weight:normal;letter-spacing:0px;line-height:16px;padding:12px 18px 12px 18px;text-align:center;text-decoration:none;\" target=\"_blank\">{1}</a></td></tr></tbody></table></td></tr></tbody></table>";
 
         public UserManager<IdentityUser> UserManager
@@ -21,7 +31,7 @@ namespace GuitarStore.Controllers
             }
         }
 
-        private GuitarStorePaymentService guitarStorePaymentService = new GuitarStorePaymentService();
+        private IPaymentService guitarStorePaymentService;
 
         // GET: Account
         [Authorize]
@@ -106,7 +116,7 @@ namespace GuitarStore.Controllers
         //GET: Signout
         public ActionResult SignOut()
         {
-            TempData.Add("LogStatus", "You have been logged out!");
+            TempData.Add("LogStatus", "You have been logged out");
             HttpContext.GetOwinContext().Authentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
@@ -130,7 +140,7 @@ namespace GuitarStore.Controllers
                             IsPersistent = true,
                             ExpiresUtc = DateTime.UtcNow.AddDays(7)
                         }, userIdentity);
-                        string message = "You have been logged in!";
+                        string message = "You have been logged in as ";
                         TempData.Add("LogStatus", message);
                         return RedirectToAction("Index", "Home");
                     }

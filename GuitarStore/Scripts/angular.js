@@ -5119,13 +5119,13 @@ function $AnchorScrollProvider() {
    * {@link ng.$anchorScrollProvider#disableAutoScrolling $anchorScrollProvider.disableAutoScrolling()}.
    *
    * Additionally, you can use its {@link ng.$anchorScroll#yOffset yOffset} property to specify a
-   * vertical scroll-offset (either fixed or dynamic).
+   *  scroll-offset (either fixed or dynamic).
    *
    * @param {string=} hash The hash specifying the element to scroll to. If omitted, the value of
    *                       {@link ng.$location#hash $location.hash()} will be used.
    *
    * @property {(number|function|jqLite)} yOffset
-   * If set, specifies a vertical scroll-offset. This is often useful when there are fixed
+   * If set, specifies a  scroll-offset. This is often useful when there are fixed
    * positioned elements at the top of the page, such as navbars, headers etc.
    *
    * `yOffset` can be specified in various ways:
@@ -5180,7 +5180,7 @@ function $AnchorScrollProvider() {
      </example>
    *
    * <hr />
-   * The example below illustrates the use of a vertical scroll-offset (specified as a fixed value).
+   * The example below illustrates the use of a  scroll-offset (specified as a fixed value).
    * See {@link ng.$anchorScroll#yOffset $anchorScroll.yOffset} for more details.
    *
    * @example

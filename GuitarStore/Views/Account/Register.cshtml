@@ -16,24 +16,33 @@
             <h2>@ViewBag.Title</h2>
             @using (Html.BeginForm())
             {
-                <div class="form-group form-inline">
-                    <div class="row">
-                        <label for="username" class="control-label col-md-2 col-md-offset-2">Username</label>
-                        <input = name="username" class="form-control col-md-6" type="text" />
+                <form class="form-horizonal">
+                    <div class="form-group">
+                        <label for="username" class="control-label col-md-3 text-left ">Email Address</label>
+                        <div class="col-md-9">
+                            <input name="username" class="form-control col-md-6 " type="text" placeholder="Enter your Email" />
+                        </div>
                     </div>
-                    <div class="row">
-                        <label for="password" class="control-label col-md-2 col-md-offset-2">Password</label>
-                        <input name="password1" class="form-control col-md-10" type="password" />
+                    <div class="form-group">
+                        <label for="password" class="control-label col-md-3 text-left ">Password</label>
+                        <div class="col-md-9">
+                            <input name="password1" class="form-control " type="password" placeholder="Enter your Password" />
+                        </div>
                     </div>
-                    <div class="row">
-                        <label for="password" class="control-label col-md-2 col-md-offset-2">Verify Password</label>
-                        <input name="password2" class="form-control col-md-10" type="password" />
+                    <div class="form-group">
+                        <label for="password" class="control-label col-md-3 text-left ">Re-enter Password</label>
+                        <div class="col-md-9">
+                            <input name="password2" class="form-control " type="password" placeholder="Re-enter your Password" />
+                        </div>
                     </div>
-                </div>
-                <div class="row">
-                    <input type="submit" value="@ViewBag.Title" class="btn btn-primary" />
-                </div>
+                    <div class="row"></div>
+                    <div class="row">
+                        <input type="submit" value="@ViewBag.Title" class="btn btn-primary" />
+                    </div>
+                </form>
+
             }
+
             <div class="row text-center">
                 <div class="box">Already Have An Account?</div>
                 <div class="box">@Html.ActionLink("Click Here to Sign In!", "Login", "Account", new { @class = "btn btn-primary" })</div>

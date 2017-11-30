@@ -32,7 +32,7 @@ canvas,
 progress,
 video {
   display: inline-block;
-  vertical-align: baseline;
+  -align: baseline;
 }
 audio:not([controls]) {
   display: none;
@@ -75,7 +75,7 @@ sup {
   position: relative;
   font-size: 75%;
   line-height: 0;
-  vertical-align: baseline;
+  -align: baseline;
 }
 sup {
   top: -.5em;
@@ -639,7 +639,7 @@ th {
 .glyphicon-folder-open:before {
   content: "\e118";
 }
-.glyphicon-resize-vertical:before {
+.glyphicon-resize-:before {
   content: "\e119";
 }
 .glyphicon-resize-horizontal:before {
@@ -987,7 +987,7 @@ th {
 .glyphicon-option-horizontal:before {
   content: "\e234";
 }
-.glyphicon-option-vertical:before {
+.glyphicon-option-:before {
   content: "\e235";
 }
 .glyphicon-menu-hamburger:before {
@@ -1026,7 +1026,7 @@ th {
 .glyphicon-object-align-left:before {
   content: "\e247";
 }
-.glyphicon-object-align-vertical:before {
+.glyphicon-object-align-:before {
   content: "\e248";
 }
 .glyphicon-object-align-right:before {
@@ -1113,7 +1113,7 @@ figure {
   margin: 0;
 }
 img {
-  vertical-align: middle;
+  -align: middle;
 }
 .img-responsive,
 .thumbnail > img,
@@ -2273,11 +2273,11 @@ th {
 .table > tfoot > tr > td {
   padding: 8px;
   line-height: 1.42857143;
-  vertical-align: top;
+  -align: top;
   border-top: 1px solid #ddd;
 }
 .table > thead > tr > th {
-  vertical-align: bottom;
+  -align: bottom;
   border-bottom: 2px solid #ddd;
 }
 .table > caption + thead > tr:first-child > th,
@@ -2665,7 +2665,7 @@ input[type="search"] {
   padding-left: 20px;
   margin-bottom: 0;
   font-weight: normal;
-  vertical-align: middle;
+  -align: middle;
   cursor: pointer;
 }
 .radio-inline + .radio-inline,
@@ -2916,19 +2916,19 @@ select[multiple].input-lg {
   .form-inline .form-group {
     display: inline-block;
     margin-bottom: 0;
-    vertical-align: middle;
+    -align: middle;
   }
   .form-inline .form-control {
     display: inline-block;
     width: auto;
-    vertical-align: middle;
+    -align: middle;
   }
   .form-inline .form-control-static {
     display: inline-block;
   }
   .form-inline .input-group {
     display: inline-table;
-    vertical-align: middle;
+    -align: middle;
   }
   .form-inline .input-group .input-group-addon,
   .form-inline .input-group .input-group-btn,
@@ -2940,14 +2940,14 @@ select[multiple].input-lg {
   }
   .form-inline .control-label {
     margin-bottom: 0;
-    vertical-align: middle;
+    -align: middle;
   }
   .form-inline .radio,
   .form-inline .checkbox {
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
-    vertical-align: middle;
+    -align: middle;
   }
   .form-inline .radio label,
   .form-inline .checkbox label {
@@ -3009,7 +3009,7 @@ select[multiple].input-lg {
   line-height: 1.42857143;
   text-align: center;
   white-space: nowrap;
-  vertical-align: middle;
+  -align: middle;
   -ms-touch-action: manipulation;
       touch-action: manipulation;
   cursor: pointer;
@@ -3504,7 +3504,7 @@ tbody.collapse.in {
   width: 0;
   height: 0;
   margin-left: 2px;
-  vertical-align: middle;
+  -align: middle;
   border-top: 4px dashed;
   border-top: 4px solid \9;
   border-right: 4px solid transparent;
@@ -3643,24 +3643,24 @@ tbody.collapse.in {
   }
 }
 .btn-group,
-.btn-group-vertical {
+.btn-group- {
   position: relative;
   display: inline-block;
-  vertical-align: middle;
+  -align: middle;
 }
 .btn-group > .btn,
-.btn-group-vertical > .btn {
+.btn-group- > .btn {
   position: relative;
   float: left;
 }
 .btn-group > .btn:hover,
-.btn-group-vertical > .btn:hover,
+.btn-group- > .btn:hover,
 .btn-group > .btn:focus,
-.btn-group-vertical > .btn:focus,
+.btn-group- > .btn:focus,
 .btn-group > .btn:active,
-.btn-group-vertical > .btn:active,
+.btn-group- > .btn:active,
 .btn-group > .btn.active,
-.btn-group-vertical > .btn.active {
+.btn-group- > .btn.active {
   z-index: 2;
 }
 .btn-group .btn + .btn,
@@ -3742,48 +3742,48 @@ tbody.collapse.in {
 .dropup .btn-lg .caret {
   border-width: 0 5px 5px;
 }
-.btn-group-vertical > .btn,
-.btn-group-vertical > .btn-group,
-.btn-group-vertical > .btn-group > .btn {
+.btn-group- > .btn,
+.btn-group- > .btn-group,
+.btn-group- > .btn-group > .btn {
   display: block;
   float: none;
   width: 100%;
   max-width: 100%;
 }
-.btn-group-vertical > .btn-group > .btn {
+.btn-group- > .btn-group > .btn {
   float: none;
 }
-.btn-group-vertical > .btn + .btn,
-.btn-group-vertical > .btn + .btn-group,
-.btn-group-vertical > .btn-group + .btn,
-.btn-group-vertical > .btn-group + .btn-group {
+.btn-group- > .btn + .btn,
+.btn-group- > .btn + .btn-group,
+.btn-group- > .btn-group + .btn,
+.btn-group- > .btn-group + .btn-group {
   margin-top: -1px;
   margin-left: 0;
 }
-.btn-group-vertical > .btn:not(:first-child):not(:last-child) {
+.btn-group- > .btn:not(:first-child):not(:last-child) {
   border-radius: 0;
 }
-.btn-group-vertical > .btn:first-child:not(:last-child) {
+.btn-group- > .btn:first-child:not(:last-child) {
   border-top-left-radius: 4px;
   border-top-right-radius: 4px;
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-group-vertical > .btn:last-child:not(:first-child) {
+.btn-group- > .btn:last-child:not(:first-child) {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
   border-bottom-right-radius: 4px;
   border-bottom-left-radius: 4px;
 }
-.btn-group-vertical > .btn-group:not(:first-child):not(:last-child) > .btn {
+.btn-group- > .btn-group:not(:first-child):not(:last-child) > .btn {
   border-radius: 0;
 }
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .btn:last-child,
-.btn-group-vertical > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
+.btn-group- > .btn-group:first-child:not(:last-child) > .btn:last-child,
+.btn-group- > .btn-group:first-child:not(:last-child) > .dropdown-toggle {
   border-bottom-right-radius: 0;
   border-bottom-left-radius: 0;
 }
-.btn-group-vertical > .btn-group:last-child:not(:first-child) > .btn:first-child {
+.btn-group- > .btn-group:last-child:not(:first-child) > .btn:first-child {
   border-top-left-radius: 0;
   border-top-right-radius: 0;
 }
@@ -3893,7 +3893,7 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
 .input-group-btn {
   width: 1%;
   white-space: nowrap;
-  vertical-align: middle;
+  -align: middle;
 }
 .input-group-addon {
   padding: 6px 12px;
@@ -4379,19 +4379,19 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   .navbar-form .form-group {
     display: inline-block;
     margin-bottom: 0;
-    vertical-align: middle;
+    -align: middle;
   }
   .navbar-form .form-control {
     display: inline-block;
     width: auto;
-    vertical-align: middle;
+    -align: middle;
   }
   .navbar-form .form-control-static {
     display: inline-block;
   }
   .navbar-form .input-group {
     display: inline-table;
-    vertical-align: middle;
+    -align: middle;
   }
   .navbar-form .input-group .input-group-addon,
   .navbar-form .input-group .input-group-btn,
@@ -4403,14 +4403,14 @@ select[multiple].input-group-sm > .input-group-btn > .btn {
   }
   .navbar-form .control-label {
     margin-bottom: 0;
-    vertical-align: middle;
+    -align: middle;
   }
   .navbar-form .radio,
   .navbar-form .checkbox {
     display: inline-block;
     margin-top: 0;
     margin-bottom: 0;
-    vertical-align: middle;
+    -align: middle;
   }
   .navbar-form .radio label,
   .navbar-form .checkbox label {
@@ -4851,7 +4851,7 @@ fieldset[disabled] .navbar-inverse .btn-link:focus {
   color: #fff;
   text-align: center;
   white-space: nowrap;
-  vertical-align: baseline;
+  -align: baseline;
   border-radius: .25em;
 }
 a.label:hover,
@@ -4919,7 +4919,7 @@ a.label:focus {
   color: #fff;
   text-align: center;
   white-space: nowrap;
-  vertical-align: middle;
+  -align: middle;
   background-color: #777;
   border-radius: 10px;
 }
@@ -5225,13 +5225,13 @@ a.thumbnail.active {
 .media-right,
 .media-body {
   display: table-cell;
-  vertical-align: top;
+  -align: top;
 }
 .media-middle {
-  vertical-align: middle;
+  -align: middle;
 }
 .media-bottom {
-  vertical-align: bottom;
+  -align: bottom;
 }
 .media-heading {
   margin-top: 0;
@@ -6472,8 +6472,8 @@ button.close {
 .form-horizontal .form-group:after,
 .btn-toolbar:before,
 .btn-toolbar:after,
-.btn-group-vertical > .btn-group:before,
-.btn-group-vertical > .btn-group:after,
+.btn-group- > .btn-group:before,
+.btn-group- > .btn-group:after,
 .nav:before,
 .nav:after,
 .navbar:before,
@@ -6500,7 +6500,7 @@ button.close {
 .row:after,
 .form-horizontal .form-group:after,
 .btn-toolbar:after,
-.btn-group-vertical > .btn-group:after,
+.btn-group- > .btn-group:after,
 .nav:after,
 .navbar:after,
 .navbar-header:after,

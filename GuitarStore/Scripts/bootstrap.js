@@ -1544,18 +1544,18 @@ if (typeof jQuery === 'undefined') {
     if (delta.left) offset.left += delta.left
     else offset.top += delta.top
 
-    var isVertical          = /top|bottom/.test(placement)
-    var arrowDelta          = isVertical ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
-    var arrowOffsetPosition = isVertical ? 'offsetWidth' : 'offsetHeight'
+    var is          = /top|bottom/.test(placement)
+    var arrowDelta          = is ? delta.left * 2 - width + actualWidth : delta.top * 2 - height + actualHeight
+    var arrowOffsetPosition = is ? 'offsetWidth' : 'offsetHeight'
 
     $tip.offset(offset)
-    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], isVertical)
+    this.replaceArrow(arrowDelta, $tip[0][arrowOffsetPosition], is)
   }
 
-  Tooltip.prototype.replaceArrow = function (delta, dimension, isVertical) {
+  Tooltip.prototype.replaceArrow = function (delta, dimension, is) {
     this.arrow()
-      .css(isVertical ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
-      .css(isVertical ? 'top' : 'left', '')
+      .css(is ? 'left' : 'top', 50 * (1 - delta / dimension) + '%')
+      .css(is ? 'top' : 'left', '')
   }
 
   Tooltip.prototype.setContent = function () {
