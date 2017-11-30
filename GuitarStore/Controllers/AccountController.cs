@@ -260,7 +260,7 @@ namespace GuitarStore.Controllers
             {
                 string resetToken = userManager.GeneratePasswordResetToken(user.Id);
                 string resetUrl = Request.Url.GetLeftPart(UriPartial.Authority) + "/Account/ResetPassword?email=" + email + "&token=" + resetToken;
-                string message = string.Format("<a href=\"{0}\">Reset your password</a>", resetUrl);
+                string message = string.Format("{0}", resetUrl);
                 userManager.SendEmail(user.Id, "your password reset token", message);
 
                 SendForgotEmail();
@@ -276,8 +276,10 @@ namespace GuitarStore.Controllers
                     request.Resource = "{domain}/messages";
                     request.AddParameter("from", "Mailgun Sandbox <postmaster@sandboxa9cdb0fb3e0a4168a77655ff39fe11ae.mailgun.org>");
                     request.AddParameter("to", email);
-                    request.AddParameter("subject", "Hello");
-                    request.AddParameter("text", message);
+
+                    request.AddParameter("subject", "Your Password Reset Request");
+                    request.AddParameter("html", "<html><img src=\"https://d30y9cdsu7xlg0.cloudfront.net/png/106416-200.png\"><h1> Hello " + email + ",</h1></br><p> We have received a request from this email address to reset your password </p></br> <a href=" + message + "><h3>Click here to reset your password.</h3></a></br><p>Sincerely,</p><br/><p>Matt's Guitar Store</p></html>");
+
                     //request.AddParameter("text", "hi");
                     request.Method = Method.POST;
                     return client.Execute(request);
@@ -302,20 +304,26 @@ namespace GuitarStore.Controllers
         }
 
         [HttpPost]
-        public ActionResult ResetPassword(string email, string token, string newPassword)
+        public ActionResult ResetPassword(string email, string token, string password1, string password2)
         {
+            if (password1 != password2)
+            {
+                ViewBag.PasswordFail = "Passwords do not match!";
+                return View();
+            }
+
             var userManager = HttpContext.GetOwinContext().GetUserManager<UserManager<IdentityUser>>();
             var user = userManager.FindByEmail(email);
             if (user != null)
             {
-                IdentityResult result = userManager.ResetPassword(user.Id, token, newPassword);
+                IdentityResult result = userManager.ResetPassword(user.Id, token, password1);
                 if (result.Succeeded)
                 {
                     TempData["Message"] = "Your password has been updated successfully";
                     return RedirectToAction("LogIn", "Account");
                 }
             }
-            return RedirectToAction("Index", "Home");
+            return View();
         }
     }
 }
