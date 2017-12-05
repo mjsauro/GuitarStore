@@ -2,16 +2,30 @@
 @{
     ViewBag.Title = "Index";
 }
-@using (Html.BeginForm())
+
+@if (User.Identity.IsAuthenticated == false)
 {
-    <div>
-        @Html.LabelFor(m => m.FirstName)
-        @Html.TextBoxFor(m => m.FirstName)
+    <div class="container-fluid">
+        <div class="row well">
+            <div class="col-md-6 col-md-offset-3">
+                <div id="alert" class="alert alert-warning">
+                    <p class="lead">You must be logged in to manage your account</p>
+                    <div class="box text-center">@Html.ActionLink("Click Here to Register for a New Account!", "Register", "Account", new { @class = "btn btn-primary" })</div>
+                    <div class="box text-center">@Html.ActionLink("Click Here to Sign In!", "Login", "Account", new { @class = "btn btn-primary" })</div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        @Html.LabelFor(m => m.LastName)
-        @Html.TextBoxFor(m => m.LastName)
+}
+else
+{
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-6 col-md-offset-3 well">
+                <p class="lead text-center">Manage Your Account</p>
+                <div class="box text-center">@Html.ActionLink("Manage Your Saved Address", "Addresses", "Account", new { @class = "btn btn-primary" })</div>
+                <div class="box text-center">@Html.ActionLink("Manage Your Saved Credit Cards", "CreditCards", "Account", new { @class = "btn btn-primary" })</div>
+            </div>
+        </div>
     </div>
-    @Html.HiddenFor(m => m.Id)
-    <input type="submit" value="Save Changes" />
 }

@@ -34,9 +34,14 @@ namespace GuitarStore.Controllers
         private IPaymentService guitarStorePaymentService;
 
         // GET: Account
-        [Authorize]
+
         public ActionResult Index()
         {
+            if (User.Identity.IsAuthenticated == false)
+            {
+                return View();
+            }
+
             var customer = guitarStorePaymentService.GetCustomer(User.Identity.Name);
             return View(customer);
         }
@@ -52,22 +57,19 @@ namespace GuitarStore.Controllers
         //Add Credit Cards
         [Authorize]
         [HttpPost]
-        public ActionResult CreatePaymentMethod(string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear)
-        {
-            guitarStorePaymentService.CreatePaymentMethod(User.Identity.Name, cardHolderName, number, cvv, expirationMonth, expirationYear);
-
-            ViewBag.Added = "Credit Card Added Successfully!";
-            return RedirectToAction("CreditCards");
-        }
-
-        //Add Credit Cards
-        [Authorize]
-        [HttpPost]
         public ActionResult AddCreditCard(string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear)
         {
             guitarStorePaymentService.AddCreditCard(User.Identity.Name, cardHolderName, number, cvv, expirationMonth, expirationYear);
 
             ViewBag.Added = "Credit Card Added Successfully!";
+            return RedirectToAction("CreditCards");
+        }
+
+        //delete credit card
+        [Authorize]
+        public ActionResult DeleteCreditCard(string token)
+        {
+            guitarStorePaymentService.DeleteCreditCard(User.Identity.Name, token);
             return RedirectToAction("CreditCards");
         }
 
@@ -224,10 +226,10 @@ namespace GuitarStore.Controllers
             return View();
         }
 
-        //public ActionResult ConfirmEmail()
-        //{
-        //    return View()
-        //}
+        public ActionResult Account()
+        {
+            return View();
+        }
 
         public ActionResult ConfirmEmail(string email, string token)
         {

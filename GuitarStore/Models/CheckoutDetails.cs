@@ -56,5 +56,6 @@ namespace GuitarStore.Models
         public string ExpirationYear { get; set; }
 
         public Braintree.Address[] Addresses { get; internal set; }
+        public Braintree.CreditCard[] CreditCards { get; internal set; }
     }
 }
