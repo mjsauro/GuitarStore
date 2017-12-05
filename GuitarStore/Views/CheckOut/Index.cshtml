@@ -118,6 +118,16 @@
                                     }
                                 </select>
                             </div>
+                            <div class="form-group">
+                                <label for="creditCardId">Choose a credit card</label>
+                                <select name="creditCardId" id="creditCardId" class="form-control">
+                                    <option value="">New Credit Card</option>
+                                    @foreach (var creditCard in Model.CreditCards)
+                                    {
+                                        <option value="@creditCard.UniqueNumberIdentifier">Card Type: @creditCard.CardType &nbsp;&nbsp;&nbsp;&nbsp; Cardholder Name: @creditCard.CardholderName &nbsp;&nbsp;&nbsp;&nbsp; Last 4: @creditCard.LastFour</option>
+                                    }
+                                </select>
+                            </div>
                         }
                         <div id="newAddress">
                             <div class="row form-group col-md-12 form-inline">
@@ -125,12 +135,6 @@
                                 @Html.TextBoxFor(m => m.ContactName, new { @class = "form-control col-md-5", placeholder = "Your Name", @style = "width: 35%;" })
                                 @Html.ValidationMessageFor(m => m.ContactName)
                             </div>
-
-                            @*<div class="row form-group col-md-12 form-inline">
-                                    @Html.LabelFor(m => m.ContactEmail, new { @class = "control-label col-md-1" })
-                                    @Html.TextBoxFor(m => m.ContactEmail, new { @class = "form-control col-md-5", placeholder = "Your Email Address", @style = "width: 35%;" })
-                                    @Html.ValidationMessageFor(m => m.ContactEmail)
-                                </div>*@
 
                             <div class="row form-group col-md-12 form-inline">
                                 @Html.LabelFor(m => m.ShippingAddress, new { @class = "control-label col-md-1" })
@@ -155,6 +159,8 @@
                                 @Html.TextBoxFor(m => m.ShippingPostalCode, new { @class = "form-control col-md-5", placeholder = "Zip Code", @style = "width: 35%;" })
                                 @Html.ValidationMessageFor(m => m.ShippingPostalCode)
                             </div>
+                        </div>
+                        <div id="newCreditCard">
                             <div class="row form-group col-md-12 form-inline">
                                 @Html.LabelFor(m => m.CreditCardNumber, new { @class = "control-label col-md-1" })
                                 @Html.TextBoxFor(m => m.CreditCardNumber, new { @class = "form-control col-md-5", placeholder = "4111111111111111" })
@@ -189,6 +195,20 @@
     @Scripts.Render("~/bundles/jqueryval")
     <script type="text/javascript">
         $("document").ready(function () {
+            $("#creditCardId").change(this, function () {
+                $("#newCreditCard .form-control[name=CreditCardNumber").val("");
+                var creditCardId = ("#creditCardId").val();
+                if (creditCardId != "") {
+                    var selectedCreditCard;
+                    for (var i = 0; i < creditCards.length; i++) {
+                        if (creditCards[i] = creditCardId) {
+                            selectedCreditCard = creditCards[i];
+                            break;
+                        }
+                    }
+                    $("#newCreditCard . form-control[name=CreditCardNumber]").val(selectedCreditCard.creditCardId);
+                }
+            });
             $("#addressId").change(this, function () {
                 $("#newAddress .form-control[name=ContactName]").val("");
                 $("#newAddress .form-control[name=ShippingAddress]").val("");
@@ -220,5 +240,6 @@
         })
 
         var addresses = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Addresses))');
+        var creditCards = JSON.parse('@Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.CreditCards))');
     </script>
 }

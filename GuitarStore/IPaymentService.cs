@@ -17,5 +17,7 @@ namespace GuitarStore
         void CreatePaymentMethod(string email, string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear);
 
         void AddCreditCard(string email, string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear);
+
+        void DeleteCreditCard(string email, string token);
     }
 }

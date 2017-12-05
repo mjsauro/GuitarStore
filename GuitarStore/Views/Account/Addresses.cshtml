@@ -1,4 +1,5 @@
 ﻿@model IEnumerable<Braintree.Address>
+
 @{
     ViewBag.Title = "Addresses";
 }
@@ -55,54 +56,63 @@
                     <div class="form-group">
                         <label class="control-label col-sm-2" for="firstName">First Name</label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="text" name="firstName" />
+                            <input class="form-control" type="text" name="firstName" placeholder="First Name" required />
                         </div>
                     </div>
                     <div class="form-group">
-                    <label class="control-label" for="lastName">Last Name</label>
-                    <input class="form-control" type="text" name="lastName" />
-                </div>
+                        <label class="control-label col-sm-2" for="lastName">Last Name</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="lastName" placeholder="Last Name" required />
+                        </div>
+                    </div>
 
-                <div class="form-group">
-                    <label class="control-label" for="company">Company</label>
-                    <input class="form-control" type="text" name="company" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="streetAddress">Street</label>
-                    <input class="form-control" type="text" name="streetAddress" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="extendedAddress">Apartment/Suite/Unit</label>
-                    <input class="form-control" type="text" name="extendedAddress" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="locality">City</label>
-                    <input class="form-control" type="text" name="locality" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="region">State</label>
-                    <input class="form-control" type="text" name="region" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="postalCode">Zip Code</label>
-                    <input class="form-control" type="text" name="postalCode" />
-                </div>
-                <div class="form-group">
-                    <label class="control-label" for="countryName">Country</label>
-                    <input class="form-control" type="text" name="countryName" placeholder="United States of America" />
-                </div>
-                <input type="submit" value="Add Address" class="btn btn-primary" />
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="company">Company</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="company" placeholder="Company" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="streetAddress">Street</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="streetAddress" placeholder="Street Address" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="extendedAddress">Apartment/Suite/Unit</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="extendedAddress" placeholder="Apartment/Suite/Unit" />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="locality">City</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="locality" placeholder="City" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="region">State</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="region" placeholder="State" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="postalCode">Zip Code</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="postalCode" placeholder="Zip Code" required />
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-sm-2" for="countryName">Country</label>
+                        <div class="col-sm-10">
+                            <input class="form-control" type="text" name="countryName" placeholder="United States of America" />
+                        </div>
+                    </div>
+                    <input type="submit" value="Add Address" class="btn btn-primary" />
                 </div>
             </div>
         }
-            </div>
     </div>
+</div>
 
-
-   
-       
-            
-
-       
         <
-    

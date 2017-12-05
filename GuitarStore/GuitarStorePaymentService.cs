@@ -107,6 +107,13 @@ namespace GuitarStore
             gateway.PaymentMethod.Create(request);
         }
 
+        public void DeleteCreditCard(string email, string token)
+        {
+            Customer c = GetCustomer(email);
+
+            gateway.CreditCard.Delete(token);
+        }
+
         public void AddCreditCard(string email, string cardHolderName, string number, string cvv, string expirationMonth, string expirationYear)
         {
             Customer c = GetCustomer(email);

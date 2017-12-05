@@ -31,13 +31,14 @@
                     <li>@Html.ActionLink("About Us", "About", "Home")</li>
                     <li><a href="@Url.Action("Index", "Cart")"><span class="fa fa-shopping-cart"></span>Cart</a></li>
                     <li class="btn-group open">
-                        <a class="btn btn-primary-outline" href="#"><i class="fa fa-cogs fa-fw"></i> Account</a>
+                        <a class="btn btn-primary-outline" src="#"><i class="fa fa-cogs fa-fw"></i> Account</a>
                         <a class="btn btn-primary-outline dropdown-toggle" data-toggle="dropdown" href="#">
                             <span class="fa fa-caret-down" title="Toggle dropdown menu"></span>
                         </a>
                         <ul class="dropdown-menu">
                             @if (User.Identity.IsAuthenticated)
                             {
+                                <li>@Html.ActionLink("Manage Your Account", "Index", "Account")</li>
                                 <li><span><i class="fa fa-sign-out fa-fw"></i>@Html.ActionLink("Sign Out", "SignOut", "Account")</span></li>
                                 <li><span><i class="fa fa-info fa-fw"></i>Logged in as @User.Identity.Name</span></li>
                             }
@@ -51,7 +52,7 @@
                         {
                         <li style="color:#9d9d9d; padding-left:50px;" class="navbar-btn pull-right">Welcome, @User.Identity.Name</li>
                         }
-                        </li>
+                        
                     </ul>
                 </div>
             </div>

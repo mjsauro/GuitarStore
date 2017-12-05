@@ -30,6 +30,7 @@ namespace GuitarStore.Controllers
 
             details.CurrentCart = db.Carts.Find(cartID);
             details.Addresses = new Braintree.Address[0];
+            details.CreditCards = new Braintree.CreditCard[0];
             if (User.Identity.IsAuthenticated)
             {
                 string merchantId = ConfigurationManager.AppSettings["Braintree.MerchantId"];
@@ -56,6 +57,7 @@ namespace GuitarStore.Controllers
                     customer = matchedCustomers.FirstItem;
                 }
                 details.Addresses = customer.Addresses;
+                details.CreditCards = customer.CreditCards;
             }
 
             return View(details);
@@ -70,6 +72,7 @@ namespace GuitarStore.Controllers
 
             model.CurrentCart = db.Carts.Find(cartID);
             model.Addresses = new Braintree.Address[0];
+            model.CreditCards = new Braintree.CreditCard[0];
             if (ModelState.IsValid)
             {
                 string trackingNumber = Guid.NewGuid().ToString().Substring(0, 8);
