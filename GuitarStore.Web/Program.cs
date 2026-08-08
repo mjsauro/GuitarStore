@@ -3,6 +3,7 @@ using Amazon.DynamoDBv2.DataModel;
 using GuitarStore.Web.Data;
 using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -68,7 +69,19 @@ builder.Services.AddScoped<CartService>();
 // without a merchant account. Swap this registration to plug in a real provider.
 builder.Services.AddSingleton<IPaymentService, SimulatedPaymentService>();
 
+// App Runner terminates TLS and forwards plain HTTP, so the original scheme arrives in
+// X-Forwarded-Proto. Without this, UseHttpsRedirection would redirect forever.
+builder.Services.Configure<ForwardedHeadersOptions>(options =>
+{
+    options.ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor;
+    // The proxy is AWS-managed and not on a known address; the hop is inside the platform.
+    options.KnownIPNetworks.Clear();
+    options.KnownProxies.Clear();
+});
+
 var app = builder.Build();
+
+app.UseForwardedHeaders();
 
 if (!app.Environment.IsDevelopment())
 {
