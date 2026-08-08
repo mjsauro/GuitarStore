@@ -1,5 +1,6 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
+using Amazon.Lambda.AspNetCoreServer.Hosting;
 using GuitarStore.Web.Data;
 using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -35,7 +36,7 @@ builder.Services
 builder.Services.AddAuthorization();
 
 // DynamoDB. Locally this points at DynamoDB Local; deployed, the AWS SDK picks up
-// credentials and region from the App Runner instance role.
+// credentials and region from the Lambda execution role.
 builder.Services.AddSingleton<IAmazonDynamoDB>(_ =>
 {
     var serviceUrl = builder.Configuration["AWS:DynamoDbServiceUrl"];
@@ -69,8 +70,12 @@ builder.Services.AddScoped<CartService>();
 // without a merchant account. Swap this registration to plug in a real provider.
 builder.Services.AddSingleton<IPaymentService, SimulatedPaymentService>();
 
-// App Runner terminates TLS and forwards plain HTTP, so the original scheme arrives in
-// X-Forwarded-Proto. Without this, UseHttpsRedirection would redirect forever.
+// Running on Lambda behind a Function URL. This is a no-op when running locally with
+// dotnet run, so the same build works both places.
+builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
+
+// The Function URL terminates TLS and forwards plain HTTP, so the original scheme arrives
+// in X-Forwarded-Proto. Without this, UseHttpsRedirection would redirect forever.
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor;
@@ -109,9 +114,12 @@ if (!app.Environment.IsDevelopment())
     app.MapControllerRoute(name: "blockDevAuth", pattern: "DevAuth/{*rest}", defaults: new { controller = "Home", action = "Error" });
 }
 
-// Create tables and seed the catalog on startup so a fresh clone just works.
-using (var scope = app.Services.CreateScope())
+// Create tables and seed the catalog on startup so a fresh clone just works. Off in
+// production: the deployed function's role is scoped to reading and writing items, not
+// creating tables, and this would otherwise run on every cold start.
+if (builder.Configuration.GetValue("AWS:AutoProvision", app.Environment.IsDevelopment()))
 {
+    using var scope = app.Services.CreateScope();
     await scope.ServiceProvider.GetRequiredService<DynamoDbInitializer>().EnsureTablesAsync();
     await SeedData.SeedProductsAsync(scope.ServiceProvider.GetRequiredService<IProductRepository>());
 }
