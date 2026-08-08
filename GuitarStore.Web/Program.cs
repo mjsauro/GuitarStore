@@ -38,6 +38,7 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 
 builder.Services.AddSingleton<DynamoDbInitializer>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
+builder.Services.AddScoped<ICartRepository, CartRepository>();
 
 var app = builder.Build();
 
