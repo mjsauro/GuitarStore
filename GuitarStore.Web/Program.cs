@@ -2,6 +2,7 @@ using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using GuitarStore.Web.Data;
 using GuitarStore.Web.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -12,6 +13,25 @@ builder.Services.AddControllersWithViews(options =>
     // remembering [ValidateAntiForgeryToken] per action, and several actions didn't.
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
+
+// Cookie auth holds the session. In Development the cookie is issued by DevAuthController;
+// deployed, Cognito issues it through OIDC.
+builder.Services
+    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+    .AddCookie(options =>
+    {
+        options.LoginPath = builder.Environment.IsDevelopment() ? "/DevAuth" : "/Account/SignIn";
+        options.AccessDeniedPath = "/Account/Denied";
+        options.ExpireTimeSpan = TimeSpan.FromDays(7);
+        options.SlidingExpiration = true;
+        options.Cookie.HttpOnly = true;
+        options.Cookie.SameSite = SameSiteMode.Lax;
+        options.Cookie.SecurePolicy = builder.Environment.IsDevelopment()
+            ? CookieSecurePolicy.SameAsRequest
+            : CookieSecurePolicy.Always;
+    });
+
+builder.Services.AddAuthorization();
 
 // DynamoDB. Locally this points at DynamoDB Local; deployed, the AWS SDK picks up
 // credentials and region from the App Runner instance role.
@@ -41,6 +61,7 @@ builder.Services.AddSingleton<DynamoDbInitializer>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
 builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
 builder.Services.AddScoped<CartService>();
 
 // No real processor is wired up: checkout simulates authorization so the flow is demoable
@@ -58,6 +79,7 @@ if (!app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapStaticAssets();
@@ -66,6 +88,13 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
+
+// The local sign-in stub is only routable in Development; DevAuthController also refuses
+// to act outside it.
+if (!app.Environment.IsDevelopment())
+{
+    app.MapControllerRoute(name: "blockDevAuth", pattern: "DevAuth/{*rest}", defaults: new { controller = "Home", action = "Error" });
+}
 
 // Create tables and seed the catalog on startup so a fresh clone just works.
 using (var scope = app.Services.CreateScope())

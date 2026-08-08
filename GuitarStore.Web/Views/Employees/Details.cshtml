@@ -1,0 +1,20 @@
+@model GuitarStore.Web.Models.Employee
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header"><h3>@Model.FullName</h3></div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Employee ID</dt><dd class="col-sm-8">@Model.EmpId</dd>
+                        <dt class="col-sm-4">Date of Birth</dt><dd class="col-sm-8">@Model.DOB.ToString("d")</dd>
+                        <dt class="col-sm-4">Wage</dt><dd class="col-sm-8">@Model.Wage.ToString("C")</dd>
+                    </dl>
+                    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.EmpId">Edit</a>
+                    <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

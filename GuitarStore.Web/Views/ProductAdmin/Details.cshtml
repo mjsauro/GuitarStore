@@ -1,0 +1,36 @@
+@model GuitarStore.Web.Models.Product
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header"><h3>@Model.DisplayName</h3></div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">ID</dt><dd class="col-sm-8">@Model.Id</dd>
+                        <dt class="col-sm-4">Type</dt><dd class="col-sm-8">@Model.ProductTypeName</dd>
+                        <dt class="col-sm-4">Make</dt><dd class="col-sm-8">@Model.MakeName</dd>
+                        <dt class="col-sm-4">Manufacturer</dt><dd class="col-sm-8">@Model.ManufacturerName</dd>
+                        <dt class="col-sm-4">Model</dt><dd class="col-sm-8">@Model.Model</dd>
+                        <dt class="col-sm-4">Description</dt><dd class="col-sm-8">@Model.Description</dd>
+                        <dt class="col-sm-4">Price</dt><dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+                    </dl>
+
+                    @if (Model.Properties.Count > 0)
+                    {
+                        <h5>Specifications</h5>
+                        <dl class="row">
+                            @foreach (var property in Model.Properties)
+                            {
+                                <dt class="col-sm-4">@property.Key</dt>
+                                <dd class="col-sm-8">@property.Value</dd>
+                            }
+                        </dl>
+                    }
+                    <a class="btn btn-dark" asp-action="Edit" asp-route-id="@Model.Id">Edit</a>
+                    <a class="btn btn-outline-secondary" asp-action="Index">Back</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

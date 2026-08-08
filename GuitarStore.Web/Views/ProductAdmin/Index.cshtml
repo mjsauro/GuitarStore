@@ -1,0 +1,40 @@
+@model IReadOnlyList<GuitarStore.Web.Models.Product>
+
+<div class="container-fluid">
+    <div class="well">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Manage Products</h2>
+            <a class="btn btn-dark" asp-action="Create">New Product</a>
+        </div>
+
+        <table class="table table-striped">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Type</th>
+                    <th>Make</th>
+                    <th>Model</th>
+                    <th>Price</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var product in Model)
+                {
+                    <tr>
+                        <td>@product.Id</td>
+                        <td>@product.ProductTypeName</td>
+                        <td>@product.MakeName</td>
+                        <td>@product.Model</td>
+                        <td>@product.Price.ToString("C")</td>
+                        <td>
+                            <a asp-action="Edit" asp-route-id="@product.Id">Edit</a> |
+                            <a asp-action="Details" asp-route-id="@product.Id">Details</a> |
+                            <a asp-action="Delete" asp-route-id="@product.Id">Delete</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+</div>

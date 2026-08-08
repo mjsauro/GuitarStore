@@ -1,0 +1,56 @@
+@model GuitarStore.Web.Models.SalesReportViewModel
+
+<div class="container-fluid">
+    <div class="well">
+        <h2>Sales Report</h2>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Orders Placed</h5>
+                        <p class="display-6">@Model.OrderCount</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5>Gross Revenue</h5>
+                        <p class="display-6">@Model.GrossRevenue.ToString("C")</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h4>Top Sellers</h4>
+        @if (Model.TopSellers.Count == 0)
+        {
+            <div class="alert alert-info">No orders have been placed yet.</div>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Units Sold</th>
+                        <th>Revenue</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var seller in Model.TopSellers)
+                    {
+                        <tr>
+                            <td>
+                                <a asp-controller="Product" asp-action="Index" asp-route-id="@seller.ProductId">@seller.ProductName</a>
+                            </td>
+                            <td>@seller.UnitsSold</td>
+                            <td>@seller.Revenue.ToString("C")</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
