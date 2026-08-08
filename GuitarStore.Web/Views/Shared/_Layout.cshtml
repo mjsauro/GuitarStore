@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - Matt's Guitar Store</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+        <div class="container">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">
+                <img id="guitar-icon" src="~/images/guitar-icon.png" alt="Matt's Guitar Store" />
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav"
+                    aria-controls="mainNav" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="mainNav">
+                <ul class="navbar-nav me-auto">
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Index">Home</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Product" asp-action="List" asp-route-id="Guitar">Guitars</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Product" asp-action="List" asp-route-id="Amplifier">Amplifiers</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Product" asp-action="List" asp-route-id="Effect">Effects Pedals</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="Location">Our Location</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Home" asp-action="About">About Us</a></li>
+                    <li class="nav-item"><a class="nav-link" asp-controller="Cart" asp-action="Index">Cart</a></li>
+                </ul>
+                <ul class="navbar-nav">
+                    @if (User.Identity?.IsAuthenticated == true)
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="Index">Manage Your Account</a></li>
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="SignOutUser">Sign Out</a></li>
+                        <li class="nav-item"><span class="navbar-text ms-2">Welcome, @User.Identity.Name</span></li>
+                    }
+                    else
+                    {
+                        <li class="nav-item"><a class="nav-link" asp-controller="Account" asp-action="SignIn">Log In</a></li>
+                    }
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid body-content">
+        @RenderBody()
+    </div>
+
+    <footer>
+        &copy; @DateTime.Now.Year - Matt's Guitar Store
+    </footer>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

@@ -1,0 +1,60 @@
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="jumbotron text-center">
+    <h1>Matt's Guitar Store</h1>
+    <p class="lead">We specialize in Guitars, Amplifiers, and Effects Pedals.</p>
+</div>
+
+<div class="container">
+    @if (TempData["LogStatus"] is string logStatus)
+    {
+        <div class="row">
+            <div class="col-md-4 offset-md-4">
+                <div class="alert alert-success text-center">@logStatus</div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h2><a asp-controller="Product" asp-action="List" asp-route-id="Guitar">Electric Guitars</a></h2>
+                </div>
+                <div class="card-body">
+                    <p><a asp-controller="Product" asp-action="List" asp-route-id="Guitar">Click here for our electric guitar collection</a></p>
+                    <a asp-controller="Product" asp-action="List" asp-route-id="Guitar">
+                        <img class="img-fluid" src="~/images/electricguitars.jpg" alt="Electric guitars" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h2><a asp-controller="Product" asp-action="List" asp-route-id="Amplifier">Amplifiers</a></h2>
+                </div>
+                <div class="card-body">
+                    <p><a asp-controller="Product" asp-action="List" asp-route-id="Amplifier">See our amplifiers</a></p>
+                    <a asp-controller="Product" asp-action="List" asp-route-id="Amplifier">
+                        <img class="img-fluid" src="~/images/amplifiers.jpg" alt="Amplifiers" />
+                    </a>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h2><a asp-controller="Product" asp-action="List" asp-route-id="Effect">Effects Pedals</a></h2>
+                </div>
+                <div class="card-body">
+                    <p><a asp-controller="Product" asp-action="List" asp-route-id="Effect">We have a large selection of effects pedals</a></p>
+                    <a asp-controller="Product" asp-action="List" asp-route-id="Effect">
+                        <img class="img-fluid" src="~/images/effectspedals.jpg" alt="Effects pedals" />
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

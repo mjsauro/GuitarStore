@@ -1,0 +1,24 @@
+@model IReadOnlyList<GuitarStore.Web.Models.Product>
+
+<div class="row">
+    @foreach (var product in Model)
+    {
+        <div class="col-md-4">
+            <div class="card h-100">
+                <div class="card-header">
+                    <h2>
+                        <a asp-controller="Product" asp-action="Index" asp-route-id="@product.Id">@product.DisplayName</a>
+                    </h2>
+                </div>
+                <div class="card-body">
+                    <a asp-controller="Product" asp-action="Index" asp-route-id="@product.Id">
+                        <img class="img-fluid" src="@product.Image" alt="@product.DisplayName" />
+                    </a>
+                </div>
+                <div class="card-footer">
+                    <a asp-controller="Product" asp-action="Index" asp-route-id="@product.Id">Click for more information!</a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
