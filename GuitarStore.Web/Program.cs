@@ -1,6 +1,7 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using GuitarStore.Web.Data;
+using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -39,6 +40,12 @@ builder.Services.AddSingleton<IDynamoDBContext>(sp =>
 builder.Services.AddSingleton<DynamoDbInitializer>();
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<ICartRepository, CartRepository>();
+builder.Services.AddScoped<IOrderRepository, OrderRepository>();
+builder.Services.AddScoped<CartService>();
+
+// No real processor is wired up: checkout simulates authorization so the flow is demoable
+// without a merchant account. Swap this registration to plug in a real provider.
+builder.Services.AddSingleton<IPaymentService, SimulatedPaymentService>();
 
 var app = builder.Build();
 

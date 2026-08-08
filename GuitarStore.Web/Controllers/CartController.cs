@@ -1,5 +1,4 @@
 using GuitarStore.Web.Data;
-using GuitarStore.Web.Models;
 using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -9,17 +8,19 @@ public class CartController : Controller
 {
     private readonly ICartRepository _carts;
     private readonly IProductRepository _products;
+    private readonly CartService _cartService;
 
-    public CartController(ICartRepository carts, IProductRepository products)
+    public CartController(ICartRepository carts, IProductRepository products, CartService cartService)
     {
         _carts = carts;
         _products = products;
+        _cartService = cartService;
     }
 
     public async Task<IActionResult> Index(CancellationToken ct)
     {
         ViewData["Title"] = "Your Cart";
-        return View(await BuildCartAsync(ct));
+        return View(await _cartService.BuildAsync(HttpContext, ct));
     }
 
     [HttpPost]
@@ -67,34 +68,5 @@ public class CartController : Controller
         }
 
         return RedirectToAction(nameof(Index));
-    }
-
-    /// <summary>
-    /// Joins cart lines to current catalog products. Lines whose product has since been
-    /// deleted are dropped rather than throwing.
-    /// </summary>
-    private async Task<CartViewModel> BuildCartAsync(CancellationToken ct)
-    {
-        var cartId = CartCookie.Read(HttpContext);
-        if (cartId is null)
-        {
-            return new CartViewModel();
-        }
-
-        var items = await _carts.GetItemsAsync(cartId, ct);
-        if (items.Count == 0)
-        {
-            return new CartViewModel { CartId = cartId };
-        }
-
-        var products = await _products.GetByIdsAsync(items.Select(i => i.ProductId), ct);
-        var byId = products.ToDictionary(p => p.Id);
-
-        var lines = items
-            .Where(item => byId.ContainsKey(item.ProductId))
-            .Select(item => new CartLine { Product = byId[item.ProductId], Quantity = item.Quantity })
-            .ToList();
-
-        return new CartViewModel { CartId = cartId, Lines = lines };
     }
 }

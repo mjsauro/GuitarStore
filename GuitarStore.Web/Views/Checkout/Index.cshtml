@@ -1,0 +1,133 @@
+@model GuitarStore.Web.Models.CheckoutViewModel
+
+<div class="container-fluid">
+    <div class="well">
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <h2>Checkout</h2>
+
+                <div class="alert alert-warning">
+                    <strong>Demo store.</strong> Payments here are simulated — nothing is charged and no
+                    card details are stored. Please don't enter a real card number.
+                    Use <code>4242 4242 4242 4242</code> to see an approval, or
+                    <code>4000 0000 0000 0002</code> to see a decline.
+                </div>
+
+                <table class="table table-striped table-sm">
+                    <thead>
+                        <tr>
+                            <th>Item</th>
+                            <th>Quantity</th>
+                            <th>Price</th>
+                            <th>Item Total</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var line in Model.Cart.Lines)
+                        {
+                            <tr>
+                                <td>@line.Product.DisplayName</td>
+                                <td>@line.Quantity</td>
+                                <td>@line.Product.Price.ToString("C")</td>
+                                <td>@line.LineTotal.ToString("C")</td>
+                            </tr>
+                        }
+                    </tbody>
+                    <tfoot>
+                        <tr><th colspan="3">Subtotal</th><th>@Model.Cart.SubTotal.ToString("C")</th></tr>
+                        <tr><th colspan="3">Shipping and Handling</th><th>@Model.Cart.ShippingAndHandling.ToString("C")</th></tr>
+                        <tr><th colspan="3">Tax</th><th>@Model.Cart.Tax.ToString("C")</th></tr>
+                        <tr><th colspan="3">Total</th><th>@Model.Cart.Total.ToString("C")</th></tr>
+                    </tfoot>
+                </table>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10 offset-md-1">
+                <form asp-controller="Checkout" asp-action="Index" method="post">
+                    <div asp-validation-summary="All" class="alert alert-danger" role="alert"></div>
+
+                    <h4>Where it's going</h4>
+                    <div class="mb-3">
+                        <label asp-for="ContactEmail" class="form-label"></label>
+                        <input asp-for="ContactEmail" class="form-control" placeholder="you@example.com" />
+                        <span asp-validation-for="ContactEmail" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ContactName" class="form-label"></label>
+                        <input asp-for="ContactName" class="form-control" placeholder="Your name" />
+                        <span asp-validation-for="ContactName" class="text-danger"></span>
+                    </div>
+                    <div class="mb-3">
+                        <label asp-for="ShippingAddress" class="form-label"></label>
+                        <input asp-for="ShippingAddress" class="form-control" placeholder="Street address" />
+                        <span asp-validation-for="ShippingAddress" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-5 mb-3">
+                            <label asp-for="ShippingCity" class="form-label"></label>
+                            <input asp-for="ShippingCity" class="form-control" placeholder="City" />
+                            <span asp-validation-for="ShippingCity" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-3 mb-3">
+                            <label asp-for="ShippingState" class="form-label"></label>
+                            <input asp-for="ShippingState" class="form-control" placeholder="State" />
+                            <span asp-validation-for="ShippingState" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-4 mb-3">
+                            <label asp-for="ShippingPostalCode" class="form-label"></label>
+                            <input asp-for="ShippingPostalCode" class="form-control" placeholder="Zip code" />
+                            <span asp-validation-for="ShippingPostalCode" class="text-danger"></span>
+                        </div>
+                    </div>
+
+                    <h4>Payment</h4>
+                    <div class="mb-3">
+                        <label asp-for="CardholderName" class="form-label"></label>
+                        <input asp-for="CardholderName" class="form-control" placeholder="Name as it appears on the card" />
+                        <span asp-validation-for="CardholderName" class="text-danger"></span>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6 mb-3">
+                            <label asp-for="CreditCardNumber" class="form-label"></label>
+                            <input asp-for="CreditCardNumber" class="form-control" autocomplete="off"
+                                    inputmode="numeric" placeholder="4242 4242 4242 4242" />
+                            <span asp-validation-for="CreditCardNumber" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label asp-for="CVV" class="form-label"></label>
+                            <input asp-for="CVV" class="form-control" autocomplete="off" inputmode="numeric" placeholder="123" />
+                            <span asp-validation-for="CVV" class="text-danger"></span>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label asp-for="ExpirationMonth" class="form-label"></label>
+                            <select asp-for="ExpirationMonth" class="form-select">
+                                @for (var m = 1; m <= 12; m++)
+                                {
+                                    <option value="@m.ToString("00")">@m.ToString("00")</option>
+                                }
+                            </select>
+                        </div>
+                        <div class="col-md-2 mb-3">
+                            <label asp-for="ExpirationYear" class="form-label"></label>
+                            <select asp-for="ExpirationYear" class="form-select">
+                                @for (var y = DateTime.UtcNow.Year; y <= DateTime.UtcNow.Year + 6; y++)
+                                {
+                                    <option value="@y">@y</option>
+                                }
+                            </select>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">Place Order</button>
+                    <a class="btn btn-outline-secondary" asp-controller="Cart" asp-action="Index">Back to Cart</a>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
