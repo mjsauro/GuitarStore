@@ -36,10 +36,10 @@ cd ~/.dynamodb-local && java -Djava.library.path=./DynamoDBLocal_lib -jar Dynamo
 
 # 2. Run the app — tables are created and the catalog seeded on first start
 cd GuitarStore.Web
-ASPNETCORE_ENVIRONMENT=Development dotnet run
+dotnet run
 ```
 
-Then open <http://localhost:5199>.
+Then open <http://localhost:5168>.
 
 To reach the admin screens locally, visit `/DevAuth` and sign in as an administrator. That
 endpoint stands in for Cognito and is unreachable outside the Development environment (the
