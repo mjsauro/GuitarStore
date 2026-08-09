@@ -2,7 +2,7 @@
 
 A rebuild of the original 2017 GuitarStore (ASP.NET MVC 5 / .NET Framework 4.6.1 / Entity
 Framework 6 / SQL Server LocalDB, still in `../GuitarStore`) on ASP.NET Core MVC and
-DynamoDB, targeting AWS App Runner.
+DynamoDB, deployed to AWS Lambda.
 
 ## What changed and why
 
@@ -96,4 +96,11 @@ invokes Lambda directly and sidesteps this entirely.
 | --- | --- | --- |
 | `AWS:DynamoDbServiceUrl` | `http://localhost:8000` | unset — uses the real service |
 | `AWS:Region` | `us-east-1` | region of the deployment |
-| Credentials | not needed (DynamoDB Local ignores them) | App Runner instance role |
+| Credentials | not needed (DynamoDB Local ignores them) | Lambda execution role |
+| `App:PublicOrigin` | unset | public URL, used to build OIDC redirects |
+| `Cognito:*` | unset — falls back to `/DevAuth` | user pool, client, domain; secret set as Lambda config |
+| `Email:FromAddress` | unset — receipts are logged, not sent | SES-verified sender |
+
+Nothing secret is committed. The Cognito client secret is set directly as Lambda
+environment configuration, and `deploy.sh` merges rather than replaces that block so a
+code push can't wipe it.
