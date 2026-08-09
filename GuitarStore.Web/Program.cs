@@ -103,7 +103,11 @@ builder.Services.AddSingleton<IAmazonDynamoDB>(_ =>
             new AmazonDynamoDBConfig
             {
                 ServiceURL = serviceUrl,
-                AuthenticationRegion = builder.Configuration["AWS:Region"] ?? "us-east-1"
+                AuthenticationRegion = builder.Configuration["AWS:Region"] ?? "us-east-1",
+                // Fail fast against a local endpoint. The default retry policy spends
+                // minutes backing off, which just looks like the app hanging.
+                MaxErrorRetry = 1,
+                Timeout = TimeSpan.FromSeconds(5)
             });
     }
 
@@ -191,8 +195,27 @@ app.MapControllerRoute(
 if (builder.Configuration.GetValue("AWS:AutoProvision", app.Environment.IsDevelopment()))
 {
     using var scope = app.Services.CreateScope();
-    await scope.ServiceProvider.GetRequiredService<DynamoDbInitializer>().EnsureTablesAsync();
-    await SeedData.SeedProductsAsync(scope.ServiceProvider.GetRequiredService<IProductRepository>());
+    try
+    {
+        await scope.ServiceProvider.GetRequiredService<DynamoDbInitializer>().EnsureTablesAsync();
+        await SeedData.SeedProductsAsync(scope.ServiceProvider.GetRequiredService<IProductRepository>());
+    }
+    catch (Exception ex)
+    {
+        // Say what's wrong in a way that points at the fix. Otherwise this surfaces as an
+        // opaque SDK timeout and looks like the app is hanging for no reason.
+        var endpoint = builder.Configuration["AWS:DynamoDbServiceUrl"] ?? "AWS";
+        app.Services.GetRequiredService<ILogger<Program>>().LogCritical(
+            ex,
+            "Could not reach DynamoDB at {Endpoint}. If you're running locally, start DynamoDB " +
+            "Local first:\n\n    cd ~/.dynamodb-local && java -Djava.library.path=./DynamoDBLocal_lib " +
+            "-jar DynamoDBLocal.jar -sharedDb -port 8000\n\nSee the README for first-time setup.",
+            endpoint);
+
+        return 1;
+    }
 }
 
 app.Run();
+
+return 0;

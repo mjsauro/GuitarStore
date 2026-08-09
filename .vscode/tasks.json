@@ -1,0 +1,53 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "start dynamodb local",
+      "detail": "Starts DynamoDB Local, downloading it on first use. Does nothing if already running.",
+      "type": "shell",
+      "command": "${workspaceFolder}/infra/dynamodb-local.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "silent",
+        "panel": "shared",
+        "clear": true
+      }
+    },
+    {
+      "label": "stop dynamodb local",
+      "type": "shell",
+      "command": "${workspaceFolder}/infra/dynamodb-local.sh stop",
+      "problemMatcher": [],
+      "presentation": { "reveal": "silent", "panel": "shared" }
+    },
+    {
+      "label": "build",
+      "type": "process",
+      "command": "dotnet",
+      "args": [
+        "build",
+        "${workspaceFolder}/GuitarStore.Web/GuitarStore.Web.csproj",
+        "/property:GenerateFullPaths=true",
+        "/consoleloggerparameters:NoSummary"
+      ],
+      "group": { "kind": "build", "isDefault": true },
+      "problemMatcher": "$msCompile",
+      "presentation": { "reveal": "silent" }
+    },
+    {
+      "label": "test",
+      "type": "process",
+      "command": "dotnet",
+      "args": ["build", "${workspaceFolder}/GuitarStore.Web.slnx", "--warnaserror"],
+      "group": { "kind": "test", "isDefault": true },
+      "problemMatcher": "$msCompile"
+    },
+    {
+      "label": "prepare and build",
+      "detail": "What F5 runs: make sure the database is up, then build.",
+      "dependsOrder": "sequence",
+      "dependsOn": ["start dynamodb local", "build"],
+      "problemMatcher": []
+    }
+  ]
+}

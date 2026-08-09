@@ -88,18 +88,28 @@ infra/              deploy scripts and IAM policy templates
 Needs the .NET 10 SDK and a JRE. No AWS account required — the app falls back to a local
 sign-in stub and logs receipts instead of sending them.
 
-```bash
-# DynamoDB Local, once
-curl -L -o /tmp/ddb.tar.gz https://d1ni2b6xgvw0s0.cloudfront.net/v2.x/dynamodb_local_latest.tar.gz
-mkdir -p ~/.dynamodb-local && tar xzf /tmp/ddb.tar.gz -C ~/.dynamodb-local
-cd ~/.dynamodb-local && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port 8000 &
+### In VS Code
 
-# The app — tables are created and the catalog seeded on first run
+Open the folder and press **F5**. That starts DynamoDB Local (downloading it the first
+time), builds, launches with the debugger attached, and opens a browser. Breakpoints in
+controllers and services work straight away.
+
+Install the recommended extensions when VS Code offers — the C# Dev Kit is what provides
+debugging.
+
+### From the terminal
+
+```bash
+./infra/dynamodb-local.sh          # start the database (safe to re-run)
 cd GuitarStore.Web && dotnet run
 ```
 
 Then open <http://localhost:5168>. Visit `/DevAuth` to sign in as an administrator; that
 endpoint stands in for Cognito and is unreachable outside the Development environment.
+
+Tables are created and the catalog seeded on first run. Data lives in
+`~/.dynamodb-local` and survives restarts. `./infra/dynamodb-local.sh stop` shuts the
+database down.
 
 See [`GuitarStore.Web/README.md`](GuitarStore.Web/README.md) for configuration and
 deployment details.

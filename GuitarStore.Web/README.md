@@ -28,11 +28,12 @@ Security gaps found in the original and closed here: SQL injection in the sales 
 
 Needs the .NET 10 SDK and a JRE (for DynamoDB Local).
 
+In VS Code, press **F5** — that starts the database, builds, and launches with the
+debugger attached. From a terminal:
+
 ```bash
-# 1. Start DynamoDB Local (once)
-curl -L -o /tmp/ddb.tar.gz https://d1ni2b6xgvw0s0.cloudfront.net/v2.x/dynamodb_local_latest.tar.gz
-mkdir -p ~/.dynamodb-local && tar xzf /tmp/ddb.tar.gz -C ~/.dynamodb-local
-cd ~/.dynamodb-local && java -Djava.library.path=./DynamoDBLocal_lib -jar DynamoDBLocal.jar -sharedDb -port 8000 &
+# 1. Start DynamoDB Local (downloads it on first use; safe to re-run)
+./infra/dynamodb-local.sh
 
 # 2. Run the app — tables are created and the catalog seeded on first start
 cd GuitarStore.Web
