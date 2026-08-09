@@ -3,7 +3,7 @@
 My bootcamp final project from 2017, and a rebuild of it from 2026 — kept side by side in
 one repository so the two can be compared directly.
 
-**[Live demo →](https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com)**
+**[Live demo →](https://guitarstore.mattsauro.com)**
 *(The first request after a quiet spell takes a second or two while Lambda cold-starts.)*
 
 Browse the catalog, add a guitar to the cart, and check out with the test card

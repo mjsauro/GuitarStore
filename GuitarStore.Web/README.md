@@ -51,7 +51,7 @@ Checkout uses a simulated payment processor — **don't enter a real card**. Use
 
 ## Deployed
 
-Live at <https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com>.
+Live at <https://guitarstore.mattsauro.com>.
 
 ```
 API Gateway (HTTP API)  ->  Lambda (dotnet10, arm64)  ->  DynamoDB (4 tables)
