@@ -1,3 +1,4 @@
+using Amazon.AspNetCore.DataProtection.SSM;
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Lambda.AspNetCoreServer.Hosting;
@@ -6,6 +7,7 @@ using GuitarStore.Web.Data;
 using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.AspNetCore.DataProtection;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using System.Globalization;
@@ -90,6 +92,22 @@ if (cognito.IsConfigured)
 }
 
 builder.Services.AddAuthorization();
+
+// Data Protection encrypts antiforgery tokens and the auth cookie. Lambda has no writable
+// persistent storage, so the default provider falls back to an in-memory key ring that
+// dies with each execution environment — a form rendered by one instance then posted to
+// another fails to validate, and sessions drop at random. Persisting the keys to Parameter
+// Store gives every instance the same key ring.
+//
+// Left unset locally, where the default file-based store works fine.
+var keyPath = builder.Configuration["AWS:DataProtectionParameterPath"];
+if (!string.IsNullOrWhiteSpace(keyPath))
+{
+    builder.Services
+        .AddDataProtection()
+        .SetApplicationName("GuitarStore")
+        .PersistKeysToAWSSystemsManager(keyPath);
+}
 
 // DynamoDB. Locally this points at DynamoDB Local; deployed, the AWS SDK picks up
 // credentials and region from the Lambda execution role.

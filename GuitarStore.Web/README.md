@@ -98,6 +98,7 @@ invokes Lambda directly and sidesteps this entirely.
 | `App:PublicOrigin` | unset | public URL, used to build OIDC redirects |
 | `Cognito:*` | unset — falls back to `/DevAuth` | user pool, client, domain; secret set as Lambda config |
 | `Email:FromAddress` | unset — receipts are logged, not sent | SES-verified sender |
+| `AWS:DataProtectionParameterPath` | unset — keys go to the local filesystem | Parameter Store path holding the shared key ring |
 
 Nothing secret is committed. The Cognito client secret is set directly as Lambda
 environment configuration, and `deploy.sh` merges rather than replaces that block so a

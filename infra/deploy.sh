@@ -76,6 +76,12 @@ if [[ "$CODE_ONLY" == false ]]; then
     --policy-name "$POLICY_NAME" \
     --policy-document "file://$(render_policy dynamodb-access-policy)"
 
+  echo "Applying data protection key policy"
+  aws iam put-role-policy \
+    --role-name "$ROLE_NAME" \
+    --policy-name GuitarStoreDataProtection \
+    --policy-document "file://$(render_policy dataprotection-policy)"
+
   if [[ -n "$SES_IDENTITY" ]]; then
     echo "Applying SES send policy for $SES_IDENTITY"
     aws iam put-role-policy \
