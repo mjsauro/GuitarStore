@@ -1,0 +1,17 @@
+{
+  // Two solutions live at the root. GuitarStore.sln is the 2017 original — .NET Framework
+  // projects plus a .sqlproj, none of which load outside Windows — so point the C# Dev Kit
+  // at the rebuild. Without this it tries to guess and reports "no solution".
+  "dotnet.defaultSolution": "GuitarStore.Web.slnx",
+
+  "files.exclude": {
+    "**/bin": true,
+    "**/obj": true
+  },
+
+  "search.exclude": {
+    "**/bin": true,
+    "**/obj": true,
+    "**/wwwroot/lib": true
+  }
+}

@@ -97,6 +97,11 @@ controllers and services work straight away.
 Install the recommended extensions when VS Code offers — the C# Dev Kit is what provides
 debugging.
 
+Two solutions sit at the root: `GuitarStore.Web.slnx` for the rebuild, and the original
+`GuitarStore.sln`, whose .NET Framework and SQL projects only load on Windows.
+`.vscode/settings.json` points the C# Dev Kit at the former, so opening the folder loads
+the rebuild rather than reporting "no solution".
+
 ### From the terminal
 
 ```bash
