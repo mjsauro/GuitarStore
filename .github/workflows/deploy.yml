@@ -1,5 +1,10 @@
 name: Deploy
 
+# A full .NET build and Lambda deploy for a documentation edit is wasted work.
+# The negative pattern has to come last — filters are evaluated in order — and it
+# is needed because GuitarStore.Web/README.md would otherwise match the allowlist
+# above. A push mixing Markdown with code still deploys, since the code file
+# matches a positive pattern and nothing excludes it.
 on:
   push:
     branches: [master, rebuild/dotnet10-aws]
@@ -7,6 +12,7 @@ on:
       - 'GuitarStore.Web/**'
       - 'infra/**'
       - '.github/workflows/deploy.yml'
+      - '!**.md'
   workflow_dispatch:
 
 # Required for OIDC: the workflow requests a token AWS trades for temporary credentials.
