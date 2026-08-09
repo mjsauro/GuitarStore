@@ -1,0 +1,48 @@
+@model GuitarStore.Web.Models.Product
+
+<div class="container-fluid">
+    <div class="well">
+        <div class="row">
+            <div class="col-xs-6 col-md-4 offset-md-1">
+                <div class="card">
+                    <div class="card-header">
+                        <h3>@Model.DisplayName</h3>
+                    </div>
+                    <div class="card-body">
+                        @foreach (var property in Model.Properties)
+                        {
+                            <p>@property.Key : @property.Value</p>
+                        }
+
+                        <p>Description: @Model.Description</p>
+                        <p>Price: @Model.Price.ToString("C")</p>
+
+                        <form asp-controller="Cart" asp-action="Add" method="post">
+                            <input type="hidden" name="productId" value="@Model.Id" />
+                            <div class="mb-3">
+                                <label class="form-label" for="quantity">Quantity</label>
+                                <select class="form-select" id="quantity" name="quantity">
+                                    @for (var i = 1; i <= 10; i++)
+                                    {
+                                        <option value="@i">@i @(i == 1 ? Model.Model : Model.Model + "s")</option>
+                                    }
+                                </select>
+                            </div>
+                            <button type="submit" class="btn btn-dark">Add to Cart</button>
+                        </form>
+                    </div>
+                    <div class="card-footer">
+                        <a asp-controller="Product" asp-action="List" asp-route-id="@Model.ProductTypeName">Return to List</a>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xs-12 col-md-4 offset-md-1">
+                <div class="card">
+                    <div class="card-body">
+                        <img class="img-fluid" src="@Model.Image" alt="@Model.DisplayName" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

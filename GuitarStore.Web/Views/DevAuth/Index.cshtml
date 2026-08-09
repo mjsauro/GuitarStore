@@ -1,0 +1,33 @@
+@{
+    ViewData["Title"] = "Developer Sign In";
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-6 offset-md-3">
+            <div class="card">
+                <div class="card-header">
+                    <h3>Developer Sign In</h3>
+                </div>
+                <div class="card-body">
+                    <div class="alert alert-warning">
+                        Local development only — this stands in for Cognito so admin screens can be
+                        exercised without AWS. It is not reachable outside the Development environment.
+                    </div>
+
+                    <form asp-controller="DevAuth" asp-action="SignInAs" method="post">
+                        <div class="mb-3">
+                            <label class="form-label" for="email">Email</label>
+                            <input class="form-control" id="email" name="email" value="dev@example.com" />
+                        </div>
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="isAdmin" name="isAdmin" value="true" checked />
+                            <label class="form-check-label" for="isAdmin">Sign in as an administrator</label>
+                        </div>
+                        <button type="submit" class="btn btn-dark">Sign In</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

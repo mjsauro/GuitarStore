@@ -1,0 +1,59 @@
+name: Deploy
+
+on:
+  push:
+    branches: [master, rebuild/dotnet10-aws]
+    paths:
+      - 'GuitarStore.Web/**'
+      - 'infra/**'
+      - '.github/workflows/deploy.yml'
+  workflow_dispatch:
+
+# Required for OIDC: the workflow requests a token AWS trades for temporary credentials.
+# No AWS keys are stored in GitHub.
+permissions:
+  id-token: write
+  contents: read
+
+# One deploy at a time; never cancel a run mid-deploy.
+concurrency:
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and deploy to Lambda
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Set up .NET
+        uses: actions/setup-dotnet@v6
+        with:
+          dotnet-version: '10.0.x'
+
+      - name: Build
+        run: dotnet build GuitarStore.Web.slnx -c Release --warnaserror
+
+      - name: Assume deploy role
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: arn:aws:iam::${{ secrets.AWS_ACCOUNT_ID }}:role/guitarstore-github-actions
+          aws-region: us-east-2
+
+      - name: Deploy
+        run: ./infra/deploy.sh --code
+
+      - name: Smoke test
+        run: |
+          URL="https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com"
+          for path in / /Product/List/Guitar /Cart; do
+            code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$URL$path")"
+            echo "$path -> $code"
+            [ "$code" = "200" ] || { echo "::error::$path returned $code"; exit 1; }
+          done
+          # Admin routes must stay behind authentication.
+          code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$URL/ProductAdmin")"
+          echo "/ProductAdmin -> $code"
+          [ "$code" = "302" ] || { echo "::error::/ProductAdmin returned $code, expected a redirect to sign-in"; exit 1; }

@@ -1,0 +1,31 @@
+@{
+    ViewData["Title"] = "Your Account";
+    var isAdmin = User.IsInRole(GuitarStore.Web.Roles.Admin);
+}
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header"><h3>Your Account</h3></div>
+                <div class="card-body">
+                    <dl class="row">
+                        <dt class="col-sm-4">Signed in as</dt>
+                        <dd class="col-sm-8">@User.Identity?.Name</dd>
+                        <dt class="col-sm-4">Role</dt>
+                        <dd class="col-sm-8">@(isAdmin ? "Administrator" : "Customer")</dd>
+                    </dl>
+
+                    @if (isAdmin)
+                    {
+                        <a class="btn btn-dark" asp-controller="ProductAdmin" asp-action="Index">Manage Products</a>
+                        <a class="btn btn-dark" asp-controller="Employees" asp-action="Index">Employees</a>
+                        <a class="btn btn-dark" asp-controller="Report" asp-action="Index">Sales Report</a>
+                    }
+
+                    <a class="btn btn-outline-secondary" asp-controller="Account" asp-action="SignOutUser">Sign Out</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

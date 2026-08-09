@@ -1,0 +1,23 @@
+@model GuitarStore.Web.Models.Product
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card">
+                <div class="card-header"><h3>Delete @Model.DisplayName?</h3></div>
+                <div class="card-body">
+                    <p class="lead">This can't be undone.</p>
+                    <dl class="row">
+                        <dt class="col-sm-4">Type</dt><dd class="col-sm-8">@Model.ProductTypeName</dd>
+                        <dt class="col-sm-4">Price</dt><dd class="col-sm-8">@Model.Price.ToString("C")</dd>
+                    </dl>
+                    <form asp-action="Delete" method="post">
+                        <input type="hidden" name="id" value="@Model.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                        <a class="btn btn-outline-secondary" asp-action="Index">Cancel</a>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

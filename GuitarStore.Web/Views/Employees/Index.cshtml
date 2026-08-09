@@ -1,0 +1,47 @@
+@model IReadOnlyList<GuitarStore.Web.Models.Employee>
+
+<div class="container-fluid">
+    <div class="well">
+        <div class="d-flex justify-content-between align-items-center">
+            <h2>Employees</h2>
+            <a class="btn btn-dark" asp-action="Create">New Employee</a>
+        </div>
+
+        @if (Model.Count == 0)
+        {
+            <div class="alert alert-info">No employees on file yet.</div>
+        }
+        else
+        {
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Date of Birth</th>
+                        <th>Wage</th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var employee in Model)
+                    {
+                        <tr>
+                            <td>@employee.EmpId</td>
+                            <td>@employee.FirstName</td>
+                            <td>@employee.LastName</td>
+                            <td>@employee.DOB.ToString("d")</td>
+                            <td>@employee.Wage.ToString("C")</td>
+                            <td>
+                                <a asp-action="Edit" asp-route-id="@employee.EmpId">Edit</a> |
+                                <a asp-action="Details" asp-route-id="@employee.EmpId">Details</a> |
+                                <a asp-action="Delete" asp-route-id="@employee.EmpId">Delete</a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>

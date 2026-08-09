@@ -1,0 +1,22 @@
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PushLambdaCode",
+      "Effect": "Allow",
+      "Action": [
+        "lambda:GetFunction",
+        "lambda:GetFunctionConfiguration",
+        "lambda:UpdateFunctionCode",
+        "lambda:UpdateFunctionConfiguration"
+      ],
+      "Resource": "arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:guitarstore-web"
+    },
+    {
+      "Sid": "ReadApiEndpoint",
+      "Effect": "Allow",
+      "Action": ["apigateway:GET"],
+      "Resource": "arn:aws:apigateway:${REGION}::/apis*"
+    }
+  ]
+}
