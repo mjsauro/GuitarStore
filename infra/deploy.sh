@@ -12,9 +12,18 @@
 #
 #   ./infra/deploy.sh          # build, package, create/update, print the URL
 #   ./infra/deploy.sh --code   # skip provisioning, just push new code
+#
+# Environment:
+#   AWS_REGION      deployment region (default us-east-2)
+#   SES_IDENTITY    verified sender address for order receipts. When unset, the SES
+#                   policy step is skipped and the app logs receipts instead of sending.
+#
+# The account id is read from the caller's identity rather than committed, and the IAM
+# policies are rendered from the .template.json files at deploy time.
 set -euo pipefail
 
 REGION="${AWS_REGION:-us-east-2}"
+SES_IDENTITY="${SES_IDENTITY:-}"
 FUNCTION_NAME="guitarstore-web"
 ROLE_NAME="guitarstore-lambda-role"
 POLICY_NAME="GuitarStoreDynamoDbAccess"
@@ -27,6 +36,22 @@ CODE_ONLY=false
 [[ "${1:-}" == "--code" ]] && CODE_ONLY=true
 
 ACCOUNT_ID="$(aws sts get-caller-identity --query Account --output text)"
+
+RENDERED="$(mktemp -d)"
+trap 'rm -rf "$RENDERED"' EXIT
+
+# Substitutes ${ACCOUNT_ID}, ${REGION}, and ${SES_IDENTITY} into a policy template.
+render_policy() {
+  local template="$REPO_ROOT/infra/$1.template.json"
+  local output="$RENDERED/$1.json"
+
+  sed -e "s|\${ACCOUNT_ID}|${ACCOUNT_ID}|g" \
+      -e "s|\${REGION}|${REGION}|g" \
+      -e "s|\${SES_IDENTITY}|${SES_IDENTITY}|g" \
+      "$template" > "$output"
+
+  echo "$output"
+}
 
 # ---------------------------------------------------------------- IAM role
 if [[ "$CODE_ONLY" == false ]]; then
@@ -49,13 +74,17 @@ if [[ "$CODE_ONLY" == false ]]; then
   aws iam put-role-policy \
     --role-name "$ROLE_NAME" \
     --policy-name "$POLICY_NAME" \
-    --policy-document "file://$REPO_ROOT/infra/dynamodb-access-policy.json"
+    --policy-document "file://$(render_policy dynamodb-access-policy)"
 
-  echo "Applying SES send policy"
-  aws iam put-role-policy \
-    --role-name "$ROLE_NAME" \
-    --policy-name GuitarStoreSesSend \
-    --policy-document "file://$REPO_ROOT/infra/ses-send-policy.json"
+  if [[ -n "$SES_IDENTITY" ]]; then
+    echo "Applying SES send policy for $SES_IDENTITY"
+    aws iam put-role-policy \
+      --role-name "$ROLE_NAME" \
+      --policy-name GuitarStoreSesSend \
+      --policy-document "file://$(render_policy ses-send-policy)"
+  else
+    echo "SES_IDENTITY not set — skipping SES policy (receipts will be logged, not sent)"
+  fi
 fi
 
 ROLE_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}"

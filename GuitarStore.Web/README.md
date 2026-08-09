@@ -78,7 +78,16 @@ report screens.
 SES is in the sandbox, so receipts only reach verified addresses — enough for a demo.
 Moving out of the sandbox requires a support request.
 
-Redeploy with `./infra/deploy.sh` (full) or `./infra/deploy.sh --code` (code only).
+Redeploy with `./infra/deploy.sh` (full) or `./infra/deploy.sh --code` (code only):
+
+```bash
+AWS_REGION=us-east-2 SES_IDENTITY=you@example.com ./infra/deploy.sh
+```
+
+The IAM policies are rendered at deploy time from the `.template.json` files — the
+account id comes from the caller's own identity and the sender address from
+`SES_IDENTITY`, so neither is committed. With `SES_IDENTITY` unset the SES policy is
+skipped and receipts are logged rather than sent.
 
 The Lambda is private: its resource policy allows exactly one principal —
 `apigateway.amazonaws.com`, restricted to this API's ARN. There's no function URL.

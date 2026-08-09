@@ -16,7 +16,7 @@ public class CognitoOptions
 
     public string Region { get; set; } = "us-east-2";
 
-    /// <summary>The hosted UI domain prefix, e.g. "guitarstore-910360776259".</summary>
+    /// <summary>The hosted UI domain prefix, e.g. "guitarstore-example".</summary>
     public string DomainPrefix { get; set; } = "";
 
     public bool IsConfigured =>
