@@ -4,6 +4,7 @@ using Amazon.Lambda.AspNetCoreServer.Hosting;
 using GuitarStore.Web.Data;
 using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -17,13 +18,24 @@ builder.Services.AddControllersWithViews(options =>
     options.Filters.Add(new AutoValidateAntiforgeryTokenAttribute());
 });
 
-// Cookie auth holds the session. In Development the cookie is issued by DevAuthController;
-// deployed, Cognito issues it through OIDC.
-builder.Services
-    .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+// Cookie auth holds the session. The cookie is issued by Cognito through OIDC when it's
+// configured, and by the Development sign-in stub when it isn't — so a fresh clone runs
+// with no AWS setup at all.
+var cognito = builder.Configuration.GetSection(CognitoOptions.SectionName).Get<CognitoOptions>() ?? new CognitoOptions();
+builder.Services.AddSingleton(cognito);
+
+var authBuilder = builder.Services
+    .AddAuthentication(options =>
+    {
+        options.DefaultScheme = CookieAuthenticationDefaults.AuthenticationScheme;
+        if (cognito.IsConfigured)
+        {
+            options.DefaultChallengeScheme = OpenIdConnectDefaults.AuthenticationScheme;
+        }
+    })
     .AddCookie(options =>
     {
-        options.LoginPath = builder.Environment.IsDevelopment() ? "/DevAuth" : "/Account/SignIn";
+        options.LoginPath = builder.Environment.IsDevelopment() && !cognito.IsConfigured ? "/DevAuth" : "/Account/SignIn";
         options.AccessDeniedPath = "/Account/Denied";
         options.ExpireTimeSpan = TimeSpan.FromDays(7);
         options.SlidingExpiration = true;
@@ -33,6 +45,41 @@ builder.Services
             ? CookieSecurePolicy.SameAsRequest
             : CookieSecurePolicy.Always;
     });
+
+if (cognito.IsConfigured)
+{
+    authBuilder.AddOpenIdConnect(options =>
+    {
+        options.Authority = cognito.Authority;
+        options.ClientId = cognito.ClientId;
+        options.ClientSecret = cognito.ClientSecret;
+        options.ResponseType = "code";
+        options.UsePkce = true;
+        options.SaveTokens = false;
+        options.GetClaimsFromUserInfoEndpoint = true;
+
+        options.Scope.Clear();
+        options.Scope.Add("openid");
+        options.Scope.Add("email");
+        options.Scope.Add("profile");
+
+        options.TokenValidationParameters.NameClaimType = "email";
+        options.TokenValidationParameters.RoleClaimType = "cognito:groups";
+
+        // Behind API Gateway the app doesn't know its own public host, so the redirect
+        // would otherwise be built from the internal one.
+        options.Events.OnRedirectToIdentityProvider = context =>
+        {
+            var publicOrigin = builder.Configuration["App:PublicOrigin"];
+            if (!string.IsNullOrEmpty(publicOrigin))
+            {
+                context.ProtocolMessage.RedirectUri = $"{publicOrigin.TrimEnd('/')}/signin-oidc";
+            }
+
+            return Task.CompletedTask;
+        };
+    });
+}
 
 builder.Services.AddAuthorization();
 
@@ -71,12 +118,12 @@ builder.Services.AddScoped<CartService>();
 // without a merchant account. Swap this registration to plug in a real provider.
 builder.Services.AddSingleton<IPaymentService, SimulatedPaymentService>();
 
-// Running on Lambda behind a Function URL. This is a no-op when running locally with
-// dotnet run, so the same build works both places.
+// Running on Lambda behind an API Gateway HTTP API. This is a no-op when running locally
+// with dotnet run, so the same build works both places.
 builder.Services.AddAWSLambdaHosting(LambdaEventSource.HttpApi);
 
-// The Function URL terminates TLS and forwards plain HTTP, so the original scheme arrives
-// in X-Forwarded-Proto. Without this, UseHttpsRedirection would redirect forever.
+// API Gateway terminates TLS and forwards plain HTTP, so the original scheme arrives in
+// X-Forwarded-Proto. Without this, UseHttpsRedirection would redirect forever.
 builder.Services.Configure<ForwardedHeadersOptions>(options =>
 {
     options.ForwardedHeaders = ForwardedHeaders.XForwardedProto | ForwardedHeaders.XForwardedFor;
@@ -89,10 +136,10 @@ var app = builder.Build();
 
 app.UseForwardedHeaders();
 
-// The function URL uses AWS_IAM auth, so Lambda hands us a principal representing the
-// SigV4 caller (CloudFront). It's flagged authenticated but carries no name, which breaks
-// antiforgery token generation and would otherwise read as a signed-in user. Reset to
-// anonymous so the cookie is the only thing that can authenticate a visitor.
+// Lambda can hand us a principal describing the caller of the function itself (the SigV4
+// signer, or an API Gateway authorizer). It's flagged authenticated but carries no name,
+// which breaks antiforgery token generation and would otherwise read as a signed-in user.
+// Reset to anonymous so the auth cookie is the only thing that can sign a visitor in.
 app.Use(async (context, next) =>
 {
     context.User = new ClaimsPrincipal(new ClaimsIdentity());
