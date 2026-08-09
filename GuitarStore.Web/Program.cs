@@ -185,13 +185,6 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}")
     .WithStaticAssets();
 
-// The local sign-in stub is only routable in Development; DevAuthController also refuses
-// to act outside it.
-if (!app.Environment.IsDevelopment())
-{
-    app.MapControllerRoute(name: "blockDevAuth", pattern: "DevAuth/{*rest}", defaults: new { controller = "Home", action = "Error" });
-}
-
 // Create tables and seed the catalog on startup so a fresh clone just works. Off in
 // production: the deployed function's role is scoped to reading and writing items, not
 // creating tables, and this would otherwise run on every cold start.

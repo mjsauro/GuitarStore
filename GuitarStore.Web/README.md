@@ -48,18 +48,6 @@ route isn't mapped, and the controller refuses to act).
 Checkout uses a simulated payment processor — **don't enter a real card**. Use
 `4242 4242 4242 4242` for an approval and `4000 0000 0000 0002` for a decline.
 
-## Building the container
-
-Docker isn't required; the SDK can build the image itself.
-
-```bash
-dotnet publish -c Release /t:PublishContainer \
-  /p:ContainerArchiveOutputPath=/tmp/guitarstore-image.tar.gz \
-  /p:ContainerRepository=guitarstore-web
-```
-
-A `Dockerfile` is included for `docker build` if you'd rather use it.
-
 ## Deployed
 
 Live at <https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com>.

@@ -61,8 +61,6 @@ public class Order
     public DateTime DateCreated { get; set; }
 
     public DateTime DateModified { get; set; }
-
-    public DateTime? ShipDate { get; set; }
 }
 
 /// <summary>Stores the embedded line items as a JSON document attribute.</summary>
