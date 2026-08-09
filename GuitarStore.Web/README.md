@@ -59,6 +59,26 @@ dotnet publish -c Release /t:PublishContainer \
 
 A `Dockerfile` is included for `docker build` if you'd rather use it.
 
+## Deployed
+
+Live at <https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com>.
+
+```
+API Gateway (HTTP API)  ->  Lambda (dotnet10, arm64)  ->  DynamoDB (4 tables)
+```
+
+Redeploy with `./infra/deploy.sh` (full) or `./infra/deploy.sh --code` (code only).
+
+The Lambda is private: its resource policy allows exactly one principal —
+`apigateway.amazonaws.com`, restricted to this API's ARN. There's no function URL.
+
+A note on why it isn't a Lambda function URL, since that's the more obvious choice:
+accounts created after ~2024 block public access to function URLs by default. Fronting
+one with CloudFront + origin access control gets GETs working but breaks every form
+post, because OAC signs origin requests with SigV4 and Lambda rejects unsigned
+payloads — a browser POST with no `x-amz-content-sha256` header gets a 403. API Gateway
+invokes Lambda directly and sidesteps this entirely.
+
 ## Configuration
 
 | Setting | Local | Deployed |

@@ -1,5 +1,12 @@
 #!/usr/bin/env bash
-# Deploys GuitarStore.Web to AWS Lambda behind a public Function URL.
+# Deploys GuitarStore.Web to AWS Lambda behind an API Gateway HTTP API.
+#
+# Why API Gateway and not a Lambda function URL: this account (like all accounts
+# created after ~2024) blocks public access to function URLs by default. Fronting the
+# URL with CloudFront + OAC works for GETs but breaks every form post — OAC signs
+# requests with SigV4 and Lambda rejects unsigned payloads, so a browser POST without
+# an x-amz-content-sha256 header gets a 403. API Gateway invokes Lambda directly and
+# has no such constraint, and the function stays private either way.
 #
 # Safe to re-run: creates what's missing, updates what exists.
 #
@@ -11,6 +18,7 @@ REGION="${AWS_REGION:-us-east-2}"
 FUNCTION_NAME="guitarstore-web"
 ROLE_NAME="guitarstore-lambda-role"
 POLICY_NAME="GuitarStoreDynamoDbAccess"
+API_NAME="guitarstore-api"
 REPO_ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROJECT="$REPO_ROOT/GuitarStore.Web"
 ARTIFACT="/tmp/guitarstore-lambda.zip"
@@ -78,20 +86,6 @@ else
     --environment "$ENV_VARS" \
     --region "$REGION" >/dev/null
   aws lambda wait function-active --function-name "$FUNCTION_NAME" --region "$REGION"
-
-  echo "Creating public Function URL"
-  aws lambda create-function-url-config \
-    --function-name "$FUNCTION_NAME" \
-    --auth-type NONE \
-    --region "$REGION" >/dev/null
-
-  aws lambda add-permission \
-    --function-name "$FUNCTION_NAME" \
-    --statement-id FunctionURLAllowPublicAccess \
-    --action lambda:InvokeFunctionUrl \
-    --principal "*" \
-    --function-url-auth-type NONE \
-    --region "$REGION" >/dev/null
 fi
 
 aws lambda update-function-configuration \
@@ -99,6 +93,30 @@ aws lambda update-function-configuration \
   --environment "$ENV_VARS" \
   --region "$REGION" >/dev/null
 
-URL="$(aws lambda get-function-url-config --function-name "$FUNCTION_NAME" --region "$REGION" --query FunctionUrl --output text)"
+# ---------------------------------------------------------------- API Gateway
+FUNCTION_ARN="arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:${FUNCTION_NAME}"
+API_ID="$(aws apigatewayv2 get-apis --region "$REGION" \
+  --query "Items[?Name=='${API_NAME}'].ApiId | [0]" --output text)"
+
+if [[ "$API_ID" == "None" || -z "$API_ID" ]]; then
+  echo "Creating HTTP API $API_NAME"
+  API_ID="$(aws apigatewayv2 create-api \
+    --name "$API_NAME" \
+    --protocol-type HTTP \
+    --target "$FUNCTION_ARN" \
+    --region "$REGION" \
+    --query ApiId --output text)"
+
+  # Only this API may invoke the function; it is not otherwise reachable.
+  aws lambda add-permission \
+    --function-name "$FUNCTION_NAME" \
+    --statement-id AllowApiGatewayInvoke \
+    --action lambda:InvokeFunction \
+    --principal apigateway.amazonaws.com \
+    --source-arn "arn:aws:execute-api:${REGION}:${ACCOUNT_ID}:${API_ID}/*/*" \
+    --region "$REGION" >/dev/null
+fi
+
+ENDPOINT="$(aws apigatewayv2 get-api --api-id "$API_ID" --region "$REGION" --query ApiEndpoint --output text)"
 echo
-echo "Deployed: $URL"
+echo "Deployed: $ENDPOINT"

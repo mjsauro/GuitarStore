@@ -6,6 +6,7 @@ using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -87,6 +88,16 @@ builder.Services.Configure<ForwardedHeadersOptions>(options =>
 var app = builder.Build();
 
 app.UseForwardedHeaders();
+
+// The function URL uses AWS_IAM auth, so Lambda hands us a principal representing the
+// SigV4 caller (CloudFront). It's flagged authenticated but carries no name, which breaks
+// antiforgery token generation and would otherwise read as a signed-in user. Reset to
+// anonymous so the cookie is the only thing that can authenticate a visitor.
+app.Use(async (context, next) =>
+{
+    context.User = new ClaimsPrincipal(new ClaimsIdentity());
+    await next();
+});
 
 if (!app.Environment.IsDevelopment())
 {
