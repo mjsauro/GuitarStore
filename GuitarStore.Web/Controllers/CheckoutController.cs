@@ -10,17 +10,20 @@ public class CheckoutController : Controller
     private readonly ICartRepository _carts;
     private readonly IOrderRepository _orders;
     private readonly IPaymentService _payments;
+    private readonly IEmailSender _email;
     private readonly CartService _cartService;
 
     public CheckoutController(
         ICartRepository carts,
         IOrderRepository orders,
         IPaymentService payments,
+        IEmailSender email,
         CartService cartService)
     {
         _carts = carts;
         _orders = orders;
         _payments = payments;
+        _email = email;
         _cartService = cartService;
     }
 
@@ -108,6 +111,10 @@ public class CheckoutController : Controller
         };
 
         await _orders.SaveAsync(order, ct);
+
+        // After the order is safely stored: the sender swallows and logs its own failures,
+        // so a bad address can't cost the customer a paid order.
+        await _email.SendOrderReceiptAsync(order, ct);
 
         await _carts.ClearAsync(cart.CartId, ct);
         CartCookie.Clear(HttpContext);

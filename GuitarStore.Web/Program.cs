@@ -1,15 +1,23 @@
 using Amazon.DynamoDBv2;
 using Amazon.DynamoDBv2.DataModel;
 using Amazon.Lambda.AspNetCoreServer.Hosting;
+using Amazon.SimpleEmailV2;
 using GuitarStore.Web.Data;
 using GuitarStore.Web.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.AspNetCore.HttpOverrides;
 using Microsoft.AspNetCore.Mvc;
+using System.Globalization;
 using System.Security.Claims;
 
 var builder = WebApplication.CreateBuilder(args);
+
+// The store prices in US dollars, so don't let the host's default culture decide how money
+// renders — on Lambda the invariant culture would print "¤599.00" instead of "$599.00".
+var storeCulture = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = storeCulture;
+CultureInfo.DefaultThreadCurrentUICulture = storeCulture;
 
 builder.Services.AddControllersWithViews(options =>
 {
@@ -117,6 +125,18 @@ builder.Services.AddScoped<CartService>();
 // No real processor is wired up: checkout simulates authorization so the flow is demoable
 // without a merchant account. Swap this registration to plug in a real provider.
 builder.Services.AddSingleton<IPaymentService, SimulatedPaymentService>();
+
+// Order receipts over SES. Without a configured sender the app logs instead of sending,
+// so local runs need no email setup.
+if (!string.IsNullOrWhiteSpace(builder.Configuration["Email:FromAddress"]))
+{
+    builder.Services.AddSingleton<IAmazonSimpleEmailServiceV2>(_ => new AmazonSimpleEmailServiceV2Client());
+    builder.Services.AddScoped<IEmailSender, SesEmailSender>();
+}
+else
+{
+    builder.Services.AddScoped<IEmailSender, NullEmailSender>();
+}
 
 // Running on Lambda behind an API Gateway HTTP API. This is a no-op when running locally
 // with dotnet run, so the same build works both places.

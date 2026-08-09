@@ -14,8 +14,9 @@ DynamoDB, targeting AWS App Runner.
 | `Cart` + `CartProducts` join | One item collection per cart | Whole cart in a single Query |
 | `Order` + `OrderProducts` join | Line items embedded on the order | They were already purchase-time snapshots |
 | Braintree with raw card data posted to the server | `IPaymentService` with a simulated processor | Demoable with no merchant account; a real provider drops in behind the interface |
-| Ad-hoc Mailgun calls copy-pasted into controllers | (pending) single `IEmailSender` on SES | One implementation instead of three |
-| ASP.NET Identity + OWIN | (pending) Cognito via OIDC | Less hand-rolled auth to get wrong |
+| Ad-hoc Mailgun calls copy-pasted into controllers | Single `IEmailSender` on SES | One implementation instead of three |
+| ASP.NET Identity + OWIN | Cognito hosted UI via OIDC | Seven hand-written auth views deleted, not ported |
+| Password minimum of 4 characters, no complexity | 8+, mixed case and digits | Enforced by Cognito |
 
 Security gaps found in the original and closed here: SQL injection in the sales report
 (that page now aggregates this store's own orders and takes no query input), missing
@@ -65,7 +66,17 @@ Live at <https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com>.
 
 ```
 API Gateway (HTTP API)  ->  Lambda (dotnet10, arm64)  ->  DynamoDB (4 tables)
+                                    |
+                                    +-> Cognito (sign-in, hosted UI)
+                                    +-> SES (order receipts)
 ```
+
+Sign-in, registration, and password reset are Cognito's hosted UI. Membership of the
+Cognito `Admin` group arrives as a role claim and gates the catalog, employee, and
+report screens.
+
+SES is in the sandbox, so receipts only reach verified addresses — enough for a demo.
+Moving out of the sandbox requires a support request.
 
 Redeploy with `./infra/deploy.sh` (full) or `./infra/deploy.sh --code` (code only).
 

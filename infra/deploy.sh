@@ -50,6 +50,12 @@ if [[ "$CODE_ONLY" == false ]]; then
     --role-name "$ROLE_NAME" \
     --policy-name "$POLICY_NAME" \
     --policy-document "file://$REPO_ROOT/infra/dynamodb-access-policy.json"
+
+  echo "Applying SES send policy"
+  aws iam put-role-policy \
+    --role-name "$ROLE_NAME" \
+    --policy-name GuitarStoreSesSend \
+    --policy-document "file://$REPO_ROOT/infra/ses-send-policy.json"
 fi
 
 ROLE_ARN="arn:aws:iam::${ACCOUNT_ID}:role/${ROLE_NAME}"
@@ -88,10 +94,28 @@ else
   aws lambda wait function-active --function-name "$FUNCTION_NAME" --region "$REGION"
 fi
 
+# Merge the settings this script owns into whatever is already on the function, rather
+# than replacing the block wholesale — Cognito and email settings (including the client
+# secret) are configured out of band and must survive a deploy.
+EXISTING="$(aws lambda get-function-configuration --function-name "$FUNCTION_NAME" --region "$REGION" \
+  --query 'Environment.Variables' --output json 2>/dev/null || echo '{}')"
+
+MERGED="$(python3 -c '
+import json, sys
+existing = json.loads(sys.argv[1] or "{}") or {}
+existing.update({
+    "ASPNETCORE_ENVIRONMENT": "Production",
+    "AWS__Region": sys.argv[2],
+    "AWS__AutoProvision": "false",
+})
+print(json.dumps({"Variables": existing}))
+' "$EXISTING" "$REGION")"
+
 aws lambda update-function-configuration \
   --function-name "$FUNCTION_NAME" \
-  --environment "$ENV_VARS" \
+  --environment "$MERGED" \
   --region "$REGION" >/dev/null
+aws lambda wait function-updated --function-name "$FUNCTION_NAME" --region "$REGION"
 
 # ---------------------------------------------------------------- API Gateway
 FUNCTION_ARN="arn:aws:lambda:${REGION}:${ACCOUNT_ID}:function:${FUNCTION_NAME}"
