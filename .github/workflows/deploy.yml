@@ -49,11 +49,17 @@ jobs:
           aws-region: us-east-2
 
       - name: Deploy
+        id: deploy
         run: ./infra/deploy.sh --code
 
+      # Deliberately the API Gateway endpoint and not guitarstore.mattsauro.com:
+      # this verifies the artifact the step above just deployed, not the custom
+      # domain and DNS in front of it. The URL comes from the deploy script so
+      # nothing here hardcodes the generated API id.
       - name: Smoke test
         run: |
-          URL="https://ff5r1kiiae.execute-api.us-east-2.amazonaws.com"
+          URL="${{ steps.deploy.outputs.endpoint }}"
+          [ -n "$URL" ] || { echo "::error::deploy step produced no endpoint"; exit 1; }
           for path in / /Product/List/Guitar /Cart; do
             code="$(curl -s -o /dev/null -w '%{http_code}' --max-time 30 "$URL$path")"
             echo "$path -> $code"

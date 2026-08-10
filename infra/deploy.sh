@@ -177,5 +177,11 @@ if [[ "$API_ID" == "None" || -z "$API_ID" ]]; then
 fi
 
 ENDPOINT="$(aws apigatewayv2 get-api --api-id "$API_ID" --region "$REGION" --query ApiEndpoint --output text)"
+
+# Hand the endpoint to the workflow rather than making it hardcode one. The
+# hostname embeds the generated API id, so it changes if this script ever has to
+# recreate the API above.
+[[ -n "${GITHUB_OUTPUT:-}" ]] && echo "endpoint=$ENDPOINT" >>"$GITHUB_OUTPUT"
+
 echo
 echo "Deployed: $ENDPOINT"
